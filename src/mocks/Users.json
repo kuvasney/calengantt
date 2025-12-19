@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Jessica Silva",
+    "email": "jessica.silva@saka.com",
+    "role": "Gerente de Projetos"
+  },
+  {
+    "id": 2,
+    "name": "Carlos Santos",
+    "email": "carlos.santos@saka.com",
+    "role": "Engenheiro"
+  },
+  {
+    "id": 3,
+    "name": "Maria Oliveira",
+    "email": "maria.oliveira@saka.com",
+    "role": "Arquiteta"
+  }
+]

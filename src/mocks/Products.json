@@ -1,0 +1,218 @@
+[
+  {
+    "id": 1,
+    "value": "dica",
+    "label": "Dica",
+    "steps": [
+      {
+        "id": 1,
+        "name": "Demolição",
+        "days": 2,
+        "order": 1
+      },
+      {
+        "id": 2,
+        "name": "Instalações Elétricas",
+        "days": 3,
+        "order": 2
+      },
+      {
+        "id": 3,
+        "name": "Pintura",
+        "days": 3,
+        "order": 3
+      },
+      {
+        "id": 4,
+        "name": "Acabamento",
+        "days": 2,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "value": "base",
+    "label": "Base",
+    "steps": [
+      {
+        "id": 1,
+        "name": "Demolição",
+        "days": 4,
+        "order": 1
+      },
+      {
+        "id": 2,
+        "name": "Instalações Elétricas",
+        "days": 3,
+        "order": 2
+      },
+      {
+        "id": 5,
+        "name": "Instalações Hidráulicas",
+        "days": 3,
+        "order": 3
+      },
+      {
+        "id": 3,
+        "name": "Pintura",
+        "days": 3,
+        "order": 4
+      },
+      {
+        "id": 4,
+        "name": "Acabamento",
+        "days": 2,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "value": "decora",
+    "label": "Decora",
+    "steps": [
+      {
+        "id": 1,
+        "name": "Demolição",
+        "days": 5,
+        "order": 1
+      },
+      {
+        "id": 2,
+        "name": "Instalações",
+        "days": 5,
+        "order": 2
+      },
+      {
+        "id": 6,
+        "name": "Revestimentos",
+        "days": 4,
+        "order": 3
+      },
+      {
+        "id": 3,
+        "name": "Pintura",
+        "days": 3,
+        "order": 4
+      },
+      {
+        "id": 4,
+        "name": "Acabamento",
+        "days": 3,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "value": "essencial",
+    "label": "Essencial",
+    "steps": [
+      {
+        "id": 1,
+        "name": "Demolição e Alvenaria",
+        "days": 6,
+        "order": 1
+      },
+      {
+        "id": 2,
+        "name": "Instalações Elétricas",
+        "days": 6,
+        "order": 2
+      },
+      {
+        "id": 5,
+        "name": "Instalações Hidráulicas",
+        "days": 6,
+        "order": 3
+      },
+      {
+        "id": 6,
+        "name": "Revestimentos e Pintura",
+        "days": 6,
+        "order": 4
+      },
+      {
+        "id": 4,
+        "name": "Acabamento Final",
+        "days": 6,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "value": "pratica",
+    "label": "Prática",
+    "steps": [
+      {
+        "id": 1,
+        "name": "Fundação e Estrutura",
+        "days": 18,
+        "order": 1
+      },
+      {
+        "id": 2,
+        "name": "Alvenaria e Fechamento",
+        "days": 18,
+        "order": 2
+      },
+      {
+        "id": 5,
+        "name": "Instalações Completas",
+        "days": 18,
+        "order": 3
+      },
+      {
+        "id": 6,
+        "name": "Revestimentos e Pintura",
+        "days": 18,
+        "order": 4
+      },
+      {
+        "id": 4,
+        "name": "Acabamento e Entrega",
+        "days": 18,
+        "order": 5
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "value": "autoral",
+    "label": "Autoral",
+    "steps": [
+      {
+        "id": 1,
+        "name": "Projeto e Aprovações",
+        "days": 32,
+        "order": 1
+      },
+      {
+        "id": 2,
+        "name": "Fundação e Estrutura",
+        "days": 32,
+        "order": 2
+      },
+      {
+        "id": 5,
+        "name": "Alvenaria e Instalações",
+        "days": 32,
+        "order": 3
+      },
+      {
+        "id": 6,
+        "name": "Revestimentos Especiais",
+        "days": 32,
+        "order": 4
+      },
+      {
+        "id": 4,
+        "name": "Acabamento Premium",
+        "days": 32,
+        "order": 5
+      }
+    ]
+  }
+]
