@@ -1,0 +1,42 @@
+// MEASURES
+$header-height: 80px;
+$footer-height: 40px;
+$main-height: calc(100vh - #{$header-height} - #{$footer-height});
+
+// TEXT SIZE
+$larger-text: 2.5em;
+$large-text: 2em;
+$regular-text: 1em;
+$small-text: 0.7em;
+
+$error: #ff4d4d;
+$success: #374ed3;
+$link-color: #646cff;
+$text-color: #333333;
+$btn-gradient: linear-gradient(
+  135deg,
+  rgba(116, 123, 255, 0.9),
+  rgba(96, 103, 235, 0.9)
+);
+
+@use "sass:map";
+
+$breakpoints: (
+  "mobile": 320px,
+  "tablet": 768px,
+  "desktop": 1024px,
+  "wide": 1200px,
+  "ultra": 1440px,
+);
+
+@mixin respond-to($breakpoint) {
+  $value: map.get($breakpoints, $breakpoint);
+
+  @if $value {
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint `#{$breakpoint}` not found in $breakpoints.";
+  }
+}

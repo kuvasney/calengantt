@@ -4,7 +4,11 @@ import {
   setHighlightedProject,
   clearHighlightedProject,
 } from "../../stores/projectsSlice";
-import type { Project, Projects } from "../../types/project";
+import SideWindow from "@components/SideWindow/SideWindow";
+import type { Project } from "../../types/project";
+import { formatDate } from "@/utils/dateFormatter";
+
+import "./listProjects.scss";
 
 export default function ListProjects() {
   const dispatch = useAppDispatch();
@@ -13,11 +17,6 @@ export default function ListProjects() {
   );
   const [projects, setProjects] = useState<Project[]>([]);
   const [showProjects, setShowProjects] = useState(false);
-
-  async function fetchProjects() {
-    const url = "https://calengantt.com/api/projects";
-    setProjects(await fetch(url).then((response) => response.json()));
-  }
 
   const highlightProject = (project: Project) => {
     dispatch(setHighlightedProject(project));
@@ -37,36 +36,100 @@ export default function ListProjects() {
   };
 
   useEffect(() => {
-    fetchProjects().then((data) => {
-      console.log("Fetched projects:", data);
-    });
+    const loadProjects = async () => {
+      const url = "https://calengantt.com/api/projects";
+      const data = await fetch(url).then((response) => response.json());
+      setProjects(data);
+    };
+
+    loadProjects();
   }, []);
 
   return (
     <div className="list-projects">
-      Lista de Projetos
-      <button onClick={() => setShowProjects(!showProjects)}>
-        {showProjects ? "Hide Projects" : "Show Projects"}
-      </button>
-      {highlightedProject !== null && (
-        <p>
-          Vendo apenas {highlightedProject.clientName}{" "}
-          <button onClick={() => clearFilters()}>Limpar filtros</button>
-        </p>
-      )}
-      {showProjects && (
+      <div className="projects-header">
+        <button
+          className="btn-default btn-show-projects"
+          onClick={() => setShowProjects(!showProjects)}
+        >
+          <span className="btn-icon">📋</span>
+          <span className="btn-text">
+            {showProjects ? "Ocultar Projetos" : "Todos os Projetos"}
+          </span>
+        </button>
+
+        {highlightedProject !== null && (
+          <div className="filter-badge">
+            <span className="filter-icon">🔍</span>
+            <span className="filter-text">{highlightedProject.clientName}</span>
+            <button
+              className="btn-clear-filter"
+              onClick={() => clearFilters()}
+              title="Limpar filtro"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+      </div>
+
+      <SideWindow
+        isOpen={showProjects}
+        onClose={() => setShowProjects(false)}
+        position="left"
+        title="Lista de Projetos"
+      >
         <div className="projects-container">
-          {projects.map((project) => (
-            <div key={project.id} className="project-item">
-              <h3>{project.clientName}</h3>
-              <p>{project.startDate}</p>
-              <button onClick={() => highlightProject(project)}>
-                Destacar
-              </button>
+          {projects.length === 0 ? (
+            <div className="empty-state">
+              <p>Nenhum projeto encontrado</p>
             </div>
-          ))}
+          ) : (
+            projects.map((project) => (
+              <div
+                key={project.id}
+                className={`project-card ${
+                  highlightedProject?.id === project.id ? "active" : ""
+                }`}
+              >
+                <div className="project-card-header">
+                  <h3 className="project-name">{project.clientName}</h3>
+                  <span className="project-id">#{project.id}</span>
+                </div>
+
+                <div className="project-card-body">
+                  <div className="project-info">
+                    <span className="info-label">📍 Endereço</span>
+                    <span className="info-value">{project.projectAddress}</span>
+                  </div>
+
+                  <div className="project-info">
+                    <span className="info-label">📅 Data de Início</span>
+                    <span className="info-value">
+                      {formatDate(project.startDate)}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  className="btn-highlight"
+                  onClick={() => highlightProject(project)}
+                >
+                  {highlightedProject?.id === project.id ? (
+                    <>
+                      <span>✓</span> Selecionado
+                    </>
+                  ) : (
+                    <>
+                      <span>👁</span> Destacar no Calendário
+                    </>
+                  )}
+                </button>
+              </div>
+            ))
+          )}
         </div>
-      )}
+      </SideWindow>
     </div>
   );
 }

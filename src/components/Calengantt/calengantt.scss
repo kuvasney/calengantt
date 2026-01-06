@@ -1,106 +1,306 @@
 .calendar {
   display: flex;
   width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+
+  // Estilização da scrollbar
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(116, 123, 255, 0.5);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(116, 123, 255, 0.7);
+    }
+  }
 }
+
 .calengantt {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  min-width: min(100%, 1200px);
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 2px;
+  border-radius: 8px;
 
   .calendar-header {
-    width: calc(100vw / 7 - 4px);
-    height: 40px;
-    border: 1px solid rgba(256, 256, 256, 0.1);
+    min-width: clamp(100px, calc(100vw / 7 - 8px), 200px);
+    height: 48px;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 12px;
+    font-size: clamp(11px, 1vw, 14px);
     text-transform: uppercase;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    letter-spacing: 0.5px;
+    background: linear-gradient(
+      135deg,
+      rgba(30, 30, 35, 0.9),
+      rgba(40, 40, 45, 0.9)
+    );
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    &.activeday {
+      background: linear-gradient(
+        135deg,
+        rgba(116, 123, 255, 0.9),
+        rgba(96, 103, 235, 0.9)
+      );
+      color: white;
+      box-shadow: 0 4px 8px rgba(116, 123, 255, 0.3);
+      transform: translateY(-2px);
+    }
   }
 
   .calendar-day {
-    width: auto;
-    min-height: 80px;
-    padding-top: 12px;
-    border: 1px solid rgba(256, 256, 256, 0.1);
-    border-bottom: 1px solid white;
+    min-width: clamp(100px, calc(100vw / 7 - 8px), 200px);
+    min-height: 120px;
+    padding: 28px 8px 8px;
+    border: none;
     position: relative;
-    background-color: #444;
+    background-color: rgba(50, 50, 55, 0.95);
     color: white;
+    border-radius: 0 0 6px 6px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: rgba(60, 60, 65, 0.95);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
 
     &.today {
-      background-color: rgba(116, 123, 255, 0.1);
+      background: linear-gradient(
+        135deg,
+        rgba(116, 123, 255, 0.15),
+        rgba(96, 103, 235, 0.08)
+      );
+      box-shadow: inset 0 0 0 2px rgba(116, 123, 255, 0.4),
+        inset 0 1px 3px rgba(0, 0, 0, 0.2);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(116, 123, 255, 0.8),
+          transparent
+        );
+        animation: pulse 2s ease-in-out infinite;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      background-color: rgba(240, 240, 245, 0.95);
+      color: #1a1a1a;
+
+      &:hover {
+        background-color: rgba(220, 220, 225, 0.95);
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
     }
   }
 
   .day-info {
-    font-size: 10px;
+    font-size: clamp(10px, 0.9vw, 12px);
     text-align: right;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 4px;
+    right: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+
+    @media (prefers-color-scheme: light) {
+      background-color: rgba(240, 240, 245, 0.95);
+      color: #1a1a1a;
+    }
 
     &.today {
       font-weight: 900;
-      background-color: white;
-      color: black;
+      background: linear-gradient(135deg, #fff, #f0f0f0);
+      color: #1a1a1a;
+      font-size: clamp(11px, 1vw, 14px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      text-align: center;
     }
   }
 
-  .project-bar {
-    height: 15px;
-    margin-block: 4px;
-    cursor: pointer;
+  .project-bars {
     position: relative;
+    min-height: 200px;
+    width: 100%;
+  }
+
+  .project-bar {
+    height: 24px;
+    padding: 0 8px;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    right: 0;
     z-index: 1;
-    font-size: 0.6em;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    font-size: clamp(9px, 0.8vw, 11px);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    border-left: 10px solid;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    @media (prefers-color-scheme: light) {
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    &:hover {
+      transform: translateX(4px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      z-index: 10;
+    }
+
+    &:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 2px;
+      z-index: 10;
+    }
+
+    &:active {
+      transform: translateX(2px) scale(0.98);
+    }
   }
 
+  // Steps com cores mais contrastantes e acessíveis
   .project-bar.step_1 {
-    border-bottom: 4px solid red;
+    border-color: #ff4757;
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 71, 87, 0.1),
+      transparent
+    );
   }
+
   .project-bar.step_2 {
-    border-bottom: 4px solid blue;
+    border-color: #3742fa;
+    background-image: linear-gradient(
+      90deg,
+      rgba(55, 66, 250, 0.1),
+      transparent
+    );
   }
+
   .project-bar.step_3 {
-    border-bottom: 4px solid green;
+    border-color: #2ed573;
+    background-image: linear-gradient(
+      90deg,
+      rgba(46, 213, 115, 0.1),
+      transparent
+    );
   }
+
   .project-bar.step_4 {
-    border-bottom: 4px solid gray;
+    border-color: #a4b0be;
+    background-image: linear-gradient(
+      90deg,
+      rgba(164, 176, 190, 0.1),
+      transparent
+    );
   }
+
   .project-bar.step_5 {
-    border-bottom: 4px solid orange;
+    border-color: #ffa502;
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 165, 2, 0.1),
+      transparent
+    );
   }
+
   .project-bar.step_6 {
-    border-bottom: 4px solid fuchsia;
+    border-color: #ff6348;
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 99, 72, 0.1),
+      transparent
+    );
   }
 }
 
-.project-details {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 90%;
-  height: 95vh;
-  background-color: #000;
-  overflow-y: auto;
-  z-index: 1000;
-  padding: 10px;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+// Animação para o dia atual
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-.project-details__close {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  background-color: #ff5c5c;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
+// Responsividade
+@media (max-width: 1024px) {
+  .calengantt {
+    .calendar-header {
+      font-size: 10px;
+      height: 40px;
+    }
+
+    .calendar-day {
+      min-height: 100px;
+      padding: 24px 6px 6px;
+    }
+
+    .project-bar {
+      height: 20px;
+      font-size: 8px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .calengantt {
+    gap: 1px;
+
+    .calendar-header {
+      font-size: 9px;
+      height: 36px;
+    }
+
+    .calendar-day {
+      min-height: 80px;
+      padding: 20px 4px 4px;
+    }
+
+    .project-bar {
+      height: 18px;
+      font-size: 7px;
+      padding: 0 4px;
+    }
+  }
 }

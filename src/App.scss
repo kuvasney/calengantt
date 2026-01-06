@@ -1,0 +1,106 @@
+@use "@/assets/styles/variables" as *;
+
+.btn-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: $btn-gradient;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(116, 123, 255, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(116, 123, 255, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &.btn-icon {
+    font-size: $regular-text;
+  }
+
+  &.btn-text {
+    letter-spacing: 0.3px;
+  }
+}
+
+.btn-submit {
+  background: green;
+  font-size: 1.4em;
+  font-weight: 700;
+}
+
+.form-regular {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  fieldset {
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+
+    legend {
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    @include respond-to("desktop") {
+      max-width: 800px;
+    }
+
+    label {
+      font-size: $regular-text;
+      font-weight: 500;
+    }
+
+    input,
+    select,
+    .select-default {
+      padding: 8px 12px;
+      border: 1px solid gray;
+      border-radius: 4px;
+      font-size: $regular-text;
+
+      &:focus {
+        outline: none;
+        border-color: gray;
+        box-shadow: 0 0 0 2px rgba(gray, 0.2);
+      }
+    }
+
+    &.size2-field {
+      @include respond-to("desktop") {
+        width: 12vw;
+        max-width: 200px;
+      }
+    }
+
+    &.size3-field {
+      @include respond-to("desktop") {
+        width: 50vw;
+        max-width: 600px;
+      }
+    }
+  }
+}
