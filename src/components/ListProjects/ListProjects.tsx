@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../stores/hooks";
 import {
   setHighlightedProject,
@@ -8,6 +8,13 @@ import SideWindow from "@components/SideWindow/SideWindow";
 import type { Project } from "../../types/project";
 import { formatDate } from "@/utils/dateFormatter";
 
+import {
+  CgPinAlt,
+  CgEye,
+  CgCalendarDates,
+  CgUser,
+  CgList,
+} from "react-icons/cg";
 import "./listProjects.scss";
 
 export default function ListProjects() {
@@ -15,7 +22,9 @@ export default function ListProjects() {
   const highlightedProject: Project | null = useAppSelector(
     (state) => state.projects.highlightedProject
   );
-  const [projects, setProjects] = useState<Project[]>([]);
+  const projects: Project[] = useAppSelector(
+    (state) => state.projects.projectsList || []
+  );
   const [showProjects, setShowProjects] = useState(false);
 
   const highlightProject = (project: Project) => {
@@ -35,24 +44,16 @@ export default function ListProjects() {
     window.history.pushState(null, "", newUrl);
   };
 
-  useEffect(() => {
-    const loadProjects = async () => {
-      const url = "https://calengantt.com/api/projects";
-      const data = await fetch(url).then((response) => response.json());
-      setProjects(data);
-    };
-
-    loadProjects();
-  }, []);
-
   return (
     <div className="list-projects">
       <div className="projects-header">
         <button
-          className="btn-default btn-show-projects"
+          className="btn-default btn-show-projects iconic"
           onClick={() => setShowProjects(!showProjects)}
         >
-          <span className="btn-icon">📋</span>
+          <span className="icon">
+            <CgList />
+          </span>
           <span className="btn-text">
             {showProjects ? "Ocultar Projetos" : "Todos os Projetos"}
           </span>
@@ -93,18 +94,41 @@ export default function ListProjects() {
                 }`}
               >
                 <div className="project-card-header">
-                  <h3 className="project-name">{project.clientName}</h3>
+                  <h3 className="project-name">{project.projectName}</h3>
                   <span className="project-id">#{project.id}</span>
                 </div>
 
                 <div className="project-card-body">
                   <div className="project-info">
-                    <span className="info-label">📍 Endereço</span>
-                    <span className="info-value">{project.projectAddress}</span>
+                    <span className="info-label">
+                      <span className="icon">
+                        <CgUser />
+                      </span>{" "}
+                      Cliente
+                    </span>
+                    <span className="info-value">{project.clientName}</span>
+                  </div>
+                  <div className="project-info">
+                    <span className="info-label">
+                      <span className="icon">
+                        <CgPinAlt />
+                      </span>{" "}
+                      Endereço
+                    </span>
+                    <span className="info-value">
+                      {project.projectAddress.street},{" "}
+                      {project.projectAddress.number} -{" "}
+                      {project.projectAddress.city}
+                    </span>
                   </div>
 
                   <div className="project-info">
-                    <span className="info-label">📅 Data de Início</span>
+                    <span className="info-label">
+                      <span className="icon">
+                        <CgCalendarDates />
+                      </span>{" "}
+                      Início
+                    </span>
                     <span className="info-value">
                       {formatDate(project.startDate)}
                     </span>
@@ -121,7 +145,10 @@ export default function ListProjects() {
                     </>
                   ) : (
                     <>
-                      <span>👁</span> Destacar no Calendário
+                      <span className="icon">
+                        <CgEye />
+                      </span>{" "}
+                      Destacar no Calendário
                     </>
                   )}
                 </button>

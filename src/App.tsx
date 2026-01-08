@@ -1,16 +1,17 @@
-import ListProjects from "./components/ListProjects/ListProjects";
-import NewProject from "./components/NewProject/NewProject";
-import Calengantt from "./components/Calengantt/Calengantt";
+import { Route, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+import Calendar from "./pages/Calendar";
 import "./App.scss";
 
 function App() {
   return (
-    <>
+    <div className="content-wrapper">
       <h1>Calengantt</h1>
-      <ListProjects />
-      <NewProject />
-      <Calengantt />
-    </>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/calendar" element={<Calendar />} />
+      </Routes>
+    </div>
   );
 }
 

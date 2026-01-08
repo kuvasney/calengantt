@@ -1,256 +1,54 @@
 [
   {
     "id": 1,
-    "clientName": "Maria Fernandes",
-    "projectAddress": "Endereço A",
+    "clientName": "Rafael Kuvasney Marcolin",
+    "projectName": "2026-01-MF",
+    "projectAddress": {
+      "zipCode": "13524-480",
+      "street": "Rua Batista de Oliveira",
+      "number": "457",
+      "neighborhood": "Bela São Pedro",
+      "complement": "",
+      "city": "São Pedro",
+      "state": "SP"
+    },
+    "obraAddress": {
+      "zipCode": "13524-480",
+      "street": "Rua Batista de Oliveira",
+      "number": "",
+      "neighborhood": "Bela São Pedro",
+      "complement": "",
+      "city": "São Pedro",
+      "state": "SP"
+    },
     "productId": 1,
-    "startDate": "2025-12-18",
-    "stepsProgress": [
-      {
-        "stepId": 1,
-        "status": "completed",
-        "actualStartDate": "2025-12-15",
-        "actualEndDate": "2025-12-17",
-        "plannedStartDate": "2025-12-15",
-        "plannedEndDate": "2025-12-16"
-      },
-      {
-        "stepId": 2,
-        "status": "in_progress",
-        "actualStartDate": "2025-12-17",
-        "plannedStartDate": "2025-12-17",
-        "plannedEndDate": "2025-12-19"
-      },
-      {
-        "stepId": 3,
-        "status": "pending",
-        "plannedStartDate": "2025-12-20",
-        "plannedEndDate": "2025-12-22"
-      },
-      {
-        "stepId": 4,
-        "status": "pending",
-        "plannedStartDate": "2025-12-23",
-        "plannedEndDate": "2025-12-24"
-      }
-    ]
+    "startDate": "2026-01-06",
+    "status": "in_progress"
   },
   {
     "id": 2,
-    "clientName": "João Souza",
-    "projectAddress": "Endereço B",
-    "productId": 2,
-    "startDate": "2025-12-10",
-    "stepsProgress": [
-      {
-        "stepId": 1,
-        "status": "completed",
-        "actualStartDate": "2025-12-10",
-        "actualEndDate": "2025-12-13",
-        "plannedStartDate": "2025-12-10",
-        "plannedEndDate": "2025-12-13"
-      },
-      {
-        "stepId": 2,
-        "status": "completed",
-        "actualStartDate": "2025-12-14",
-        "actualEndDate": "2025-12-16",
-        "plannedStartDate": "2025-12-14",
-        "plannedEndDate": "2025-12-16"
-      },
-      {
-        "stepId": 3,
-        "status": "in_progress",
-        "actualStartDate": "2025-12-17",
-        "plannedStartDate": "2025-12-17",
-        "plannedEndDate": "2025-12-19"
-      },
-      {
-        "stepId": 4,
-        "status": "pending",
-        "plannedStartDate": "2025-12-20",
-        "plannedEndDate": "2025-12-22"
-      },
-      {
-        "stepId": 5,
-        "status": "pending",
-        "plannedStartDate": "2025-12-23",
-        "plannedEndDate": "2025-12-24"
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "clientName": "Claudia Mendes",
-    "projectAddress": "Endereço C",
-    "productId": 6,
-    "startDate": "2025-11-01",
-    "stepsProgress": [
-      {
-        "stepId": 1,
-        "status": "completed",
-        "actualStartDate": "2025-11-01",
-        "actualEndDate": "2025-12-02",
-        "plannedStartDate": "2025-11-01",
-        "plannedEndDate": "2025-12-02"
-      },
-      {
-        "stepId": 2,
-        "status": "in_progress",
-        "actualStartDate": "2025-12-03",
-        "plannedStartDate": "2025-12-03",
-        "plannedEndDate": "2026-01-03"
-      },
-      {
-        "stepId": 3,
-        "status": "pending",
-        "plannedStartDate": "2026-01-04",
-        "plannedEndDate": "2026-02-04"
-      },
-      {
-        "stepId": 4,
-        "status": "pending",
-        "plannedStartDate": "2026-02-05",
-        "plannedEndDate": "2026-03-08"
-      },
-      {
-        "stepId": 5,
-        "status": "pending",
-        "plannedStartDate": "2026-03-09",
-        "plannedEndDate": "2026-04-09"
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "clientName": "Hussara Lima",
-    "projectAddress": "Endereço D",
+    "clientName": "Jessica Ayumi Saka",
+    "projectName": "2026-02-MF",
+    "projectAddress": {
+      "zipCode": "13524-480",
+      "street": "Rua Batista de Oliveira",
+      "number": "457",
+      "neighborhood": "Bela São Pedro",
+      "complement": "",
+      "city": "São Pedro",
+      "state": "SP"
+    },
+    "obraAddress": {
+      "zipCode": "13524-480",
+      "street": "Rua Batista de Oliveira",
+      "number": "",
+      "neighborhood": "Bela São Pedro",
+      "complement": "",
+      "city": "São Pedro",
+      "state": "SP"
+    },
     "productId": 3,
-    "startDate": "2025-12-28",
-    "stepsProgress": [
-      {
-        "stepId": 1,
-        "status": "completed",
-        "actualStartDate": "2025-12-28",
-        "actualEndDate": "2026-01-03",
-        "plannedStartDate": "2025-12-28",
-        "plannedEndDate": "2026-01-01"
-      },
-      {
-        "stepId": 2,
-        "status": "completed",
-        "actualStartDate": "2026-01-04",
-        "actualEndDate": "2026-01-08",
-        "plannedStartDate": "2026-01-02",
-        "plannedEndDate": "2026-01-06"
-      },
-      {
-        "stepId": 3,
-        "status": "in_progress",
-        "actualStartDate": "2026-01-09",
-        "plannedStartDate": "2026-01-07",
-        "plannedEndDate": "2026-01-10"
-      },
-      {
-        "stepId": 4,
-        "status": "pending",
-        "plannedStartDate": "2026-01-11",
-        "plannedEndDate": "2026-01-13"
-      },
-      {
-        "stepId": 5,
-        "status": "pending",
-        "plannedStartDate": "2026-01-14",
-        "plannedEndDate": "2026-01-16"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "clientName": "Paulo Lima",
-    "projectAddress": "Endereço D",
-    "productId": 3,
-    "startDate": "2025-12-05",
-    "stepsProgress": [
-      {
-        "stepId": 1,
-        "status": "completed",
-        "actualStartDate": "2025-12-05",
-        "actualEndDate": "2025-12-11",
-        "plannedStartDate": "2025-12-05",
-        "plannedEndDate": "2025-12-09"
-      },
-      {
-        "stepId": 2,
-        "status": "completed",
-        "actualStartDate": "2025-12-12",
-        "actualEndDate": "2025-12-16",
-        "plannedStartDate": "2025-12-10",
-        "plannedEndDate": "2025-12-14"
-      },
-      {
-        "stepId": 3,
-        "status": "in_progress",
-        "actualStartDate": "2025-12-17",
-        "plannedStartDate": "2025-12-15",
-        "plannedEndDate": "2025-12-18"
-      },
-      {
-        "stepId": 4,
-        "status": "pending",
-        "plannedStartDate": "2025-12-19",
-        "plannedEndDate": "2025-12-21"
-      },
-      {
-        "stepId": 5,
-        "status": "pending",
-        "plannedStartDate": "2025-12-22",
-        "plannedEndDate": "2025-12-24"
-      }
-    ]
-  },
-  {
-    "id": 6,
-    "clientName": "Jurandir Silva",
-    "projectAddress": "Endereço H",
-    "productId": 3,
-    "startDate": "2026-01-05",
-    "stepsProgress": [
-      {
-        "stepId": 1,
-        "status": "completed",
-        "actualStartDate": "2026-01-05",
-        "actualEndDate": "2026-01-11",
-        "plannedStartDate": "2026-01-05",
-        "plannedEndDate": "2026-01-09"
-      },
-      {
-        "stepId": 2,
-        "status": "completed",
-        "actualStartDate": "2026-01-12",
-        "actualEndDate": "2026-01-16",
-        "plannedStartDate": "2026-01-10",
-        "plannedEndDate": "2026-01-14"
-      },
-      {
-        "stepId": 3,
-        "status": "in_progress",
-        "actualStartDate": "2026-01-17",
-        "plannedStartDate": "2026-01-15",
-        "plannedEndDate": "2026-01-18"
-      },
-      {
-        "stepId": 4,
-        "status": "pending",
-        "plannedStartDate": "2026-01-19",
-        "plannedEndDate": "2026-01-21"
-      },
-      {
-        "stepId": 5,
-        "status": "pending",
-        "plannedStartDate": "2026-01-22",
-        "plannedEndDate": "2026-01-24"
-      }
-    ]
+    "startDate": "2026-01-04",
+    "status": "in_progress"
   }
 ]

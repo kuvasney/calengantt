@@ -12,10 +12,10 @@ export const useCepApi = () => {
       throw new Error("CEP não encontrado");
     }
     return {
-      street: data.logradouro,
-      neighborhood: data.bairro,
-      city: data.localidade,
-      state: data.uf,
+      logradouro: data.logradouro,
+      bairro: data.bairro,
+      localidade: data.localidade,
+      uf: data.uf,
     };
   };
 

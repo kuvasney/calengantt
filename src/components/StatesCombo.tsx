@@ -1,5 +1,14 @@
-export default function StatesCombo() {
+interface StatesComboProps {
+  onStateChange: (uf: string) => void;
+  value?: string;
+}
+
+export default function StatesCombo({
+  onStateChange,
+  value,
+}: StatesComboProps) {
   const BRAZILIAN_STATES = [
+    { uf: "", name: "Selecione um estado" },
     { uf: "AC", name: "Acre" },
     { uf: "AL", name: "Alagoas" },
     { uf: "AP", name: "Amapá" },
@@ -32,9 +41,14 @@ export default function StatesCombo() {
   return (
     <>
       <label htmlFor="state">Estado</label>
-      <select className="select-default" id="state">
+      <select
+        className="select-default"
+        id="state"
+        value={value}
+        onChange={(e) => onStateChange(e.target.value)}
+      >
         {BRAZILIAN_STATES.map((state) => (
-          <option key={state.uf} value={state.uf}>
+          <option key={state.uf || "empty"} value={state.uf}>
             {state.name}
           </option>
         ))}

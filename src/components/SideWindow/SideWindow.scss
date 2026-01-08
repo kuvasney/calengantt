@@ -17,7 +17,7 @@
   bottom: 0;
   width: 400px;
   max-width: 90vw;
-  background-color: #111827;
+  background-color: $client-color-bg;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   display: flex;
@@ -51,7 +51,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: $client-color-light;
 }
 
 .side-window__close {

@@ -1,0 +1,34 @@
+@use "@/assets/styles/variables" as *;
+
+.btn-new-project {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.form-regular.form-add_project {
+  max-width: 1000px;
+  margin: 0 auto;
+
+  fieldset {
+    border-width: 0 0 0 4px;
+    border-style: solid;
+    border-color: $client-color1;
+    background-color: #010101;
+
+    legend {
+      color: $client-color3;
+      font-size: $large-text;
+    }
+  }
+
+  .form-field {
+    label {
+      color: $client-color-light;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: small;
+    }
+  }
+}

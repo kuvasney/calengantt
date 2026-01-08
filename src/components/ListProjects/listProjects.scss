@@ -1,17 +1,17 @@
 @use "@/assets/styles/variables" as *;
 
 .list-projects {
-  padding: 16px;
-
   .projects-header {
     display: flex;
     align-items: center;
+    padding: 12px 0;
+    margin: 12px 0;
+
     gap: 12px;
     flex-wrap: wrap;
 
     .btn-show-projects {
       @include respond-to("mobile") {
-        flex: 1;
         justify-content: center;
       }
     }
@@ -85,25 +85,24 @@
     gap: 16px;
     padding: 20px;
     max-height: calc(100vh - 120px);
-    overflow-y: auto;
 
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
+    // &::-webkit-scrollbar {
+    //   width: 8px;
+    // }
 
-    &::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-    }
+    // &::-webkit-scrollbar-track {
+    //   background: rgba(0, 0, 0, 0.1);
+    //   border-radius: 4px;
+    // }
 
-    &::-webkit-scrollbar-thumb {
-      background: rgba(116, 123, 255, 0.4);
-      border-radius: 4px;
+    // &::-webkit-scrollbar-thumb {
+    //   background: rgba(116, 123, 255, 0.4);
+    //   border-radius: 4px;
 
-      &:hover {
-        background: rgba(116, 123, 255, 0.6);
-      }
-    }
+    //   &:hover {
+    //     background: rgba(116, 123, 255, 0.6);
+    //   }
+    // }
 
     .empty-state {
       padding: 40px 20px;
@@ -117,10 +116,10 @@
     }
 
     .project-card {
-      background: rgba(50, 50, 55, 0.8);
+      background: rgba($client-color-bg, 0.8);
       border-radius: 12px;
       padding: 20px;
-      border-left: 4px solid rgba(116, 123, 255, 0.5);
+      border-left: 4px solid rgba($client-color1, 0.6);
       transition: all 0.3s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       cursor: pointer;
@@ -133,11 +132,16 @@
       &:hover {
         transform: translateX(4px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        border-left-color: rgba(116, 123, 255, 0.8);
+        border-left-color: rgba($client-color1, 1);
 
         @media (prefers-color-scheme: light) {
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
+      }
+
+      .icon {
+        font-size: $large-text;
+        color: $client-color3;
       }
 
       &.active {
@@ -170,8 +174,8 @@
 
         .project-id {
           padding: 4px 10px;
-          background: rgba(116, 123, 255, 0.2);
-          color: rgba(116, 123, 255, 1);
+          background: rgba($client-color-bg, 0.2);
+          color: rgba($client-color-light, 1);
           border-radius: 10px;
           font-size: 12px;
           font-weight: 700;
@@ -198,8 +202,11 @@
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba($client-color-light, 0.9);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
 
             @media (prefers-color-scheme: light) {
               color: rgba(0, 0, 0, 0.5);
@@ -221,10 +228,10 @@
       .btn-highlight {
         width: 100%;
         padding: 10px 16px;
-        background: rgba(116, 123, 255, 0.15);
-        border: 2px solid rgba(116, 123, 255, 0.3);
+        background: rgba($client-color1, 0.15);
+        border: 2px solid rgba($client-color-light, 0.3);
         border-radius: 8px;
-        color: rgba(116, 123, 255, 1);
+        color: rgba($client-color-light, 1);
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
@@ -235,8 +242,8 @@
         gap: 6px;
 
         &:hover {
-          background: rgba(116, 123, 255, 0.25);
-          border-color: rgba(116, 123, 255, 0.5);
+          background: rgba($client-color1, 0.25);
+          border-color: rgba($client-color-light, 0.5);
           transform: translateY(-1px);
         }
 
@@ -250,13 +257,13 @@
       }
 
       &.active .btn-highlight {
-        background: rgba(46, 213, 115, 0.15);
-        border-color: rgba(46, 213, 115, 0.4);
-        color: #2ed573;
+        background: rgba($client-color1, 0.15);
+        border-color: rgba($client-color-light, 0.4);
+        color: $client-color-light;
 
         &:hover {
-          background: rgba(46, 213, 115, 0.25);
-          border-color: rgba(46, 213, 115, 0.6);
+          background: rgba($client-color1, 0.25);
+          border-color: rgba($client-color-light, 0.6);
         }
       }
     }
@@ -264,61 +271,61 @@
 }
 
 // Responsividade
-@media (max-width: 768px) {
-  .list-projects {
-    padding: 12px;
+// @media (max-width: 768px) {
+//   .list-projects {
+//     padding: 12px;
 
-    .projects-header {
-      .btn-show-projects {
-        padding: 10px 16px;
-        font-size: 13px;
+//     .projects-header {
+//       .btn-show-projects {
+//         padding: 10px 16px;
+//         font-size: 13px;
 
-        .btn-icon {
-          font-size: 16px;
-        }
-      }
+//         .btn-icon {
+//           font-size: 16px;
+//         }
+//       }
 
-      .filter-badge {
-        padding: 6px 12px;
-        font-size: 12px;
+//       .filter-badge {
+//         padding: 6px 12px;
+//         font-size: 12px;
 
-        .filter-text {
-          max-width: 150px;
-        }
-      }
-    }
+//         .filter-text {
+//           max-width: 150px;
+//         }
+//       }
+//     }
 
-    .projects-container {
-      padding: 12px;
+//     .projects-container {
+//       padding: 12px;
 
-      .project-card {
-        padding: 16px;
+//       .project-card {
+//         padding: 16px;
 
-        .project-card-header {
-          .project-name {
-            font-size: 16px;
-          }
+//         .project-card-header {
+//           .project-name {
+//             font-size: 16px;
+//           }
 
-          .project-id {
-            font-size: 11px;
-            padding: 3px 8px;
-          }
-        }
+//           .project-id {
+//             font-size: 11px;
+//             padding: 3px 8px;
+//           }
+//         }
 
-        .project-card-body {
-          gap: 10px;
+//         .project-card-body {
+//           gap: 10px;
 
-          .project-info {
-            .info-label {
-              font-size: 10px;
-            }
+//           .project-info {
+//             .info-label {
+//               font-size: 10px;
+//             }
 
-            .info-value {
-              font-size: 13px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
+//             .info-value {
+//               font-size: 13px;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

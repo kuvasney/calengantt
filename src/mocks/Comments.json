@@ -6,71 +6,33 @@
     "userId": 1,
     "userName": "Jessica Silva",
     "createdAt": "2025-12-15T09:30:00Z",
-    "text": ["Iniciando demolição conforme planejado."]
+    "text": [
+      "Iniciando demolição conforme planejado.",
+      "Equipe está a todo vapor."
+    ]
   },
   {
     "id": 2,
     "projectId": 1,
-    "stepId": 1,
-    "userId": 1,
-    "userName": "Jessica Silva",
-    "createdAt": "2025-12-17T16:45:00Z",
+    "stepId": 2,
+    "userId": 2,
+    "userName": "Carlos Souza",
+    "createdAt": "2025-12-18T14:45:00Z",
     "text": [
-      "Demolição finalizada.",
-      "Tivemos um pequeno atraso de 1 dia por conta da chuva."
+      "Instalações elétricas em andamento.",
+      "Encontramos um pequeno desafio com a fiação, mas está sob controle."
     ]
   },
   {
     "id": 3,
     "projectId": 1,
-    "stepId": 2,
+    "stepId": null,
     "userId": 2,
-    "userName": "Carlos Santos",
-    "createdAt": "2025-12-17T08:00:00Z",
-    "text": ["Iniciando instalações elétricas."]
-  },
-  {
-    "id": 4,
-    "projectId": 2,
-    "stepId": 7,
-    "userId": 1,
-    "userName": "Jessica Silva",
-    "createdAt": "2025-12-17T10:15:00Z",
-    "text": ["Instalações hidráulicas em andamento, tudo dentro do cronograma."]
-  },
-  {
-    "id": 5,
-    "projectId": 4,
-    "stepId": 10,
-    "userId": 3,
-    "userName": "Maria Oliveira",
-    "createdAt": "2025-12-11T14:20:00Z",
+    "userName": "Carlos Souza",
+    "createdAt": "2025-12-18T14:45:00Z",
     "text": [
-      "Demolição concluída com 2 dias de atraso devido a problemas com o entulho."
-    ]
-  },
-  {
-    "id": 6,
-    "projectId": 4,
-    "stepId": 12,
-    "userId": 3,
-    "userName": "Maria Oliveira",
-    "createdAt": "2025-12-17T11:00:00Z",
-    "text": [
-      "Revestimentos em andamento.",
-      "Cliente solicitou mudança no material."
-    ]
-  },
-  {
-    "id": 7,
-    "projectId": 3,
-    "stepId": 26,
-    "userId": 2,
-    "userName": "Carlos Santos",
-    "createdAt": "2025-12-15T13:45:00Z",
-    "text": [
-      "Estrutura está sendo executada conforme projeto autoral.",
-      "Tudo ok."
+      "Projeto iniciado em tempo hábil.",
+      "Tudo conforme o cronograma até agora."
     ]
   }
 ]

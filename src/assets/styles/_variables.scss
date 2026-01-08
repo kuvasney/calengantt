@@ -13,10 +13,24 @@ $error: #ff4d4d;
 $success: #374ed3;
 $link-color: #646cff;
 $text-color: #333333;
+$client-color-dark: #84402d;
+$client-color-light: #b6b99a;
+$client-color-bg: #1f1f1f;
+$client-color1: #475e4c;
+$client-color2: #84402d;
+$client-color3: #ab6532;
+$client-color4: #b6b99a;
+
 $btn-gradient: linear-gradient(
   135deg,
-  rgba(116, 123, 255, 0.9),
-  rgba(96, 103, 235, 0.9)
+  rgba($client-color1, 0.9),
+  rgba($client-color1, 0.6)
+);
+
+$btn-gradient2: linear-gradient(
+  135deg,
+  rgba($client-color2, 0.9),
+  rgba($client-color2, 0.6)
 );
 
 @use "sass:map";

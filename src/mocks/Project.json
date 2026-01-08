@@ -1,0 +1,55 @@
+{
+  "id": 1,
+  "clientName": "Rafael Kuvasney Marcolin",
+  "projectName": "2026-01-MF",
+  "projectAddress": {
+    "zipCode": "13524-480",
+    "street": "Rua Batista de Oliveira",
+    "number": "457",
+    "neighborhood": "Bela São Pedro",
+    "complement": "",
+    "city": "São Pedro",
+    "state": "SP"
+  },
+  "obraAddress": {
+    "zipCode": "13524-480",
+    "street": "Rua Batista de Oliveira",
+    "number": "",
+    "neighborhood": "Bela São Pedro",
+    "complement": "",
+    "city": "São Pedro",
+    "state": "SP"
+  },
+  "productId": 1,
+  "startDate": "2026-01-06",
+  "status": "in_progress",
+  "stepsProgress": [
+    {
+      "stepId": 1,
+      "status": "completed",
+      "actualStartDate": "2025-12-15",
+      "actualEndDate": "2025-12-17",
+      "plannedStartDate": "2025-12-15",
+      "plannedEndDate": "2025-12-16"
+    },
+    {
+      "stepId": 2,
+      "status": "in_progress",
+      "actualStartDate": "2025-12-17",
+      "plannedStartDate": "2025-12-17",
+      "plannedEndDate": "2025-12-19"
+    },
+    {
+      "stepId": 3,
+      "status": "pending",
+      "plannedStartDate": "2025-12-20",
+      "plannedEndDate": "2025-12-22"
+    },
+    {
+      "stepId": 4,
+      "status": "pending",
+      "plannedStartDate": "2025-12-23",
+      "plannedEndDate": "2025-12-24"
+    }
+  ]
+}

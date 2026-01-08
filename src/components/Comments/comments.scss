@@ -35,3 +35,17 @@
   color: #777;
   margin-left: 0.5rem;
 }
+
+.comments__form {
+  margin-top: 2rem;
+
+  .form-field {
+    align-items: self-start;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+  }
+}

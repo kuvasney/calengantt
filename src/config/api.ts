@@ -5,3 +5,16 @@ export const API_CONFIG = {
     "Content-Type": "application/json",
   },
 };
+
+interface ApiEndpoints {
+  projects: string;
+  project: string;
+  products: string;
+}
+
+// Endpoints da API
+export const API_ENDPOINTS: ApiEndpoints = {
+  projects: "/api/projects",
+  project: "/api/project",
+  products: "/api/products",
+};

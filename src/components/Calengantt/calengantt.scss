@@ -1,3 +1,5 @@
+@use "@/assets/styles/variables" as *;
+
 .calendar {
   display: flex;
   width: 100%;
@@ -10,16 +12,32 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba($client-color1, 0.3);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(116, 123, 255, 0.5);
+    background: rgba($client-color2, 0.5);
     border-radius: 4px;
 
     &:hover {
-      background: rgba(116, 123, 255, 0.7);
+      background: rgba($client-color2, 0.7);
     }
+  }
+}
+
+.calengantt__days-to-show {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  label {
+    width: auto;
+  }
+
+  input[type="number"] {
+    width: 60px;
   }
 }
 
@@ -260,47 +278,5 @@
   }
   50% {
     opacity: 1;
-  }
-}
-
-// Responsividade
-@media (max-width: 1024px) {
-  .calengantt {
-    .calendar-header {
-      font-size: 10px;
-      height: 40px;
-    }
-
-    .calendar-day {
-      min-height: 100px;
-      padding: 24px 6px 6px;
-    }
-
-    .project-bar {
-      height: 20px;
-      font-size: 8px;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .calengantt {
-    gap: 1px;
-
-    .calendar-header {
-      font-size: 9px;
-      height: 36px;
-    }
-
-    .calendar-day {
-      min-height: 80px;
-      padding: 20px 4px 4px;
-    }
-
-    .project-bar {
-      height: 18px;
-      font-size: 7px;
-      padding: 0 4px;
-    }
   }
 }

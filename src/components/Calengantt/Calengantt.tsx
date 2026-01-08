@@ -1,7 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import ProjectsMock from "@/mocks/Projects.json";
-import ProductsMock from "@/mocks/Products.json";
-import CommentsMock from "@/mocks/Comments.json";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
 import { setHighlightedProject } from "@/stores/projectsSlice";
 
@@ -14,8 +11,13 @@ import ProjectDetails from "../ProjectDetails/ProjectDetails";
 import "./calengantt.scss";
 
 export default function Calengantt() {
-  const productsList: Product[] = ProductsMock;
-  const projectsList: Project[] = ProjectsMock;
+  const productsList: Product[] = useAppSelector(
+    (state) => state.products.productsList || []
+  );
+  const projectsList: Project[] = useAppSelector(
+    (state) => state.projects.projectsList || []
+  );
+
   const dispatch = useAppDispatch();
   const highlightedProject = useAppSelector(
     (state) => state.projects.highlightedProject
@@ -101,14 +103,17 @@ export default function Calengantt() {
 
   return (
     <section>
-      <p>
-        Mostrar quantos dias:{" "}
-        <input
-          type="number"
-          value={daysToShow}
-          onChange={(e) => setDaysToShow(Number(e.target.value))}
-        />
-      </p>
+      <form className="form-regular calengantt__days-to-show">
+        <div className="form-field form-inline">
+          <label htmlFor="daysToShow">Mostrar quantos dias: </label>
+          <input
+            type="number"
+            id="daysToShow"
+            value={daysToShow}
+            onChange={(e) => setDaysToShow(Number(e.target.value))}
+          />
+        </div>
+      </form>
       <section className="calendar">
         <div className="calengantt">
           <div
@@ -162,6 +167,7 @@ export default function Calengantt() {
               const product = productsList.find(
                 (p) => p.id === project.productId
               );
+
               if (!product) return false;
 
               const projectEnd = new Date(projectStart);
@@ -243,6 +249,7 @@ export default function Calengantt() {
                         }}
                         onClick={showProject(project.id)}
                       >
+                        {project.projectName} -{" "}
                         {project.clientName.split(" ")[0]}
                       </div>
                     );
@@ -256,7 +263,9 @@ export default function Calengantt() {
           <SideWindow
             isOpen={selectedProject !== null}
             onClose={() => setSelectedProject(null)}
-            title={selectedProject ? `Projeto ${selectedProject.id}` : ""}
+            title={
+              selectedProject ? `Projeto ${selectedProject.projectName}` : ""
+            }
           >
             <ProjectDetails selectedProject={selectedProject} />
           </SideWindow>

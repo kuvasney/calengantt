@@ -1,16 +1,28 @@
-import CommentsMock from "@/mocks/Comments.json";
-import type { Project } from "@/types/project";
+import { useMemo } from "react";
+import type { Project, Comments } from "@/types/project";
 import { formatDateTime } from "@/utils/dateFormatter";
 import "./comments.scss";
 
 export default function Comments({
   selectedProject,
+  stepId,
+  comments,
 }: {
   selectedProject: Project;
+  stepId?: number;
+  comments: Comments[];
 }) {
-  const filteredComments = CommentsMock.filter(
-    (comment) => comment.projectId === selectedProject.id
-  );
+  const filteredComments = useMemo(() => {
+    if (stepId) {
+      return comments.filter(
+        (comment: { stepId: number }) => comment.stepId === stepId
+      );
+    } else {
+      return comments.filter(
+        (comment: { stepId: number }) => comment.stepId === null
+      );
+    }
+  }, [comments, stepId]);
 
   return (
     <section className="comments">
@@ -33,6 +45,19 @@ export default function Comments({
           </li>
         ))}
       </ul>
+      <form className="form-regular comments__form">
+        <div className="form-field">
+          <textarea
+            className="comments__textarea"
+            placeholder="Escreva seu comentário..."
+          ></textarea>
+        </div>
+        <div className="form-field">
+          <button className="btn-default comments__submit" type="submit">
+            Enviar
+          </button>
+        </div>
+      </form>
     </section>
   );
 }

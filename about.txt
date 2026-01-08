@@ -1,0 +1,162 @@
+Criar admin:
+/api/users/admin (post)
+Dados do responsável pela conta. Este user poderá adicionar novos users para a conta.
+Nome Completo, CPF, Endereço, Email, Senha, Avatar, Dados de Pagamento
+Interface UserAdmin {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  avatar: string;
+  password: string;
+  address: Address;
+  paymentInfo: PaymentInfo;
+}
+
+Criar user:
+/api/users/add (post)
+Nome completo, cargo, avatar, email e senha.
+Interface User:
+{
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  avatar: string;
+  password: string;
+}
+
+Listar users:
+/api/users/ (get)
+apenas o admin poderá ver
+Interface Users: User[]
+
+Editar users:
+/api/users/:id (put)
+Se for o admin poderá editar as informações e excluir.
+Interface User
+
+Login:
+/api/user/auth (post)
+Email + password com implementação futura de um SSO para logar com Google e Microsoft
+Interface Login {
+  user: string;
+  password: string
+}
+
+Criar Produtos:
+/api/products/add (post)
+O admin pode criar produtos, que terão um nome, label e steps. Os steps são os subprodutos necessários para a conclusão, um array com id, nome, duração e ordem. A soma dos dias nos steps montará o tempo total deste produto.
+Interface Product {
+  id: number;
+  value: string;
+  label: string;
+  steps: ProductStep[];
+  idPosition?: number;
+}
+
+interface ProductStep {
+  id: number;
+  name: string;
+  days: number;
+  order: number;
+}
+
+Listar Produtos:
+/api/products/ (get)
+Listará os produtos disponíveis para serem escolhidos ao criar um projeto
+interface Product[]
+
+Lista de comentários:
+/api/project/:id/comments (get)
+serão separados por projeto, com a etapa referente ao comentário (stepId) Caso stepId === null o comentário será referente ao projeto e deverá ser exibido no final. Será chamado quando os detalhes de um projeto forem abertos.
+Interface Comments {
+  id: number;
+  projectId: number;
+  stepId: number;
+  userId: number;
+  userName: string;
+  createdAt: string;
+  text: string[];
+}
+
+Lista de projetos:
+/api/projects (get)
+um endpoint para trazer apenas a lista de projetos simples, sem steps, address ou comments
+Interface:
+{
+  projectName: string;
+  clientName: string;
+  product: string;
+  startDate: string;
+  status: projectStatus;
+}
+
+
+Detalhes do projeto:
+/api/project/:id (get)
+endpoint listará todos os projetos ativos com steps e address. Comments serão carregados separadamente, pois podem ser muitos e tornariam o retorno deste endpoint lento.
+Interface:
+{
+  projectName: string;
+  clientName: string;
+  clientAddress: {
+    cep: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    complemento?: string;
+    cidade: string;
+    estado: string;
+  };
+  obraAddress: {
+    cep: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    complemento?: string;
+    cidade: string;
+    estado: string;
+  };
+  product: string;
+  startDate: string;
+  status: projectStatus; ("planned" | "in_progress" | "completed");
+  steps: {
+	  stepId: number;
+	  status: StepStatus;
+	  actualStartDate?: string;
+	  actualEndDate?: string;
+	  plannedStartDate: string;
+	  plannedEndDate: string;
+	}
+}
+
+Criar projeto:
+/api/project/ (post)
+endpoint para criar um novo projeto. 
+Interface: 
+{
+  projectName: string;
+  clientName: string;
+  clientAddress: {
+    cep: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    complemento?: string;
+    cidade: string;
+    estado: string;
+  };
+  obraAddress: {
+    cep: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    complemento?: string;
+    cidade: string;
+    estado: string;
+  };
+  product: string;
+  startDate: string;
+  status: projectStatus; ("planned" | "in_progress" | "completed")
+}
