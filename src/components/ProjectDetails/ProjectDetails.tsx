@@ -105,7 +105,7 @@ export default function ProjectDetails({
                 </span>
               </div>
             </div>
-            <Comments selectedProject={project} comments={comments} />
+            <Comments comments={comments} />
           </header>
 
           <div className="steps-section">
@@ -173,7 +173,6 @@ export default function ProjectDetails({
                       </span>
                     </div>
                     <Comments
-                      selectedProject={project}
                       stepId={stepProgress.stepId}
                       comments={comments}
                     />

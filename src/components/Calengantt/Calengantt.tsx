@@ -24,20 +24,20 @@ export default function Calengantt() {
   );
   const [daysToShow, setDaysToShow] = useState(5);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const today = new Date();
-
-  // Calcular o domingo anterior (ou o próprio dia se for domingo)
-  const startDate = new Date(today);
+  const today = useMemo(() => new Date(), []);
   const dayOfWeek = today.getDay(); // 0 = domingo, 1 = segunda, etc.
-  startDate.setDate(today.getDate() - dayOfWeek);
-
-  // Calcular total de dias a exibir (do domingo até daysToShow a partir de hoje)
-  const totalDays = dayOfWeek + daysToShow;
 
   // Criar mapeamento fixo de projeto -> posição baseado nos projetos visíveis no período
   const projectPositions = useMemo(() => {
     const positions = new Map<number, number>();
     const visibleProjects = new Set<number>();
+
+    // Calcular o domingo anterior (ou o próprio dia se for domingo)
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - dayOfWeek);
+
+    // Calcular total de dias a exibir (do domingo até daysToShow a partir de hoje)
+    const totalDays = dayOfWeek + daysToShow;
 
     // Calcular data final do período
     const endDate = new Date(startDate);
@@ -71,12 +71,12 @@ export default function Calengantt() {
     });
 
     return positions;
-  }, [projectsList, productsList, startDate, totalDays]);
+  }, [projectsList, productsList, today, dayOfWeek, daysToShow]);
 
-  const lastDay = today.getDate() + daysToShow;
-  const maxDate = new Date(today.getFullYear(), today.getMonth(), lastDay)
-    .toISOString()
-    .split("T")[0];
+  // const lastDay = today.getDate() + daysToShow;
+  // const maxDate = new Date(today.getFullYear(), today.getMonth(), lastDay)
+  //   .toISOString()
+  //   .split("T")[0];
 
   const showProject = (projectId: number) => () => {
     console.log("show project", projectId);
@@ -152,7 +152,9 @@ export default function Calengantt() {
             Sáb
           </div>
 
-          {Array.from({ length: totalDays }, (_, i) => {
+          {Array.from({ length: dayOfWeek + daysToShow }, (_, i) => {
+            const startDate = new Date(today);
+            startDate.setDate(today.getDate() - dayOfWeek);
             const currentDate = new Date(startDate);
             currentDate.setDate(startDate.getDate() + i);
             const dayOfMonth = currentDate.getDate();

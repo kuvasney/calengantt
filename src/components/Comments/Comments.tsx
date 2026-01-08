@@ -1,14 +1,12 @@
 import { useMemo } from "react";
-import type { Project, Comments } from "@/types/project";
+import type { Comments } from "@/types/project";
 import { formatDateTime } from "@/utils/dateFormatter";
 import "./comments.scss";
 
 export default function Comments({
-  selectedProject,
   stepId,
   comments,
 }: {
-  selectedProject: Project;
   stepId?: number;
   comments: Comments[];
 }) {
