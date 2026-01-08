@@ -1,3 +1,10 @@
+import { Link } from "react-router-dom";
+
 export default function Login() {
-  return <div>Login Page</div>;
+  return (
+    <div>
+      <h1>Login</h1>
+      <Link to="/calendar">Ir para o Calendário</Link>
+    </div>
+  );
 }
