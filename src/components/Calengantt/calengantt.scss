@@ -25,6 +25,13 @@
   }
 }
 
+.refresh-button-wrapper {
+  position: fixed;
+  bottom: 25px;
+  left: 20px;
+  z-index: 90;
+}
+
 .calengantt__days-to-show {
   display: flex;
   gap: 8px;

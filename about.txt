@@ -16,6 +16,7 @@ Interface UserAdmin {
 Criar user:
 /api/users/add (post)
 Nome completo, cargo, avatar, email e senha.
+Atento à possibilidade de um mesmo user ser admin em uma conta e single user em outra
 Interface User:
 {
   id: number;

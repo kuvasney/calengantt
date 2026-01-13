@@ -1,0 +1,29 @@
+@use "@/assets/styles/variables.scss" as *;
+.app-header {
+  height: $header-height;
+  background-color: $client-color-bg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-bottom: 2em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .app-header__title {
+    font-size: $text-large;
+    font-weight: bold;
+
+    @include respond-to("mobile") {
+      font-size: $text-regular;
+    }
+
+    @include respond-to("desktop") {
+      font-size: $text-large;
+    }
+
+    span {
+      color: $client-color-light;
+      font-size: 10px;
+    }
+  }
+}

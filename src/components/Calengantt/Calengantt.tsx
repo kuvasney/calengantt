@@ -7,10 +7,15 @@ import type { Product } from "@/types/products";
 
 import SideWindow from "@components/SideWindow/SideWindow";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
+import RefreshButton from "../RefreshButton/RefreshButton";
 
 import "./calengantt.scss";
 
-export default function Calengantt() {
+interface CalenganttProps {
+  onRefresh: () => void;
+}
+
+export default function Calengantt({ onRefresh }: CalenganttProps) {
   const productsList: Product[] = useAppSelector(
     (state) => state.products.productsList || []
   );
@@ -103,17 +108,22 @@ export default function Calengantt() {
 
   return (
     <section>
-      <form className="form-regular calengantt__days-to-show">
-        <div className="form-field form-inline">
-          <label htmlFor="daysToShow">Mostrar quantos dias: </label>
-          <input
-            type="number"
-            id="daysToShow"
-            value={daysToShow}
-            onChange={(e) => setDaysToShow(Number(e.target.value))}
-          />
+      <div className="calengantt__controls">
+        <form className="form-regular calengantt__days-to-show">
+          <div className="form-field form-inline">
+            <label htmlFor="daysToShow">Mostrar quantos dias: </label>
+            <input
+              type="number"
+              id="daysToShow"
+              value={daysToShow}
+              onChange={(e) => setDaysToShow(Number(e.target.value))}
+            />
+          </div>
+        </form>
+        <div className="refresh-button-wrapper">
+          <RefreshButton onClick={onRefresh} />
         </div>
-      </form>
+      </div>
       <section className="calendar">
         <div className="calengantt">
           <div
@@ -241,7 +251,7 @@ export default function Calengantt() {
                         }`}
                         title={`${project.clientName} - ${
                           productsList.find((p) => p.id === project.productId)
-                            ?.label
+                            ?.value || ""
                         }`}
                         style={{
                           backgroundColor: `hsla(${

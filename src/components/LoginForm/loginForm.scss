@@ -1,0 +1,41 @@
+@use "@/assets/styles/variables" as *;
+
+.login-page {
+  display: flex;
+  justify-content: space-around;
+
+  @include respond-to("mobile") {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  @include respond-to("desktop") {
+    max-width: 1400px;
+    width: 80%;
+  }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-width: 400px;
+  margin: 0 auto;
+
+  fieldset {
+    position: relative;
+  }
+}
+
+.login-form__password {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-form__see-password {
+  cursor: pointer;
+  color: $client-color-light;
+  background: $btn-gradient;
+  font-size: $text-small;
+  border: 0;
+}

@@ -1,0 +1,30 @@
+@use "@/assets/styles/variables.scss" as *;
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+
+  .user-name {
+    font-weight: bold;
+
+    @include respond-to("mobile") {
+      font-size: $text-small;
+    }
+  }
+
+  .logout-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    font-size: $text-small;
+
+    &:hover {
+      color: #0056b3;
+    }
+  }
+}

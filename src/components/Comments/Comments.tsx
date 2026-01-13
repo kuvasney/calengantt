@@ -10,6 +10,7 @@ export default function Comments({
   stepId?: number;
   comments: Comments[];
 }) {
+  const isActive: boolean = false;
   const filteredComments = useMemo(() => {
     if (stepId) {
       return comments.filter(
@@ -24,38 +25,42 @@ export default function Comments({
 
   return (
     <section className="comments">
-      <h3 className="comments__title">Discussão</h3>
-      {filteredComments.length === 0 && <p>Nenhum comentário.</p>}
-      <ul className="comments__list">
-        {filteredComments.map((comment) => (
-          <li key={comment.id} className="comments__item">
-            <div className="comments__author">
-              <strong>{comment.userName}</strong>{" "}
-              <span className="comments__date">
-                {formatDateTime(comment.createdAt)}
-              </span>
+      {isActive && (
+        <>
+          <h3 className="comments__title">Discussão</h3>
+          {filteredComments.length === 0 && <p>Nenhum comentário.</p>}
+          <ul className="comments__list">
+            {filteredComments.map((comment) => (
+              <li key={comment.id} className="comments__item">
+                <div className="comments__author">
+                  <strong>{comment.userName}</strong>{" "}
+                  <span className="comments__date">
+                    {formatDateTime(comment.createdAt)}
+                  </span>
+                </div>
+                <div>
+                  {comment.text.map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <form className="form-regular comments__form">
+            <div className="form-field">
+              <textarea
+                className="comments__textarea"
+                placeholder="Escreva seu comentário..."
+              ></textarea>
             </div>
-            <div>
-              {comment.text.map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
+            <div className="form-field">
+              <button className="btn-default comments__submit" type="submit">
+                Enviar
+              </button>
             </div>
-          </li>
-        ))}
-      </ul>
-      <form className="form-regular comments__form">
-        <div className="form-field">
-          <textarea
-            className="comments__textarea"
-            placeholder="Escreva seu comentário..."
-          ></textarea>
-        </div>
-        <div className="form-field">
-          <button className="btn-default comments__submit" type="submit">
-            Enviar
-          </button>
-        </div>
-      </form>
+          </form>
+        </>
+      )}
     </section>
   );
 }

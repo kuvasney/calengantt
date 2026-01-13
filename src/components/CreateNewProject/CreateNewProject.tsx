@@ -1,17 +1,19 @@
 import { useState } from "react";
-import ProductsMock from "../../mocks/Products.json";
 import { useCepApi } from "@/hooks/useCepApi";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
+import { useAppSelector } from "@/stores/hooks";
 import SideWindow from "../SideWindow/SideWindow";
 import StatesCombo from "../StatesCombo";
 import Loader from "../Loader/Loader";
 
 import type { ProjectData } from "@/types/project";
+import { CgMathPlus } from "react-icons/cg";
 
 import "./createNewProject.scss";
+import type { Product } from "@/types/products";
 
 export default function NewProject() {
-  const Products = ProductsMock;
+  const productsList = useAppSelector((state) => state.products.productsList);
   const { postProject } = useProjectsApi();
   const { fetchAddressByCep } = useCepApi();
 
@@ -202,9 +204,12 @@ export default function NewProject() {
   return (
     <>
       <button
-        className="btn-default btn-new-project"
+        className="btn-default btn-new-project iconic"
         onClick={() => setShowProjects(true)}
       >
+        <span className="icon">
+          <CgMathPlus />
+        </span>
         Criar Novo Projeto
       </button>
       <SideWindow
@@ -461,11 +466,12 @@ export default function NewProject() {
                     onChange={(e) => setProjectProduct(e.target.value)}
                   >
                     <option value="">Selecione um produto</option>
-                    {Products.map((product) => (
-                      <option key={product.id} value={product.id}>
-                        {product.label}
-                      </option>
-                    ))}
+                    {Array.isArray(productsList) &&
+                      productsList.map((product: Product) => (
+                        <option key={product.id} value={product.id}>
+                          {product.value}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 <div className="form-field size2-field">

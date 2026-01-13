@@ -73,6 +73,21 @@
           @media (prefers-color-scheme: light) {
             color: #1a1a1a;
           }
+
+          &.editable-field {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 2px;
+
+            .btn-edit {
+              display: none;
+            }
+            &:hover .btn-edit {
+              display: inline-flex;
+              cursor: pointer;
+            }
+          }
         }
       }
     }

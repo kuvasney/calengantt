@@ -34,6 +34,10 @@
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba($client-color4, 0.3);
 
+  @include respond-to("desktop") {
+    max-width: max-content;
+  }
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba($client-color4, 0.4);
@@ -44,7 +48,7 @@
   }
 
   &.btn-icon {
-    font-size: $regular-text;
+    font-size: $text-regular;
   }
 
   &.btn-text {
@@ -56,6 +60,11 @@
   background: $btn-gradient2;
   font-size: 1.4em;
   font-weight: 700;
+}
+
+.btn-small {
+  padding: 4px;
+  font-size: $text-small;
 }
 
 .form-regular {
@@ -109,7 +118,7 @@
     }
 
     label {
-      font-size: $regular-text;
+      font-size: $text-regular;
       font-weight: 500;
     }
 
@@ -120,7 +129,7 @@
       padding: 8px 12px;
       border: $client-color-dark 1px solid;
       border-radius: 4px;
-      font-size: $regular-text;
+      font-size: $text-regular;
       background-color: $client-color-light;
       color: $client-color-dark;
       font-weight: bold;

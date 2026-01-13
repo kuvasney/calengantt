@@ -6,7 +6,7 @@
   border-top: 2px solid #e0e0e0;
 }
 .comments__author {
-  font-size: $regular-text;
+  font-size: $text-regular;
   margin-bottom: 1rem;
   color: #333;
   display: flex;
@@ -31,7 +31,7 @@
   }
 }
 .comments__date {
-  font-size: $small-text;
+  font-size: $text-small;
   color: #777;
   margin-left: 0.5rem;
 }
