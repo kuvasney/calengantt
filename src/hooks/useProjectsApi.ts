@@ -1,14 +1,15 @@
 import { useCallback } from "react";
-import { API_CONFIG, API_ENDPOINTS } from "@/config/api";
+import { API_CONFIG, API_ENDPOINTS, getAuthHeaders } from "@/config/api";
+import { fetchWithAuth } from "@/utils/apiInterceptor";
 import type { ProjectData } from "@/types/project";
 
 export const useProjectsApi = () => {
   const getProjects = useCallback(async () => {
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}`,
       {
         method: "GET",
-        headers: API_CONFIG.headers,
+        headers: getAuthHeaders(),
       }
     );
 
@@ -20,11 +21,11 @@ export const useProjectsApi = () => {
   }, []);
 
   const getProject = useCallback(async (projectId: number) => {
-    const response = await fetch(
-      `${API_CONFIG.baseURL}${API_ENDPOINTS.project}/${projectId}`,
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}`,
       {
         method: "GET",
-        headers: API_CONFIG.headers,
+        headers: getAuthHeaders(),
       }
     );
 
@@ -36,11 +37,11 @@ export const useProjectsApi = () => {
   }, []);
 
   const postProject = useCallback(async (projectData: ProjectData) => {
-    const response = await fetch(
+    const response = await fetchWithAuth(
       `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}`,
       {
         method: "POST",
-        headers: API_CONFIG.headers,
+        headers: getAuthHeaders(),
         body: JSON.stringify(projectData),
       }
     );
@@ -52,21 +53,72 @@ export const useProjectsApi = () => {
     return await response.json();
   }, []);
 
-  const getProjectComments = useCallback(async (projectId: number) => {
-    const response = await fetch(
-      `${API_CONFIG.baseURL}${API_ENDPOINTS.project}/${projectId}/comments`,
-      {
-        method: "GET",
-        headers: API_CONFIG.headers,
+  const updateProject = useCallback(
+    async (projectId: number, projectData: Partial<ProjectData>) => {
+      const response = await fetchWithAuth(
+        `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}`,
+        {
+          method: "PUT",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(projectData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar o projeto");
       }
-    );
 
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar os comentários: ${response.statusText}`);
-    }
+      return await response.json();
+    },
+    []
+  );
 
-    return await response.json();
-  }, []);
+  const updateStepStatus = useCallback(
+    async (
+      projectId: number,
+      scheduleId: number,
+      status: "in_progress" | "completed",
+      actualDate?: string
+    ) => {
+      const response = await fetchWithAuth(
+        `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}/schedules/${scheduleId}/status`,
+        {
+          method: "PATCH",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ status, actualDate }),
+        }
+      );
 
-  return { getProjects, getProject, postProject, getProjectComments };
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar status da etapa");
+      }
+
+      return await response.json();
+    },
+    []
+  );
+
+  // const getProjectComments = useCallback(async (projectId: number) => {
+  //   const response = await fetchWithAuth(
+  //     `${API_CONFIG.baseURL}${API_ENDPOINTS.project}/${projectId}/comments`,
+  //     {
+  //       method: "GET",
+  //       headers: getAuthHeaders(),
+  //     }
+  //   );
+
+  //   if (!response.ok) {
+  //     throw new Error(`Erro ao buscar os comentários: ${response.statusText}`);
+  //   }
+
+  //   return await response.json();
+  // }, []);
+
+  return {
+    getProjects,
+    getProject,
+    postProject,
+    updateProject,
+    updateStepStatus,
+  };
 };

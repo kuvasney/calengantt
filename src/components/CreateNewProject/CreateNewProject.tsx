@@ -48,7 +48,31 @@ export default function NewProject() {
   const [startDate, setStartDate] = useState("");
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+
+  function clearForm() {
+    setProjectName("");
+    setClientName("");
+    setClientCEP("");
+    setClientLogradouro("");
+    setClientNumero("");
+    setClientBairro("");
+    setClientComplemento("");
+    setClientCidade("");
+    setClientEstado("");
+    setObraCEP("");
+    setObraLogradouro("");
+    setObraNumero("");
+    setObraBairro("");
+    setObraComplemento("");
+    setObraCidade("");
+    setObraEstado("");
+    setProjectProduct("");
+    setStartDate("");
+    setSameClientAddress(false);
+    setFormErrors([]);
+  }
 
   function handleCepSearch(
     cep: string,
@@ -124,12 +148,7 @@ export default function NewProject() {
         isError = true;
       }
 
-      if (sameClientAddress) {
-        setObraLogradouro(clientLogradouro);
-        setObraBairro(clientBairro);
-        setObraCidade(clientCidade);
-        setObraEstado(clientEstado);
-      } else {
+      if (!sameClientAddress) {
         if (obraLogradouro.trim() === "") {
           setFormErrors((prev) => [
             ...prev,
@@ -174,20 +193,40 @@ export default function NewProject() {
           city: clientCidade,
           state: clientEstado,
         },
-        obraAddress: {
-          zipCode: obraCEP,
-          street: obraLogradouro,
-          number: obraNumero,
-          neighborhood: obraBairro,
-          complement: obraComplemento,
-          city: obraCidade,
-          state: obraEstado,
-        },
-        product: projectProduct,
+        obraAddress: sameClientAddress
+          ? {
+              zipCode: clientCEP,
+              street: clientLogradouro,
+              number: clientNumero,
+              neighborhood: clientBairro,
+              complement: clientComplemento,
+              city: clientCidade,
+              state: clientEstado,
+            }
+          : {
+              zipCode: obraCEP,
+              street: obraLogradouro,
+              number: obraNumero,
+              neighborhood: obraBairro,
+              complement: obraComplemento,
+              city: obraCidade,
+              state: obraEstado,
+            },
+        productId: Number(projectProduct),
         startDate,
       };
 
       await postProject(projectData as ProjectData);
+
+      // Sucesso: mostrar mensagem e limpar formulário
+      setSuccessMessage("✅ Projeto criado com sucesso!");
+      clearForm();
+
+      // Limpar mensagem após 5 segundos
+      setTimeout(() => {
+        setSuccessMessage("");
+        setShowProjects(false); // Fechar o side window
+      }, 5000);
     } catch (error) {
       console.error(error);
       setFormErrors((prev) => [
@@ -492,6 +531,11 @@ export default function NewProject() {
                 Criar Projeto
               </button>
             </fieldset>
+            {successMessage && (
+              <div className="success-message">
+                <p>{successMessage}</p>
+              </div>
+            )}
             {formErrors.length > 0 && (
               <div className="error-messages">
                 {formErrors.map((error, index) => (

@@ -2,8 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
 import { setHighlightedProject } from "@/stores/projectsSlice";
 
-import type { Project } from "@/types/project";
-import type { Product } from "@/types/products";
+import type { ProjectItem } from "@/types/project";
 
 import SideWindow from "@components/SideWindow/SideWindow";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
@@ -16,10 +15,7 @@ interface CalenganttProps {
 }
 
 export default function Calengantt({ onRefresh }: CalenganttProps) {
-  const productsList: Product[] = useAppSelector(
-    (state) => state.products.productsList || []
-  );
-  const projectsList: Project[] = useAppSelector(
+  const projectsList: ProjectItem[] = useAppSelector(
     (state) => state.projects.projectsList || []
   );
 
@@ -28,7 +24,9 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
     (state) => state.projects.highlightedProject
   );
   const [daysToShow, setDaysToShow] = useState(5);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
+    null
+  );
   const today = useMemo(() => new Date(), []);
   const dayOfWeek = today.getDay(); // 0 = domingo, 1 = segunda, etc.
 
@@ -50,16 +48,14 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
 
     // Identificar todos os projetos que aparecem no período visível
     projectsList.forEach((project) => {
-      const projectStart = new Date(project.startDate);
-      const product = productsList.find((p) => p.id === project.productId);
-      if (!product) return;
+      if (!project.schedules || project.schedules.length === 0) return;
 
-      const projectEnd = new Date(projectStart);
-      const productTotalDays = product.steps.reduce(
-        (sum, step) => sum + step.days,
-        0
-      );
-      projectEnd.setDate(projectStart.getDate() + productTotalDays - 1);
+      // Pegar primeira e última data dos schedules
+      const firstSchedule = project.schedules[0];
+      const lastSchedule = project.schedules[project.schedules.length - 1];
+
+      const projectStart = new Date(firstSchedule.plannedStartDate);
+      const projectEnd = new Date(lastSchedule.plannedEndDate);
 
       // Verifica se o projeto aparece no período visível
       if (projectEnd >= startDate && projectStart <= endDate) {
@@ -76,7 +72,7 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
     });
 
     return positions;
-  }, [projectsList, productsList, today, dayOfWeek, daysToShow]);
+  }, [projectsList, today, dayOfWeek, daysToShow]);
 
   // const lastDay = today.getDate() + daysToShow;
   // const maxDate = new Date(today.getFullYear(), today.getMonth(), lastDay)
@@ -84,8 +80,7 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
   //   .split("T")[0];
 
   const showProject = (projectId: number) => () => {
-    console.log("show project", projectId);
-    const _project: Project | undefined = projectsList.find(
+    const _project: ProjectItem | undefined = projectsList.find(
       (p) => p.id === projectId
     );
     if (_project) {
@@ -104,7 +99,7 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
         dispatch(setHighlightedProject(project));
       }
     }
-  }, [dispatch]);
+  }, [dispatch, projectsList]);
 
   return (
     <section>
@@ -175,19 +170,15 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
 
             // Verificar quais projetos ocupam este dia
             let projectsInThisDay = projectsList.filter((project) => {
-              const projectStart = new Date(project.startDate);
-              const product = productsList.find(
-                (p) => p.id === project.productId
-              );
+              if (!project.schedules || project.schedules.length === 0)
+                return false;
 
-              if (!product) return false;
+              const firstSchedule = project.schedules[0];
+              const lastSchedule =
+                project.schedules[project.schedules.length - 1];
 
-              const projectEnd = new Date(projectStart);
-              const productTotalDays = product.steps.reduce(
-                (sum, step) => sum + step.days,
-                0
-              );
-              projectEnd.setDate(projectStart.getDate() + productTotalDays - 1);
+              const projectStart = new Date(firstSchedule.plannedStartDate);
+              const projectEnd = new Date(lastSchedule.plannedEndDate);
 
               return currentDate >= projectStart && currentDate <= projectEnd;
             });
@@ -206,37 +197,27 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
                 </div>
                 <div className="project-bars">
                   {projectsInThisDay.map((project) => {
-                    const product = productsList.find(
-                      (p) => p.id === project.productId
-                    );
+                    // Identificar qual schedule está ativo neste dia
+                    let currentSchedule = null;
+                    let currentStepName = "";
 
-                    // Identificar qual step está ativo neste dia
-                    let currentStepId = null;
-                    if (product) {
-                      const projectStart = new Date(project.startDate);
-                      projectStart.setHours(0, 0, 0, 0);
-                      let accumulatedDays = 0;
-
-                      for (const step of product.steps) {
-                        const stepStart = new Date(projectStart);
-                        stepStart.setDate(
-                          projectStart.getDate() + accumulatedDays
+                    if (project.schedules) {
+                      currentSchedule = project.schedules.find((schedule) => {
+                        const scheduleStart = new Date(
+                          schedule.plannedStartDate
                         );
-                        stepStart.setHours(0, 0, 0, 0);
+                        const scheduleEnd = new Date(schedule.plannedEndDate);
+                        scheduleStart.setHours(0, 0, 0, 0);
+                        scheduleEnd.setHours(23, 59, 59, 999);
 
-                        const stepEnd = new Date(stepStart);
-                        stepEnd.setDate(stepStart.getDate() + step.days - 1);
-                        stepEnd.setHours(23, 59, 59, 999);
+                        return (
+                          currentDate >= scheduleStart &&
+                          currentDate <= scheduleEnd
+                        );
+                      });
 
-                        if (
-                          currentDate >= stepStart &&
-                          currentDate <= stepEnd
-                        ) {
-                          currentStepId = step.id;
-                          break;
-                        }
-
-                        accumulatedDays += step.days;
+                      if (currentSchedule) {
+                        currentStepName = currentSchedule.productStep.name;
                       }
                     }
 
@@ -247,11 +228,10 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
                       <div
                         key={project.id}
                         className={`project-bar ${
-                          currentStepId ? `step_${currentStepId}` : ""
+                          currentSchedule ? `step_${currentSchedule.id}` : ""
                         }`}
-                        title={`${project.clientName} - ${
-                          productsList.find((p) => p.id === project.productId)
-                            ?.value || ""
+                        title={`${project.clientName} - ${project.projectName}${
+                          currentStepName ? ` - ${currentStepName}` : ""
                         }`}
                         style={{
                           backgroundColor: `hsla(${

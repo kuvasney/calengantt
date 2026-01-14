@@ -50,11 +50,10 @@ export const handlers = [
     return HttpResponse.json(MOCK_NEW_PROJECT);
   }),
 
-  http.patch(`${API_BASE_URL}/project/*`, async ({ request }) => {
+  http.patch(`${API_BASE_URL}/project/*`, async () => {
     await delay(500);
-    const body = await request.json();
     // Em produção, o servidor mesclaria os dados e retornaria o projeto atualizado
     // Aqui apenas retornamos sucesso com os dados enviados
-    return HttpResponse.json({ ...MOCK_PROJECT, ...body });
+    return HttpResponse.json(MOCK_PROJECT);
   }),
 ];

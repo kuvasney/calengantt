@@ -1,14 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import { useAppDispatch } from "@/stores/hooks";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 import "./userInfo.scss";
 
 export default function UserInfo() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const sessionUser = sessionStorage.getItem("user");
-  const user =
-    useAppSelector((state) => state.user.currentUser) ||
-    (sessionUser ? JSON.parse(sessionUser) : null);
+  const user = useCurrentUser();
 
   const handleLogout = () => {
     sessionStorage.removeItem("accessToken");

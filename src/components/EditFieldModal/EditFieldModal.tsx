@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Modal from "../Modal/Modal";
 
 interface EditFieldModalProps {
   isOpen: boolean;
@@ -43,51 +44,40 @@ export default function EditFieldModal({
     }
   };
 
-  if (!isOpen) return null;
+  const footer = (
+    <>
+      <button
+        className="btn-default"
+        onClick={onClose}
+        disabled={loading}
+        type="button"
+      >
+        Cancelar
+      </button>
+      <button
+        className="btn-primary"
+        onClick={handleSave}
+        disabled={loading}
+        type="button"
+      >
+        {loading ? "Salvando..." : "Salvar"}
+      </button>
+    </>
+  );
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h3>{title}</h3>
-          <button className="btn-close" onClick={onClose}>
-            ×
-          </button>
-        </div>
-
-        <div className="modal-body">
-          <div className="form-field">
-            <label htmlFor="edit-field">{fieldLabel}</label>
-            <input
-              type={fieldType}
-              id="edit-field"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-          {error && <div className="error-message">{error}</div>}
-        </div>
-
-        <div className="modal-footer">
-          <button
-            className="btn-default"
-            onClick={onClose}
-            disabled={loading}
-            type="button"
-          >
-            Cancelar
-          </button>
-          <button
-            className="btn-primary"
-            onClick={handleSave}
-            disabled={loading}
-            type="button"
-          >
-            {loading ? "Salvando..." : "Salvar"}
-          </button>
-        </div>
+    <Modal isOpen={isOpen} onClose={onClose} title={title} footer={footer}>
+      <div className="form-field">
+        <label htmlFor="edit-field">{fieldLabel}</label>
+        <input
+          type={fieldType}
+          id="edit-field"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={loading}
+        />
       </div>
-    </div>
+      {error && <div className="error-message">{error}</div>}
+    </Modal>
   );
 }

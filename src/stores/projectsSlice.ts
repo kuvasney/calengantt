@@ -1,9 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Project } from "../types/project";
+import type { ProjectItem } from "../types/project";
 
 interface ProjectState {
-  highlightedProject: Project | null;
-  projectsList: Project[];
+  highlightedProject: ProjectItem | null;
+  projectsList: ProjectItem[];
 }
 
 const initialState: ProjectState = {
@@ -15,13 +15,16 @@ const projectsSlice = createSlice({
   name: "projects",
   initialState,
   reducers: {
-    setHighlightedProject: (state, action: PayloadAction<Project | null>) => {
+    setHighlightedProject: (
+      state,
+      action: PayloadAction<ProjectItem | null>
+    ) => {
       state.highlightedProject = action.payload;
     },
     clearHighlightedProject: (state) => {
       state.highlightedProject = null;
     },
-    setProjectsList: (state, action: PayloadAction<Project[]>) => {
+    setProjectsList: (state, action: PayloadAction<ProjectItem[]>) => {
       state.projectsList = action.payload;
     },
   },

@@ -5,29 +5,23 @@ import {
   clearHighlightedProject,
 } from "../../stores/projectsSlice";
 import SideWindow from "@components/SideWindow/SideWindow";
-import type { Project } from "../../types/project";
+import type { ProjectItem } from "../../types/project";
 import { formatDate } from "@/utils/dateFormatter";
 
-import {
-  CgPinAlt,
-  CgEye,
-  CgCalendarDates,
-  CgUser,
-  CgList,
-} from "react-icons/cg";
+import { CgEye, CgCalendarDates, CgUser, CgList } from "react-icons/cg";
 import "./listProjects.scss";
 
 export default function ListProjects() {
   const dispatch = useAppDispatch();
-  const highlightedProject: Project | null = useAppSelector(
+  const highlightedProject: ProjectItem | null = useAppSelector(
     (state) => state.projects.highlightedProject
   );
-  const projects: Project[] = useAppSelector(
+  const projects: ProjectItem[] = useAppSelector(
     (state) => state.projects.projectsList || []
   );
   const [showProjects, setShowProjects] = useState(false);
 
-  const highlightProject = (project: Project) => {
+  const highlightProject = (project: ProjectItem) => {
     dispatch(setHighlightedProject(project));
     // Atualizar URL para deep linking
     const urlParams = new URLSearchParams(window.location.search);
@@ -108,7 +102,7 @@ export default function ListProjects() {
                     </span>
                     <span className="info-value">{project.clientName}</span>
                   </div>
-                  <div className="project-info">
+                  {/* <div className="project-info">
                     <span className="info-label">
                       <span className="icon">
                         <CgPinAlt />
@@ -120,7 +114,7 @@ export default function ListProjects() {
                       {project.projectAddress.number} -{" "}
                       {project.projectAddress.city}
                     </span>
-                  </div>
+                  </div> */}
 
                   <div className="project-info">
                     <span className="info-label">

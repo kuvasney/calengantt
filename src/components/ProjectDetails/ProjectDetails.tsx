@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
-import { useProjectUpdate } from "@/hooks/useProjectUpdate";
 import { formatDate } from "@/utils/dateFormatter";
-import { useAppSelector } from "@/stores/hooks";
 import Skeleton from "./Skeleton";
-import type { Project, Comments as CommentsType } from "@/types/project";
-import type { Product } from "@/types/products";
+import type { Project, ProjectItem, Address, Schedules } from "@/types/project";
 
 import { CgCalendarDates, CgCheckR, CgPen } from "react-icons/cg";
 
-import Comments from "../Comments/Comments";
 import EditFieldModal from "../EditFieldModal/EditFieldModal";
 import EditAddressModal from "../EditAddressModal/EditAddressModal";
 
@@ -19,15 +15,11 @@ import "../EditFieldModal/EditFieldModal.scss";
 export default function ProjectDetails({
   selectedProject,
 }: {
-  selectedProject: Project;
+  selectedProject: ProjectItem;
 }) {
-  const { getProject, getProjectComments } = useProjectsApi();
-  const { updateProject } = useProjectUpdate();
-  const productsList: Product[] = useAppSelector(
-    (state) => state.products.productsList || []
-  );
+  const { getProject, updateProject, updateStepStatus } = useProjectsApi();
   const [project, setProject] = useState<Project | null>(null);
-  const [comments, setComments] = useState<CommentsType[]>([]);
+  // const [comments, setComments] = useState<CommentsType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [editClientName, setEditClientName] = useState(false);
@@ -61,22 +53,38 @@ export default function ProjectDetails({
     setProject({ ...project, projectName: value });
   };
 
-  const handleSaveAddress = async (address: any) => {
+  const handleSaveAddress = async (address: Address) => {
     if (!project) return;
-    await updateProject(project.id, { projectAddress: address });
-    setProject({ ...project, projectAddress: address });
+    await updateProject(project.id, { obraAddress: address });
+    setProject({ ...project, obraAddress: address });
+  };
+
+  const handleFinishStep = async (schedule: Schedules) => {
+    if (!project) return;
+
+    try {
+      // Atualiza o status da etapa no backend (recalcula automaticamente as próximas)
+      await updateStepStatus(
+        project.id,
+        schedule.id,
+        "completed",
+        new Date().toISOString()
+      );
+
+      // Recarrega o projeto completo para mostrar as datas recalculadas
+      const updatedProject = await getProject(project.id);
+      setProject(updatedProject);
+    } catch (error) {
+      console.error("Erro ao finalizar etapa:", error);
+    }
   };
 
   useEffect(() => {
     async function fetchProject() {
       setLoading(true);
       try {
-        const [projectData, commentsData] = await Promise.all([
-          getProject(selectedProject.id),
-          getProjectComments(selectedProject.id),
-        ]);
+        const projectData = await getProject(selectedProject.id);
         setProject(projectData);
-        setComments(commentsData);
       } catch (error) {
         console.error("Erro ao carregar o projeto:", error);
       } finally {
@@ -85,7 +93,7 @@ export default function ProjectDetails({
     }
 
     fetchProject();
-  }, [selectedProject, getProject, getProjectComments]);
+  }, [selectedProject, getProject]);
 
   if (!selectedProject) {
     return <div>Nenhum projeto selecionado.</div>;
@@ -130,11 +138,7 @@ export default function ProjectDetails({
               <div className="meta-item">
                 <span className="meta-label">Produto</span>
                 <span className="meta-value editable-field">
-                  {
-                    productsList.find(
-                      (product) => product.id === project.productId
-                    )?.label
-                  }
+                  {project.product?.value}
                 </span>
               </div>
               <div className="meta-item">
@@ -144,12 +148,11 @@ export default function ProjectDetails({
                 </span>
               </div>
               <div className="meta-item">
-                <span className="meta-label">Endereço</span>
+                <span className="meta-label">Endereço da Obra</span>
                 <span className="meta-value editable-field">
-                  {project.projectAddress.street},{" "}
-                  {project.projectAddress.number} -{" "}
-                  {project.projectAddress.city}, {project.projectAddress.state}{" "}
-                  {project.projectAddress.zipCode}{" "}
+                  {project.obraAddress.street}, {project.obraAddress.number} -{" "}
+                  {project.obraAddress.city}, {project.obraAddress.state}{" "}
+                  {project.obraAddress.zipCode}{" "}
                   <button
                     className="btn-edit iconic"
                     onClick={() => setEditAddress(true)}
@@ -160,29 +163,26 @@ export default function ProjectDetails({
                 </span>
               </div>
             </div>
-            <Comments comments={comments} />
           </header>
 
           <div className="steps-section">
             <h3 className="section-title">Etapas do Projeto</h3>
             <div className="steps-timeline">
-              {project.stepsProgress.map((stepProgress, index) => {
-                const step = productsList
-                  .find((product) => product.id === project.productId)
-                  ?.steps.find((s) => s.id === stepProgress.stepId);
-                const statusClass = stepProgress.status.replace("_", "-");
+              {project.schedules?.map((schedule, index) => {
+                const step = schedule.productStep;
+                const statusClass = schedule.status.replace("_", "-");
 
                 return (
                   <div
-                    key={stepProgress.stepId}
+                    key={schedule.id}
                     className={`step-card status-${statusClass}`}
                   >
                     <div className="step-header">
                       <div className="step-number">{index + 1}</div>
                       <div className="step-info">
-                        <h4 className="step-name">{step?.name}</h4>
+                        <h4 className="step-name">{step.name}</h4>
                         <span className={`step-status ${statusClass}`}>
-                          {translateStatus(stepProgress.status)}
+                          {translateStatus(schedule.status)}
                         </span>
                       </div>
                     </div>
@@ -191,26 +191,22 @@ export default function ProjectDetails({
                       <div className="date-group">
                         <span className="date-label">Planejado</span>
                         <div className="date-range">
-                          <span>
-                            {formatDate(stepProgress.plannedStartDate)}
-                          </span>
+                          <span>{formatDate(schedule.plannedStartDate)}</span>
                           <span className="date-separator">→</span>
-                          <span>{formatDate(stepProgress.plannedEndDate)}</span>
+                          <span>{formatDate(schedule.plannedEndDate)}</span>
                         </div>
                       </div>
 
-                      {stepProgress.actualStartDate && (
+                      {schedule.actualStartDate && (
                         <div className="date-group">
                           <span className="date-label">Real</span>
                           <div className="date-range">
-                            <span>
-                              {formatDate(stepProgress.actualStartDate)}
-                            </span>
-                            {stepProgress.actualEndDate && (
+                            <span>{formatDate(schedule.actualStartDate)}</span>
+                            {schedule.actualEndDate && (
                               <>
                                 <span className="date-separator">→</span>
                                 <span>
-                                  {formatDate(stepProgress.actualEndDate)}
+                                  {formatDate(schedule.actualEndDate)}
                                 </span>
                               </>
                             )}
@@ -224,17 +220,14 @@ export default function ProjectDetails({
                         <span className="icon">
                           <CgCalendarDates />
                         </span>{" "}
-                        {step?.days} {step?.days === 1 ? "dia" : "dias"}
+                        {step.days} {step.days === 1 ? "dia" : "dias"}
                       </span>
                     </div>
-                    <Comments
-                      stepId={stepProgress.stepId}
-                      comments={comments}
-                    />
-                    {stepProgress.status !== "completed" && (
+                    {schedule.status !== "completed" && (
                       <button
                         className="btn-default step-action-button iconic"
                         type="button"
+                        onClick={() => handleFinishStep(schedule)}
                       >
                         <span className="icon">
                           <CgCheckR />
@@ -274,7 +267,7 @@ export default function ProjectDetails({
             isOpen={editAddress}
             onClose={() => setEditAddress(false)}
             onSave={handleSaveAddress}
-            currentAddress={project.projectAddress}
+            currentAddress={project.obraAddress}
           />
         </>
       )}

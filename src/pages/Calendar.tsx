@@ -12,6 +12,7 @@ import { useProductsApi } from "@/hooks/useProductsApi";
 import { useAppDispatch } from "@/stores/hooks";
 import { setProjectsList } from "@/stores/projectsSlice";
 import { setProductsList } from "@/stores/productsSlice";
+import { CgFolder } from "react-icons/cg";
 
 export default function Calendar() {
   const { getProjects } = useProjectsApi();
@@ -65,9 +66,29 @@ export default function Calendar() {
     );
   }
 
+  if (projectsList.length === 0) {
+    return (
+      <div>
+        <p>
+          Você não tem nenhum projeto cadastrado. <br />
+          Para começar a utilizar o {APP_CONFIG.appName}, crie um novo projeto.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <ListProjects />
+      <button
+        className="btn-default iconic"
+        onClick={() => navigate("/products")}
+      >
+        <span className="icon">
+          <CgFolder />
+        </span>
+        Ver produtos
+      </button>
       <CreateNewProject />
       <Calengantt onRefresh={fetchProjects} />
     </>

@@ -19,7 +19,6 @@ export const getAuthHeaders = (): HeadersInit => {
 interface ApiEndpoints {
   user: string;
   projects: string;
-  project: string;
   products: string;
 }
 
@@ -27,6 +26,5 @@ interface ApiEndpoints {
 export const API_ENDPOINTS: ApiEndpoints = {
   user: "/api/auth",
   projects: "/api/projects",
-  project: "/api/project",
   products: "/api/products",
 };

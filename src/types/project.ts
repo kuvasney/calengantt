@@ -1,3 +1,5 @@
+import type { ProductStep } from "./products";
+
 type projectStatus = "planned" | "in_progress" | "completed";
 
 export interface ProjectData {
@@ -21,7 +23,7 @@ export interface ProjectData {
     city: string;
     state: string;
   };
-  product: string;
+  productId: number;
   startDate: string;
   status?: projectStatus;
 }
@@ -48,11 +50,41 @@ export interface Address {
 export interface Project {
   id: number;
   clientName: string;
-  projectAddress: Address;
+  clientAddress: Address;
+  obraAddress: Address;
   projectName: string;
   productId: number;
+  product?: {
+    id: number;
+    value: string;
+    description: string;
+    steps: ProductStep[];
+  };
   startDate: string;
-  stepsProgress: StepProgress[];
+  status: projectStatus;
+  schedules: Schedules[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Schedules {
+  id: number;
+  plannedStartDate: string;
+  plannedEndDate: string;
+  actualStartDate: string | null;
+  actualEndDate: string | null;
+  status: "pending" | "in_progress" | "completed";
+  productStep: ProductStep;
+}
+
+export interface ProjectItem {
+  id: number;
+  projectName: string;
+  clientName: string;
+  startDate: string;
+  status: projectStatus;
+  productId: number;
+  schedules: Schedules[];
 }
 
 export interface Comments {

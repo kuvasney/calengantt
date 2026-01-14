@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useProductsApi } from "@/hooks/useProductsApi";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LoaderComponent from "../Loader/LoaderComponent";
 import type { ProductStep, Product } from "@/types/products";
 
-export default function ProductsForm() {
-  const { postProduct } = useProductsApi();
+interface ProductsFormProps {
+  initialProduct?: Product;
+  onSuccess?: () => void;
+}
+
+export default function ProductsForm({
+  initialProduct,
+  onSuccess,
+}: ProductsFormProps) {
+  const { postProduct, updateProduct } = useProductsApi();
   const currentUser = useCurrentUser();
+
+  const isEditing = !!initialProduct;
 
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -16,6 +26,18 @@ export default function ProductsForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Popular formulário ao editar
+  useEffect(() => {
+    if (initialProduct) {
+      setProductName(initialProduct.value);
+      setProductDescription(initialProduct.description || "");
+      const stepNames = initialProduct.steps.map((s) => s.name);
+      const stepDays = initialProduct.steps.map((s) => s.days);
+      setProductStepName(stepNames);
+      setProductStepDays(stepDays);
+    }
+  }, [initialProduct]);
 
   function handleAddStep(step: React.FormEvent) {
     step.preventDefault();
@@ -37,7 +59,7 @@ export default function ProductsForm() {
     setActualStepIndex(actualStepIndex - 1);
   }
 
-  async function handleAddProduct(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
@@ -48,12 +70,13 @@ export default function ProductsForm() {
       setIsLoading(false);
       return;
     }
+
     const steps: ProductStep[] = productStepName.map((name, index) => ({
       name: name.trim() || `Etapa ${index + 1}`,
       days: productStepDays[index] || 0,
       order: index + 1,
     }));
-    console.log("current user:", currentUser);
+
     const productData = {
       value: productName.trim(),
       description: productDescription.trim(),
@@ -62,30 +85,54 @@ export default function ProductsForm() {
     };
 
     try {
-      const productResponse = await postProduct(productData as Product);
-      if (!productResponse) {
-        throw new Error("Resposta inválida ao criar o produto");
+      let productResponse;
+
+      if (isEditing && initialProduct) {
+        // Atualizar produto existente
+        productResponse = await updateProduct(
+          initialProduct.id,
+          productData as Product
+        );
+      } else {
+        // Criar novo produto
+        productResponse = await postProduct(productData as Product);
       }
 
-      setSuccessMessage("Produto criado com sucesso!");
-      setProductName("");
-      setProductDescription("");
-      setProductStepName([""]);
-      setProductStepDays([0]);
-      setActualStepIndex(0);
+      if (!productResponse) {
+        throw new Error("Resposta inválida ao salvar o produto");
+      }
+
+      setSuccessMessage(
+        isEditing
+          ? "Produto atualizado com sucesso!"
+          : "Produto criado com sucesso!"
+      );
+
+      if (!isEditing) {
+        // Só limpa se for criação
+        setProductName("");
+        setProductDescription("");
+        setProductStepName([""]);
+        setProductStepDays([0]);
+        setActualStepIndex(0);
+      }
+
+      onSuccess?.();
     } catch (error) {
-      console.error("Erro ao criar o produto:", error);
-      setErrorMessage("Erro ao criar o produto. Por favor, tente novamente.");
+      console.error("Erro ao salvar o produto:", error);
+      setErrorMessage("Erro ao salvar o produto. Por favor, tente novamente.");
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <form className="form-regular products-form" onSubmit={handleAddProduct}>
+    <form className="form-regular products-form" onSubmit={handleSubmit}>
       {isLoading && <LoaderComponent />}
       <fieldset>
-        <legend>Adicionar Novo Produto</legend>
+        <legend>
+          {isEditing ? "Editar Produto" : "Adicionar Novo Produto"}
+        </legend>
         <div className="form-field">
           <label htmlFor="productName">Nome do Produto:</label>
           <input
@@ -160,7 +207,7 @@ export default function ProductsForm() {
         <div className="products-form__success-message">{successMessage}</div>
       )}
       <button type="submit" className="btn-default btn-submit">
-        Salvar Produto
+        {isEditing ? "Atualizar Produto" : "Salvar Produto"}
       </button>
     </form>
   );
