@@ -1,0 +1,13 @@
+@use "@/assets/styles/variables" as *;
+
+.form-message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: $text-small;
+  gap: 5px;
+
+  span.icon {
+    font-size: $text-large;
+  }
+}

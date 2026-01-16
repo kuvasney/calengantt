@@ -1,19 +1,22 @@
 import { useState } from "react";
+import { APP_CONFIG } from "@/config/app";
 import { useUserApi } from "@/hooks/useUserApi";
 import LoaderComponent from "@/components/Loader/LoaderComponent";
 import { Link } from "react-router-dom";
+import { HiOutlineCalendar, HiOutlineMail } from "react-icons/hi";
+import FormMessages from "@/components/FormMessages/FormMessages";
 
 export default function ForgotPassword() {
   const { passwordEmailRecovery } = useUserApi();
   const [email, setEmail] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setEmailSent(false);
+    setSuccessMessage("");
 
     if (!email) {
       setError("Por favor, insira seu e-mail.");
@@ -23,7 +26,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       await passwordEmailRecovery(email);
-      setEmailSent(true);
+      setSuccessMessage("E-mail de recuperação enviado com sucesso!");
     } catch (error) {
       console.error("Erro ao enviar e-mail de recuperação:", error);
       setError("Erro ao tentar enviar o e-mail. Por favor, tente novamente.");
@@ -33,15 +36,25 @@ export default function ForgotPassword() {
   };
 
   return (
-    <section className="forgot-password-page">
+    <section className="login-page">
       <div className="forgot-password-page__main-content">
-        <h2>Recuperar Senha</h2>
+        <h2>
+          Recuperar sua senha do{" "}
+          <span className="calangar-font">{APP_CONFIG.appName}</span>
+        </h2>
+        <div>
+          <img src="/images/calangar.png" alt="Calangar Logo" width={100} />
+          <HiOutlineCalendar size={100} color="var(--main-color)" />
+        </div>
       </div>
       <div className="forgot-password-page__form-content">
         <form className="form-regular" onSubmit={handleSubmit}>
-          <fieldset>
+          <fieldset className="fieldset-regular">
             <legend>Insira seu e-mail para recuperar sua senha</legend>
-            <div className="form-field size3-field">
+            <div className="input-field-pretty">
+              <span className="form-icon">
+                <HiOutlineMail />
+              </span>
               <label htmlFor="email">E-mail:</label>
               <input
                 type="email"
@@ -53,14 +66,12 @@ export default function ForgotPassword() {
               />
             </div>
             {loading && <LoaderComponent />}
-            {error && <div className="form-error-message">{error}</div>}
-            {emailSent && (
-              <div className="form-success-message">
-                Se seu e-mail estiver cadastrado, você receberá instruções para
-                recuperar sua senha.
-              </div>
+            {successMessage && (
+              <FormMessages type="success">{successMessage}</FormMessages>
             )}
-            <div className="form-actions">
+            {error && <FormMessages type="error">{error}</FormMessages>}
+
+            <div className="input-field">
               <button type="submit" className="btn-default">
                 Enviar E-mail de Recuperação
               </button>
@@ -68,7 +79,9 @@ export default function ForgotPassword() {
           </fieldset>
         </form>
         <p>
-          <Link to="/">Voltar para o login</Link>
+          <Link className="link-default" to="/">
+            Voltar para o login
+          </Link>
         </p>
       </div>
     </section>

@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import { APP_CONFIG } from "@/config/app";
 import LoginForm from "@/components/LoginForm/LoginForm";
-import { CgCalendar } from "react-icons/cg";
+import { HiOutlineCalendar } from "react-icons/hi";
 
 import "@/assets/styles/main_page.scss";
 
@@ -16,12 +17,19 @@ export default function Login() {
           </h1>
           <div>
             <img src="/images/calangar.png" alt="Calangar Logo" width={100} />
-            <CgCalendar size={100} color="var(--main-color)" />
+            <HiOutlineCalendar size={100} color="var(--main-color)" />
           </div>
           <h2>
             Um calendário online para profissionais que precisam organizar seus
             serviços!
           </h2>
+          <p className="login-page__create-account">
+            Caso você ainda não tenha uma conta,{" "}
+            <Link className="link-default" to="/register">
+              registre-se aqui
+            </Link>
+            .
+          </p>
         </div>
         <div className="login-page__login-form">
           <LoginForm />

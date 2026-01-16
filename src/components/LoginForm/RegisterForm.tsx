@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { useUserApi } from "@/hooks/useUserApi";
 import { APP_CONFIG } from "@/config/app";
 import LoaderComponent from "../Loader/LoaderComponent";
+import SocialLogin from "../SocialLogin";
+import FormMessages from "../FormMessages/FormMessages";
+import { CgLock, CgUser, CgEye, CgEyeAlt } from "react-icons/cg";
 
 import "./loginForm.scss";
 
@@ -43,10 +46,16 @@ export default function RegisterForm() {
 
   return (
     <div className="login-form-container">
-      <form className="form-regular login-form" onSubmit={handleRegister}>
-        <fieldset>
-          <legend>Registre-se para acessar o {APP_CONFIG.appName}</legend>
-          <div className="form-field size3-field">
+      <form className="login-form" onSubmit={handleRegister}>
+        <fieldset className="fieldset-regular">
+          <legend>
+            Registre-se para acessar o{" "}
+            <span className="calangar-font">{APP_CONFIG.appName}</span>
+          </legend>
+          <div className="input-field-pretty">
+            <span className="form-icon">
+              <CgUser />
+            </span>
             <label htmlFor="fullName">Nome Completo:</label>
             <input
               type="text"
@@ -56,7 +65,8 @@ export default function RegisterForm() {
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
-          <div className="form-field size3-field">
+          <div className="input-field-pretty">
+            <span className="form-icon">@</span>
             <label htmlFor="email">E-mail:</label>
             <input
               type="email"
@@ -66,15 +76,18 @@ export default function RegisterForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="form-field size3-field">
+          <div className="input-field-pretty">
             <label htmlFor="password" className="login-form__password">
+              <span className="form-icon">
+                <CgLock />
+              </span>
               Senha:
               <button
-                className="btn-link login-form__see-password"
+                className="btn-flat login-form__see-password"
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? "Ocultar senha" : "Ver senha"}
+                {showPassword ? <CgEye /> : <CgEyeAlt />}
               </button>
             </label>
             <input
@@ -85,17 +98,18 @@ export default function RegisterForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <div className="form-error">{error}</div>}
+          {error && <FormMessages type="error">{error}</FormMessages>}
           {successMessage && (
-            <div className="form-success">
+            <FormMessages type="success">
               {successMessage} Você pode agora fazer <Link to="/">login</Link>.
-            </div>
+            </FormMessages>
           )}
           <div className="form-actions">
             <button type="submit" className="btn-default" disabled={loading}>
               {loading ? <LoaderComponent /> : "Registrar"}
             </button>
           </div>
+          <SocialLogin />
         </fieldset>
       </form>
     </div>
