@@ -1,4 +1,4 @@
-import { CgRedo } from "react-icons/cg";
+import { HiRefresh } from "react-icons/hi";
 import "./refreshButton.scss";
 
 interface RefreshButtonProps {
@@ -9,13 +9,13 @@ interface RefreshButtonProps {
 export default function RefreshButton({ onClick, label }: RefreshButtonProps) {
   return (
     <button
-      className="btn-default iconic refresh-button"
+      className="btn-default iconic"
       type="button"
       onClick={onClick}
       title={label || "Atualizar"}
     >
       <span className="icon">
-        <CgRedo />
+        <HiRefresh />
       </span>
       {label && <span>{label}</span>}
     </button>

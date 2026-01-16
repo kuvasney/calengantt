@@ -7,7 +7,7 @@ import StatesCombo from "../StatesCombo";
 import Loader from "../Loader/Loader";
 
 import type { ProjectData } from "@/types/project";
-import { CgMathPlus } from "react-icons/cg";
+import { HiPlus } from "react-icons/hi";
 
 import "./createNewProject.scss";
 import type { Product } from "@/types/products";
@@ -247,7 +247,7 @@ export default function NewProject() {
         onClick={() => setShowProjects(true)}
       >
         <span className="icon">
-          <CgMathPlus />
+          <HiPlus />
         </span>
         Criar Novo Projeto
       </button>

@@ -12,7 +12,7 @@ import { useProductsApi } from "@/hooks/useProductsApi";
 import { useAppDispatch } from "@/stores/hooks";
 import { setProjectsList } from "@/stores/projectsSlice";
 import { setProductsList } from "@/stores/productsSlice";
-import { CgFolder } from "react-icons/cg";
+import { HiFolder } from "react-icons/hi";
 
 export default function Calendar() {
   const { getProjects } = useProjectsApi();
@@ -85,7 +85,7 @@ export default function Calendar() {
         onClick={() => navigate("/products")}
       >
         <span className="icon">
-          <CgFolder />
+          <HiFolder />
         </span>
         Ver produtos
       </button>

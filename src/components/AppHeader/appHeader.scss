@@ -8,6 +8,8 @@
   padding: 0 20px;
   margin-bottom: 2em;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
 
   .app-logo {
     height: 40px;
@@ -27,8 +29,65 @@
     }
 
     span {
-      color: var(--light-color);
       font-size: 10px;
+    }
+  }
+}
+
+.app-nav {
+  position: relative;
+  overflow: hidden;
+
+  .user-info {
+    margin: 1rem;
+    text-align: center;
+  }
+}
+
+.btn-menu {
+  svg {
+    height: calc($header-height - 1rem);
+    width: calc($header-height - 1rem);
+  }
+}
+
+.app-nav__navigator {
+  position: fixed;
+  right: 0;
+  top: calc($header-height + 1px);
+  width: 250px;
+  height: calc(100vh - $header-height - 1px);
+  background-color: var(--main-color);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  &.openned {
+    transform: translateX(0);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+
+      a,
+      button {
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 0.5rem;
+        text-transform: uppercase;
+        background-color: var(--text-color);
+        color: var(--light-color);
+        border-color: var(--light-color);
+        border-width: 1px 0;
+        border-style: solid;
+      }
     }
   }
 }

@@ -8,7 +8,7 @@ import SideWindow from "@components/SideWindow/SideWindow";
 import type { ProjectItem } from "../../types/project";
 import { formatDate } from "@/utils/dateFormatter";
 
-import { CgEye, CgCalendarDates, CgUser, CgList } from "react-icons/cg";
+import { HiEye, HiCalendar, HiUser, HiBriefcase } from "react-icons/hi";
 import "./listProjects.scss";
 
 export default function ListProjects() {
@@ -46,7 +46,7 @@ export default function ListProjects() {
           onClick={() => setShowProjects(!showProjects)}
         >
           <span className="icon">
-            <CgList />
+            <HiBriefcase />
           </span>
           <span className="btn-text">
             {showProjects ? "Ocultar Projetos" : "Todos os Projetos"}
@@ -96,7 +96,7 @@ export default function ListProjects() {
                   <div className="project-info">
                     <span className="info-label">
                       <span className="icon">
-                        <CgUser />
+                        <HiUser />
                       </span>{" "}
                       Cliente
                     </span>
@@ -105,7 +105,7 @@ export default function ListProjects() {
                   {/* <div className="project-info">
                     <span className="info-label">
                       <span className="icon">
-                        <CgPinAlt />
+                        <HiPinAlt />
                       </span>{" "}
                       Endereço
                     </span>
@@ -119,7 +119,7 @@ export default function ListProjects() {
                   <div className="project-info">
                     <span className="info-label">
                       <span className="icon">
-                        <CgCalendarDates />
+                        <HiCalendar />
                       </span>{" "}
                       Início
                     </span>
@@ -140,7 +140,7 @@ export default function ListProjects() {
                   ) : (
                     <>
                       <span className="icon">
-                        <CgEye />
+                        <HiEye />
                       </span>{" "}
                       Destacar no Calendário
                     </>
