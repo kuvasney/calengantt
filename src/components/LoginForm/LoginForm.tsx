@@ -6,7 +6,7 @@ import { APP_CONFIG } from "@/config/app";
 import { useAppDispatch } from "@/stores/hooks";
 import LoaderComponent from "../Loader/LoaderComponent";
 
-import { CgEye, CgEyeAlt, CgGoogle, CgLock } from "react-icons/cg";
+import { CgEye, CgEyeAlt, CgLock } from "react-icons/cg";
 import type { UserCredentials, LoginResponse } from "@/types/user";
 
 import "./loginForm.scss";
