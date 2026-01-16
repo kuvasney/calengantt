@@ -1,0 +1,50 @@
+@use "./assets/styles/_variables" as *;
+@import url("https://fonts.googleapis.com/css2?family=Ranchers&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+:root {
+  color-scheme: light dark;
+
+  /* Variáveis para light mode */
+  --bg-color: #{$light_color-bg};
+  --text-color: #{$light_color-text};
+  --main-color: #{$light_color-main};
+  --alt-color1: #{$light_color-2};
+  --alt-color2: #{$light_color-3};
+  --light-color: #{$light_light-color};
+  --dark-color-bg: #{$light_dark-color};
+  --btn-gradient1: #{$light_btn-gradient1};
+  --btn-gradient2: #{$light_btn-gradient2};
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #{$dark_color-bg};
+    --text-color: #{$dark_color-text};
+    --main-color: #{$dark_color-main};
+    --alt-color1: #{$dark_color-2};
+    --alt-color2: #{$dark_color-3};
+    --light-color: #{$dark_light-color};
+    --dark-color-bg: #{$dark_dark-color};
+    --btn-gradient1: #{$dark_btn-gradient1};
+    --btn-gradient2: #{$dark_btn-gradient2};
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+
+  @include respond-to("mobile") {
+    font-size: 0.8em;
+  }
+  @include respond-to("desktop") {
+    font-size: 1em;
+  }
+}
+
+.calangar-font {
+  font-family: "Ranchers", cursive;
+}

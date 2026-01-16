@@ -116,10 +116,10 @@
     }
 
     .project-card {
-      background: rgba($client-color-bg, 0.8);
+      background: rgba(var(--bg-color), 0.8);
       border-radius: 12px;
       padding: 20px;
-      border-left: 4px solid rgba($client-color1, 0.6);
+      border-left: 4px solid rgba(var(--main-color), 0.6);
       transition: all 0.3s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       cursor: pointer;
@@ -132,7 +132,7 @@
       &:hover {
         transform: translateX(4px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        border-left-color: rgba($client-color1, 1);
+        border-left-color: rgba(var(--main-color), 1);
 
         @media (prefers-color-scheme: light) {
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -141,7 +141,7 @@
 
       .icon {
         font-size: $text-large;
-        color: $client-color3;
+        color: var(--alt-color3);
       }
 
       &.active {
@@ -174,8 +174,8 @@
 
         .project-id {
           padding: 4px 10px;
-          background: rgba($client-color-bg, 0.2);
-          color: rgba($client-color-light, 1);
+          background: rgba(var(--bg-color), 0.2);
+          color: rgba(var(--light-color), 1);
           border-radius: 10px;
           font-size: 12px;
           font-weight: 700;
@@ -202,7 +202,7 @@
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: rgba($client-color-light, 0.9);
+            color: rgba(var(--light-color), 0.9);
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -228,10 +228,10 @@
       .btn-highlight {
         width: 100%;
         padding: 10px 16px;
-        background: rgba($client-color1, 0.15);
-        border: 2px solid rgba($client-color-light, 0.3);
+        background: rgba(var(--main-color), 0.15);
+        border: 2px solid rgba(var(--light-color), 0.3);
         border-radius: 8px;
-        color: rgba($client-color-light, 1);
+        color: rgba(var(--light-color), 1);
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
@@ -242,8 +242,8 @@
         gap: 6px;
 
         &:hover {
-          background: rgba($client-color1, 0.25);
-          border-color: rgba($client-color-light, 0.5);
+          background: rgba(var(--main-color), 0.25);
+          border-color: rgba(var(--light-color), 0.5);
           transform: translateY(-1px);
         }
 
@@ -257,13 +257,13 @@
       }
 
       &.active .btn-highlight {
-        background: rgba($client-color1, 0.15);
-        border-color: rgba($client-color-light, 0.4);
-        color: $client-color-light;
+        background: rgba(var(--main-color), 0.15);
+        border-color: rgba(var(--light-color), 0.4);
+        color: var(--light-color);
 
         &:hover {
-          background: rgba($client-color1, 0.25);
-          border-color: rgba($client-color-light, 0.6);
+          background: rgba(var(--main-color), 0.25);
+          border-color: rgba(var(--light-color), 0.6);
         }
       }
     }

@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserApi } from "@/hooks/useUserApi";
 import useGoogleAuth from "@/hooks/useGoogleAuth";
 import { APP_CONFIG } from "@/config/app";
 import { useAppDispatch } from "@/stores/hooks";
 import LoaderComponent from "../Loader/LoaderComponent";
 
+import { CgEye, CgEyeAlt, CgGoogle, CgLock } from "react-icons/cg";
 import type { UserCredentials, LoginResponse } from "@/types/user";
 
 import "./loginForm.scss";
@@ -54,10 +55,14 @@ export default function LoginForm() {
 
   return (
     <div className="login-form-container">
-      <form className="form-regular login-form" onSubmit={handleLogin}>
+      <form className="login-form" onSubmit={handleLogin}>
         <fieldset>
-          <legend>Identifique-se para acessar o {APP_CONFIG.appName}</legend>
-          <div className="form-field size3-field">
+          <legend>
+            Identifique-se para acessar o{" "}
+            <span className="calangar-font">{APP_CONFIG.appName}</span>
+          </legend>
+          <div className="form-field input-field size3-field">
+            <span className="form-icon">@</span>
             <label htmlFor="username">E-mail:</label>
             <input
               type="email"
@@ -68,15 +73,18 @@ export default function LoginForm() {
               required
             />
           </div>
-          <div className="form-field size3-field">
+          <div className="form-field input-field size3-field">
+            <span className="form-icon">
+              <CgLock />
+            </span>
             <label htmlFor="password" className="login-form__password">
               Senha:
               <button
-                className="btn-link login-form__see-password"
+                className="btn-flat login-form__see-password"
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? "Ocultar senha" : "Ver senha"}
+                {showPassword ? <CgEye /> : <CgEyeAlt />}
               </button>
             </label>
             <input
@@ -88,33 +96,43 @@ export default function LoginForm() {
               required
             />
           </div>
-          <div className="form-field">
-            <button
-              className="btn-google login-form__google-login"
-              type="button"
-              onClick={loginWithGoogle}
-            >
-              Entrar com Google
-            </button>
-          </div>
           <div className="form-field login-form__submit-field">
-            <button className="btn-default login-form__submit" type="submit">
+            <button className="btn-submit login-form__submit" type="submit">
               Entrar
             </button>
             {loading && <LoaderComponent />}
           </div>
           {error && <div className="login-form__error-message">{error}</div>}
           <div className="form-field">
-            <a href="/forgot-password" className="login-form__forgot-password">
+            <Link
+              to="/forgot-password"
+              className="link-default login-form__forgot-password"
+            >
               Esqueci minha senha
-            </a>
+            </Link>
           </div>
         </fieldset>
+        <div className="login-form__alternative-login">
+          <p>Ou utilize suas credenciais:</p>
+          <div className="form-field">
+            <button
+              className="btn-google"
+              type="button"
+              onClick={loginWithGoogle}
+            >
+              <span className="icon" />
+              Utilize sua conta Google
+            </button>
+          </div>
+        </div>
       </form>
       <div className="login-form__data-info">
         <p>
           Caso você ainda não tenha uma conta,{" "}
-          <a href="/register">registre-se aqui</a>.
+          <Link className="link-default" to="/register">
+            registre-se aqui
+          </Link>
+          .
         </p>
       </div>
     </div>

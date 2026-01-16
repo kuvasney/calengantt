@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Login from "@/pages/Login";
 import Calendar from "@/pages/Calendar";
 import Products from "@/pages/Products";
@@ -11,9 +11,18 @@ import AppHeader from "@/components/AppHeader/AppHeader";
 import "./App.scss";
 
 function App() {
+  const location = useLocation();
+  const hideHeaderPaths = [
+    "/",
+    "/register",
+    "/forgot-password",
+    "/auth/callback",
+  ];
+  const shouldShowHeader = !hideHeaderPaths.includes(location.pathname);
+
   return (
     <div className="app-wrapper">
-      <AppHeader />
+      {shouldShowHeader && <AppHeader />}
       <div className="content-wrapper">
         <Routes>
           <Route path="/" element={<Login />} />

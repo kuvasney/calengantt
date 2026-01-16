@@ -1,21 +1,7 @@
 @use "@/assets/styles/variables" as *;
 
-.login-page {
-  display: flex;
-  justify-content: space-around;
-
-  @include respond-to("mobile") {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  @include respond-to("desktop") {
-    max-width: 1400px;
-    width: 80%;
-  }
-}
-
 .login-form {
+  @extend .form-regular !optional;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -24,6 +10,12 @@
 
   fieldset {
     position: relative;
+
+    legend {
+      font-weight: 400;
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
+    }
   }
 }
 
@@ -34,8 +26,8 @@
 
 .login-form__see-password {
   cursor: pointer;
-  color: $client-color-light;
-  background: $btn-gradient;
+  color: var(--light-color);
+  background: var(--btn-gradient1);
   font-size: $text-small;
   border: 0;
 }

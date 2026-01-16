@@ -1,0 +1,76 @@
+@use "@/assets/styles/variables" as *;
+
+.login-page {
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+
+  @include respond-to("mobile") {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  @include respond-to("desktop") {
+    max-width: 1400px;
+    width: 80%;
+  }
+}
+
+.login-page__top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include respond-to("mobile") {
+    flex-direction: column;
+  }
+
+  @include respond-to("desktop") {
+    flex-direction: row;
+  }
+}
+
+.login-page__main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1em;
+
+  @include respond-to("mobile") {
+    padding: 0 1em;
+    width: 100%;
+  }
+
+  @include respond-to("desktop") {
+    padding: 0;
+    width: 60%;
+  }
+
+  h1 {
+    font-size: $text-large;
+    margin: 0;
+  }
+
+  p {
+    font-size: $text-large;
+    margin: 0;
+  }
+}
+
+.login-page__login-form {
+  display: flex;
+  align-items: center;
+  width: 40%;
+
+  @include respond-to("mobile") {
+    width: 100%;
+    margin-top: 2em;
+  }
+
+  @include respond-to("desktop") {
+    width: 40%;
+    margin-top: 0;
+  }
+}

@@ -14,18 +14,18 @@
   fieldset {
     border-width: 0 0 0 4px;
     border-style: solid;
-    border-color: $client-color1;
+    border-color: var(--main-color);
     background-color: #010101;
 
     legend {
-      color: $client-color3;
+      color: var(--alt-color3);
       font-size: $text-large;
     }
   }
 
   .form-field {
     label {
-      color: $client-color-light;
+      color: var(--light-color);
       text-transform: uppercase;
       font-weight: bold;
       font-size: small;

@@ -3,35 +3,36 @@ $header-height: 50px;
 $footer-height: 40px;
 $main-height: calc(100vh - #{$header-height} - #{$footer-height});
 
-// TEXT SIZE
-$text-larger: 2.5em;
-$text-large: 2em;
+// TYPOGRAPHY
+$text-small: 0.8em;
 $text-regular: 1em;
-$text-small: 0.7em;
+$text-large: 1.8em;
+$text-xlarge: 2.2em;
 
-$error: #ff4d4d;
-$success: #374ed3;
-$link-color: #646cff;
-$text-color: #333333;
-$client-color-dark: #84402d;
-$client-color-light: #b6b99a;
-$client-color-bg: #1f1f1f;
-$client-color1: #475e4c;
-$client-color2: #84402d;
-$client-color3: #ab6532;
-$client-color4: #b6b99a;
+// COLORS
+$dark_color-bg: #00280a; // Background principal (mantido)
+$dark_color-main: #1a4d2e; // Verde médio mais suave
+$dark_color-2: #27ae60; // Verde mais vibrante para destaque
+$dark_color-3: #2ecc71; // Verde claro para acentos
+$dark_light-color: #001505; // Tons ainda mais escuros para containers
+$dark_dark-color: #003d14; // Para bordas e separadores
+$dark_btn-gradient1: linear-gradient(45deg, #1a4d2e, #27ae60);
+$dark_btn-gradient2: linear-gradient(45deg, #1a4d2e, #0a3d2000);
+$dark_color-text: #cbe9da; // Texto principal (verde muito claro/branco)
+$dark_color-text-secondary: #a5d6a7; // Texto secundário
+$dark_color-accent: #4caf50; // Para CTAs e elementos importantes
+$dark_color-border: #1b3a24; // Bordas sutis
+$dark_color-hover: #134d2c; // Estados hover
 
-$btn-gradient: linear-gradient(
-  135deg,
-  rgba($client-color1, 0.9),
-  rgba($client-color1, 0.6)
-);
-
-$btn-gradient2: linear-gradient(
-  135deg,
-  rgba($client-color2, 0.9),
-  rgba($client-color2, 0.6)
-);
+$light_color-bg: #e6f2e6;
+$light_color-main: #b3e6b3;
+$light_color-2: #66cc66;
+$light_color-3: #00cc66;
+$light_light-color: #f0fff0;
+$light_dark-color: #99ff99;
+$light_btn-gradient1: linear-gradient(45deg, #33cc33, #009900);
+$light_btn-gradient2: linear-gradient(45deg, #b3e6b3, #0000ff00);
+$light_color-text: #000000;
 
 @use "sass:map";
 

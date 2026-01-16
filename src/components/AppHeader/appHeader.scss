@@ -1,7 +1,7 @@
 @use "@/assets/styles/variables.scss" as *;
 .app-header {
   height: $header-height;
-  background-color: $client-color-bg;
+  background-color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9,8 +9,13 @@
   margin-bottom: 2em;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
+  .app-logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+
   .app-header__title {
-    font-size: $text-large;
+    font-size: $text-xlarge;
     font-weight: bold;
 
     @include respond-to("mobile") {
@@ -18,11 +23,11 @@
     }
 
     @include respond-to("desktop") {
-      font-size: $text-large;
+      font-size: $text-xlarge;
     }
 
     span {
-      color: $client-color-light;
+      color: var(--light-color);
       font-size: 10px;
     }
   }

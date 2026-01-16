@@ -1,4 +1,5 @@
 @use "@/assets/styles/variables" as *;
+@use "@/assets/styles/forms" as forms;
 
 .content-wrapper {
   padding: 1em;
@@ -14,7 +15,17 @@
     align-items: center;
     justify-content: center;
     font-size: 1.4em;
-    color: $client-color-light;
+    color: var(--light-color);
+  }
+}
+
+.link-default {
+  color: var(--alt-color2);
+  text-decoration: none;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 
@@ -24,7 +35,7 @@
   justify-content: center;
   gap: 8px;
   padding: 12px 20px;
-  background: $btn-gradient;
+  background: var(--btn-gradient1);
   color: white;
   border: none;
   border-radius: 8px;
@@ -32,127 +43,68 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba($client-color4, 0.3);
+  box-shadow: 0 2px 8px rgba(var(--main-color), 0.3);
 
   @include respond-to("desktop") {
+    min-width: 200px;
     max-width: max-content;
   }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba($client-color4, 0.4);
+    // transform: translateY(-2px);
+    // box-shadow: 0 4px 12px rgba($client-color4, 0.4);
   }
 
   &:active {
-    transform: translateY(0);
+    // transform: translateY(0);
   }
 
   &.btn-icon {
-    font-size: $text-regular;
+    // font-size: $text-regular;
   }
 
   &.btn-text {
-    letter-spacing: 0.3px;
+    // letter-spacing: 0.3px;
+  }
+}
+
+.btn-flat {
+  background: transparent;
+  color: var(--text-color);
+  font-size: $text-regular;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: $text-regular;
+  width: fit-content;
+  border-radius: 4px;
+  padding: 8px 12px;
+  background-color: white;
+  color: #000;
+
+  .icon {
+    background-image: url("/images/google.svg");
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 }
 
 .btn-submit {
-  background: $btn-gradient2;
+  @extend .btn-default;
+  background: var(--btn-gradient1);
   font-size: 1.4em;
   font-weight: 700;
 }
 
 .btn-small {
-  padding: 4px;
-  font-size: $text-small;
-}
-
-.form-regular {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-  fieldset {
-    border: 1px solid gray;
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-
-    legend {
-      font-weight: 600;
-      font-size: 16px;
-    }
-  }
-
-  .form-inline {
-    @include respond-to("desktop") {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      gap: 16px;
-      width: 100%;
-    }
-  }
-
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 100%;
-    @include respond-to("desktop") {
-      max-width: 800px;
-    }
-
-    &.form-inline {
-      @include respond-to("desktop") {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        align-items: center;
-        gap: 16px;
-        width: 100%;
-      }
-    }
-
-    label {
-      font-size: $text-regular;
-      font-weight: 500;
-    }
-
-    input,
-    select,
-    textarea,
-    .select-default {
-      padding: 8px 12px;
-      border: $client-color-dark 1px solid;
-      border-radius: 4px;
-      font-size: $text-regular;
-      background-color: $client-color-light;
-      color: $client-color-dark;
-      font-weight: bold;
-
-      &:focus {
-        outline: none;
-        border-color: gray;
-        box-shadow: 0 0 0 2px rgba(gray, 0.2);
-      }
-    }
-
-    &.size2-field {
-      @include respond-to("desktop") {
-        width: 12vw;
-        max-width: 200px;
-      }
-    }
-
-    &.size3-field {
-      @include respond-to("desktop") {
-        width: 50vw;
-        max-width: 600px;
-      }
-    }
-  }
+  // padding: 4px;
+  // font-size: $text-small;
 }

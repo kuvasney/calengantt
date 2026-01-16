@@ -7,7 +7,7 @@ import { store } from "./stores";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import App from "./App.tsx";
 
-import "./index.css";
+import "./index.scss";
 
 async function enableMocking() {
   if (import.meta.env.DEV) {
