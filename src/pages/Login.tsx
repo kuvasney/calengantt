@@ -11,12 +11,10 @@ export default function Login() {
       <div className="login-page__top">
         <div className="login-page__main-content">
           <h1>
-            <span className="calangar-font">
-              Bem vindo ao {APP_CONFIG.appName}
-            </span>
+            <span className="calangar-font">Bem vindo ao</span>
           </h1>
+          <div className="calango calangar-font">{APP_CONFIG.appName}</div>
           <div>
-            <img src="/images/calangar.png" alt="Calangar Logo" width={100} />
             <HiOutlineCalendar size={100} color="var(--main-color)" />
           </div>
           <h2>
