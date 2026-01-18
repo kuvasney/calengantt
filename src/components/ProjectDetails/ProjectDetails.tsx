@@ -112,7 +112,7 @@ export default function ProjectDetails({
               <h2>
                 {project.projectName}{" "}
                 <button
-                  className="btn-edit iconic"
+                  className="btn-edit"
                   onClick={() => setEditProjectName(true)}
                   type="button"
                 >
@@ -127,7 +127,7 @@ export default function ProjectDetails({
                 <span className="meta-value editable-field">
                   {project.clientName}{" "}
                   <button
-                    className="btn-edit iconic"
+                    className="btn-edit"
                     onClick={() => setEditClientName(true)}
                     type="button"
                   >
@@ -154,7 +154,7 @@ export default function ProjectDetails({
                   {project.obraAddress.city}, {project.obraAddress.state}{" "}
                   {project.obraAddress.zipCode}{" "}
                   <button
-                    className="btn-edit iconic"
+                    className="btn-edit"
                     onClick={() => setEditAddress(true)}
                     type="button"
                   >
@@ -216,7 +216,7 @@ export default function ProjectDetails({
                     </div>
 
                     <div className="step-footer">
-                      <span className="step-duration iconic">
+                      <span className="step-duration">
                         <span className="icon">
                           <CgCalendarDates />
                         </span>{" "}
@@ -225,7 +225,7 @@ export default function ProjectDetails({
                     </div>
                     {schedule.status !== "completed" && (
                       <button
-                        className="btn-default step-action-button iconic"
+                        className="btn-default step-action-button"
                         type="button"
                         onClick={() => handleFinishStep(schedule)}
                       >

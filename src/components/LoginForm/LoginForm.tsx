@@ -60,7 +60,7 @@ export default function LoginForm() {
             Identifique-se para acessar o{" "}
             <span className="calangar-font">{APP_CONFIG.appName}</span>
           </legend>
-          <div className="input-field-pretty">
+          <div className="input-field--pretty">
             <span className="form-icon">@</span>
             <label htmlFor="username">E-mail:</label>
             <input
@@ -72,7 +72,7 @@ export default function LoginForm() {
               required
             />
           </div>
-          <div className="input-field-pretty">
+          <div className="input-field--pretty">
             <span className="form-icon">
               <CgLock />
             </span>

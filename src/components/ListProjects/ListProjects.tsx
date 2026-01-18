@@ -42,15 +42,13 @@ export default function ListProjects() {
     <div className="list-projects">
       <div className="projects-header">
         <button
-          className="btn-default btn-show-projects iconic"
+          className="btn-default btn-show-projects"
           onClick={() => setShowProjects(!showProjects)}
         >
           <span className="icon">
             <HiBriefcase />
           </span>
-          <span className="btn-text">
-            {showProjects ? "Ocultar Projetos" : "Todos os Projetos"}
-          </span>
+          {showProjects ? "Ocultar Projetos" : "Todos os Projetos"}
         </button>
 
         {highlightedProject !== null && (

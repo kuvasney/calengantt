@@ -1,23 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCepApi } from "@/hooks/useCepApi";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
 import { useAppSelector } from "@/stores/hooks";
 import SideWindow from "../SideWindow/SideWindow";
 import StatesCombo from "../StatesCombo";
+import FormMessages from "../FormMessages/FormMessages";
 import Loader from "../Loader/Loader";
 
 import type { ProjectData } from "@/types/project";
-import { HiPlus } from "react-icons/hi";
+import { HiPlus, HiSearch, HiFolderAdd } from "react-icons/hi";
 
 import "./createNewProject.scss";
 import type { Product } from "@/types/products";
 
-export default function NewProject() {
+interface NewProjectInterface {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+  startingDate?: Date | string;
+}
+
+export default function NewProject({
+  isOpen,
+  onClose,
+  onSuccess,
+  startingDate,
+}: NewProjectInterface) {
   const productsList = useAppSelector((state) => state.products.productsList);
   const { postProject } = useProjectsApi();
   const { fetchAddressByCep } = useCepApi();
 
-  const [showProjects, setShowProjects] = useState(false);
+  const [showProjectsForm, setShowProjectsForm] = useState(false);
   const [sameClientAddress, setSameClientAddress] = useState(false);
   // PROJETO
   const [projectName, setProjectName] = useState("");
@@ -45,11 +58,22 @@ export default function NewProject() {
 
   // DADOS BASE DO PROJETO
   const [projectProduct, setProjectProduct] = useState("");
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState<string>(
+    startingDate ? new Date(startingDate).toISOString().split("T")[0] : ""
+  );
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Sincronizar startDate com startingDate quando mudar
+  useEffect(() => {
+    if (startingDate) {
+      setStartDate(new Date(startingDate).toISOString().split("T")[0]);
+    }
+  }, [startingDate]);
 
   function clearForm() {
     setProjectName("");
@@ -170,7 +194,7 @@ export default function NewProject() {
         }
       }
 
-      if (startDate.trim() === "") {
+      if (startDate === "") {
         setFormErrors((prev) => [...prev, "A data de início é obrigatória."]);
         setIsLoading(false);
         isError = true;
@@ -178,6 +202,8 @@ export default function NewProject() {
 
       if (isError) {
         setIsLoading(false);
+        // Rolar para o final do formulário para ver os erros
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
         return;
       }
 
@@ -222,11 +248,11 @@ export default function NewProject() {
       setSuccessMessage("✅ Projeto criado com sucesso!");
       clearForm();
 
-      // Limpar mensagem após 5 segundos
+      // Limpar mensagem após 3 segundos e fechar
       setTimeout(() => {
         setSuccessMessage("");
-        setShowProjects(false); // Fechar o side window
-      }, 5000);
+        onSuccess(); // Notifica pai e fecha
+      }, 3000);
     } catch (error) {
       console.error(error);
       setFormErrors((prev) => [
@@ -242,28 +268,29 @@ export default function NewProject() {
 
   return (
     <>
-      <button
-        className="btn-default btn-new-project iconic"
-        onClick={() => setShowProjects(true)}
-      >
+      <button className="btn-default" onClick={() => setShowProjectsForm(true)}>
         <span className="icon">
           <HiPlus />
         </span>
         Criar Novo Projeto
       </button>
       <SideWindow
-        isOpen={showProjects}
-        onClose={() => setShowProjects(false)}
+        isOpen={isOpen || showProjectsForm}
+        onClose={() => {
+          setShowProjectsForm(false);
+          clearForm();
+          onClose();
+        }}
         position="left"
         title="Criar novo projeto"
       >
         <section>
           {isLoading && <Loader />}
           {/* <h2 className="project-title">Criar Projeto</h2> */}
-          <form className="form-regular form-add_project">
-            <fieldset>
+          <form className="form-regular form-add_project" ref={formRef}>
+            <fieldset className="fieldset-regular">
               <legend>Dados de identificação</legend>
-              <div className="form-field">
+              <div className="input-field--pretty">
                 <label htmlFor="clientName">Nome do cliente</label>
                 <input
                   type="text"
@@ -273,7 +300,7 @@ export default function NewProject() {
                   onChange={(e) => setClientName(e.target.value)}
                 />
               </div>
-              <div className="form-field">
+              <div className="input-field--pretty">
                 <label htmlFor="projectName">Nome do projeto</label>
                 <input
                   type="text"
@@ -284,10 +311,10 @@ export default function NewProject() {
                 />
               </div>
             </fieldset>
-            <fieldset>
+            <fieldset className="fieldset-regular">
               <legend>Endereço do cliente</legend>
-              <div className="form-inline">
-                <div className="form-field size2-field">
+              <div className="form-field form-inline">
+                <div className="input-field--pretty size2-field">
                   <label htmlFor="cep">CEP do cliente</label>
                   <input
                     type="text"
@@ -299,6 +326,7 @@ export default function NewProject() {
                 <button
                   className="btn-default"
                   type="button"
+                  disabled={clientCEP === ""}
                   onClick={() =>
                     handleCepSearch(
                       clientCEP,
@@ -312,30 +340,31 @@ export default function NewProject() {
                     )
                   }
                 >
-                  Buscar pelo CEP
+                  <HiSearch /> Buscar pelo CEP
                 </button>
               </div>
               {clientCEPError.length > 0 && (
-                <div className="error-messages">
+                <FormMessages type="error">
                   {clientCEPError.map((error, index) => (
                     <p key={index} className="error-text">
                       {error}
                     </p>
                   ))}
-                </div>
+                </FormMessages>
               )}
-              <div className="form-inline">
-                <div className="form-field">
-                  <label htmlFor="logradouro">Logradouro</label>
-                  <input
-                    type="text"
-                    id="logradouro"
-                    value={clientLogradouro}
-                    onChange={(e) => setClientLogradouro(e.target.value)}
-                    placeholder="Avenida Exemplo"
-                  />
-                </div>
-                <div className="form-field size2-field">
+
+              <div className="input-field--pretty">
+                <label htmlFor="logradouro">Logradouro</label>
+                <input
+                  type="text"
+                  id="logradouro"
+                  value={clientLogradouro}
+                  onChange={(e) => setClientLogradouro(e.target.value)}
+                  placeholder="Avenida Exemplo"
+                />
+              </div>
+              <div className="form-field form-inline">
+                <div className="input-field--pretty">
                   <label htmlFor="numero">Número</label>
                   <input
                     type="text"
@@ -344,27 +373,29 @@ export default function NewProject() {
                     onChange={(e) => setClientNumero(e.target.value)}
                   />
                 </div>
+
+                <div className="input-field--pretty">
+                  <label htmlFor="bairro">Bairro</label>
+                  <input
+                    type="text"
+                    id="bairro"
+                    value={clientBairro}
+                    onChange={(e) => setClientBairro(e.target.value)}
+                  />
+                </div>
+                <div className="input-field--pretty">
+                  <label htmlFor="complemento">Complemento</label>
+                  <input
+                    type="text"
+                    id="complemento"
+                    value={clientComplemento}
+                    onChange={(e) => setClientComplemento(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="form-field size3-field">
-                <label htmlFor="bairro">Bairro</label>
-                <input
-                  type="text"
-                  id="bairro"
-                  value={clientBairro}
-                  onChange={(e) => setClientBairro(e.target.value)}
-                />
-              </div>
-              <div className="form-field size3-field">
-                <label htmlFor="complemento">Complemento</label>
-                <input
-                  type="text"
-                  id="complemento"
-                  value={clientComplemento}
-                  onChange={(e) => setClientComplemento(e.target.value)}
-                />
-              </div>
-              <div className="form-inline">
-                <div className="form-field size3-field">
+
+              <div className="form-field form-inline">
+                <div className="input-field--pretty">
                   <label htmlFor="cidade">Cidade</label>
                   <input
                     type="text"
@@ -373,7 +404,7 @@ export default function NewProject() {
                     onChange={(e) => setClientCidade(e.target.value)}
                   />
                 </div>
-                <div className="form-field size2-field">
+                <div className="input-field--pretty">
                   <StatesCombo
                     value={clientEstado}
                     onStateChange={setClientEstado}
@@ -381,26 +412,27 @@ export default function NewProject() {
                 </div>
               </div>
             </fieldset>
-            <fieldset>
+            <fieldset className="fieldset-regular">
               <legend>Dados base do Projeto</legend>
-              <div className="form-field">
+              <div className="input-field">
                 <label htmlFor="projectAddress">
                   Endereço da Obra{" "}
                   <button
                     type="button"
+                    className="btn-small"
                     onClick={() => setSameClientAddress(!sameClientAddress)}
                   >
                     {sameClientAddress && (
                       <i className="check-icon">&#10003;</i>
                     )}{" "}
-                    Usar endereço do cliente
+                    Clique aqui para repetir o endereço do cliente
                   </button>
                 </label>
               </div>
               {!sameClientAddress && (
                 <>
-                  <div className="form-inline">
-                    <div className="form-field size2-field">
+                  <div className="form-field form-inline">
+                    <div className="input-field--pretty">
                       <label htmlFor="obra-cep">CEP da obra</label>
                       <input
                         type="text"
@@ -412,6 +444,7 @@ export default function NewProject() {
                     <button
                       className="btn-default"
                       type="button"
+                      disabled={obraCEP === ""}
                       onClick={() =>
                         handleCepSearch(
                           obraCEP,
@@ -425,7 +458,7 @@ export default function NewProject() {
                         )
                       }
                     >
-                      Buscar pelo CEP
+                      <HiSearch /> Buscar pelo CEP
                     </button>
                   </div>
                   {obraCEPError.length > 0 && (
@@ -437,19 +470,17 @@ export default function NewProject() {
                       ))}
                     </div>
                   )}
-                  <div className="form-inline">
-                    <div className="form-field">
-                      <label htmlFor="obra-logradouro">
-                        Logradouro da obra
-                      </label>
-                      <input
-                        type="text"
-                        id="obra-logradouro"
-                        value={obraLogradouro}
-                        onChange={(e) => setObraLogradouro(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-field size2-field">
+                  <div className="input-field--pretty">
+                    <label htmlFor="obra-logradouro">Logradouro da obra</label>
+                    <input
+                      type="text"
+                      id="obra-logradouro"
+                      value={obraLogradouro}
+                      onChange={(e) => setObraLogradouro(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-field form-inline">
+                    <div className="input-field--pretty">
                       <label htmlFor="obra-numero">Número da obra</label>
                       <input
                         type="text"
@@ -458,27 +489,27 @@ export default function NewProject() {
                         onChange={(e) => setObraNumero(e.target.value)}
                       />
                     </div>
+                    <div className="input-field--pretty">
+                      <label htmlFor="obra-bairro">Bairro da obra</label>
+                      <input
+                        type="text"
+                        id="obra-bairro"
+                        value={obraBairro}
+                        onChange={(e) => setObraBairro(e.target.value)}
+                      />
+                    </div>
+                    <div className="input-field--pretty">
+                      <label htmlFor="obra-complemento">Complemento</label>
+                      <input
+                        type="text"
+                        id="obra-complemento"
+                        value={obraComplemento}
+                        onChange={(e) => setObraComplemento(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <div className="form-field size3-field">
-                    <label htmlFor="obra-bairro">Bairro da obra</label>
-                    <input
-                      type="text"
-                      id="obra-bairro"
-                      value={obraBairro}
-                      onChange={(e) => setObraBairro(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-field size3-field">
-                    <label htmlFor="obra-complemento">Complemento</label>
-                    <input
-                      type="text"
-                      id="obra-complemento"
-                      value={obraComplemento}
-                      onChange={(e) => setObraComplemento(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-inline">
-                    <div className="form-field size3-field">
+                  <div className="form-field form-inline">
+                    <div className="input-field--pretty">
                       <label htmlFor="obra-cidade">Cidade da obra</label>
                       <input
                         type="text"
@@ -487,7 +518,7 @@ export default function NewProject() {
                         onChange={(e) => setObraCidade(e.target.value)}
                       />
                     </div>
-                    <div className="form-field size2-field">
+                    <div className="input-field--pretty">
                       <StatesCombo
                         value={obraEstado}
                         onStateChange={setObraEstado}
@@ -496,8 +527,8 @@ export default function NewProject() {
                   </div>
                 </>
               )}
-              <div className="form-inline">
-                <div className="form-field size2-field">
+              <div className="form-field form-inline">
+                <div className="input-field--pretty">
                   <label htmlFor="projectProduct">Produto</label>
                   <select
                     id="projectProduct"
@@ -513,7 +544,7 @@ export default function NewProject() {
                       ))}
                   </select>
                 </div>
-                <div className="form-field size2-field">
+                <div className="input-field--pretty">
                   <label htmlFor="startDate">Data de Início</label>
                   <input
                     type="date"
@@ -528,20 +559,22 @@ export default function NewProject() {
                 type="submit"
                 onClick={handleProjectSubmit}
               >
-                Criar Projeto
+                <HiFolderAdd /> Criar Projeto
               </button>
             </fieldset>
             {successMessage && (
-              <div className="success-message">
+              <FormMessages type="success">
                 <p>{successMessage}</p>
-              </div>
+              </FormMessages>
             )}
             {formErrors.length > 0 && (
               <div className="error-messages">
                 {formErrors.map((error, index) => (
-                  <p key={index} className="error-text">
-                    {error}
-                  </p>
+                  <FormMessages type="error">
+                    <p key={index} className="error-text">
+                      {error}
+                    </p>
+                  </FormMessages>
                 ))}
               </div>
             )}

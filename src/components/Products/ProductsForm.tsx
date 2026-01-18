@@ -129,7 +129,7 @@ export default function ProductsForm({
 
   return (
     <div className="products-form__wrapper">
-      <h2>Adicionar Novo Produto</h2>
+      <h2>{isEditing ? "Editar produto" : "Adicionar Novo Produto"}</h2>
       <form className="form-regular products-form" onSubmit={handleSubmit}>
         {isLoading && <LoaderComponent />}
         <fieldset className="fieldset-regular">
@@ -211,7 +211,7 @@ export default function ProductsForm({
           className="btn-default btn-small"
           onClick={handleAddStep}
         >
-          Adicionar Etapa
+          Adicionar etapa
         </button>
         {errorMessage && (
           <div className="products-form__error-message">{errorMessage}</div>

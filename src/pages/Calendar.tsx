@@ -12,7 +12,7 @@ import { useProductsApi } from "@/hooks/useProductsApi";
 import { useAppDispatch } from "@/stores/hooks";
 import { setProjectsList } from "@/stores/projectsSlice";
 import { setProductsList } from "@/stores/productsSlice";
-import { HiFolder } from "react-icons/hi";
+// import { HiFolder } from "react-icons/hi";
 
 export default function Calendar() {
   const { getProjects } = useProjectsApi();
@@ -21,6 +21,8 @@ export default function Calendar() {
   const navigate = useNavigate();
   const [projectsList, setProjectsListState] = useState([]);
   const [productsList, setProductsListState] = useState([]);
+  const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [projectStartDate, setProjectStartDate] = useState<Date | string>("");
 
   const fetchProjects = useCallback(async () => {
     try {
@@ -46,6 +48,15 @@ export default function Calendar() {
     }
   }, [getProducts, dispatch]);
 
+  function openCreateProject() {
+    setIsCreateProjectOpen(true);
+  }
+
+  function handleOnCreateNewProject(data: Date) {
+    setProjectStartDate(data);
+    setIsCreateProjectOpen(true);
+  }
+
   useEffect(() => {
     fetchProjects();
     fetchProducts();
@@ -66,31 +77,36 @@ export default function Calendar() {
     );
   }
 
-  if (projectsList.length === 0) {
-    return (
-      <div>
-        <p>
-          Você não tem nenhum projeto cadastrado. <br />
-          Para começar a utilizar o {APP_CONFIG.appName}, crie um novo projeto.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <>
       <ListProjects />
-      <button
-        className="btn-default iconic"
-        onClick={() => navigate("/products")}
-      >
+      {projectsList.length === 0 && (
+        <p>
+          Você não tem nenhum projeto cadastrado.{" "}
+          <button className="btn-small--flat" onClick={openCreateProject}>
+            Crie seu primeiro projeto!
+          </button>
+        </p>
+      )}
+      {/* <button className="btn-default" onClick={() => navigate("/products")}>
         <span className="icon">
           <HiFolder />
         </span>
         Ver produtos
-      </button>
-      <CreateNewProject />
-      <Calengantt onRefresh={fetchProjects} />
+      </button> */}
+      <CreateNewProject
+        isOpen={isCreateProjectOpen}
+        onClose={() => setIsCreateProjectOpen(false)}
+        startingDate={projectStartDate}
+        onSuccess={() => {
+          setIsCreateProjectOpen(false);
+          fetchProjects();
+        }}
+      />
+      <Calengantt
+        onRefresh={fetchProjects}
+        newProjectDate={(data: Date) => handleOnCreateNewProject(data)}
+      />
     </>
   );
 }

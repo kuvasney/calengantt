@@ -18,6 +18,7 @@ textarea,
   background-color: transparent;
   color: var(--text-color);
   font-weight: bold;
+  width: 90%;
 
   &:focus {
     outline: none;
@@ -31,53 +32,17 @@ textarea,
   flex-direction: column;
   gap: 16px;
 
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-    width: calc(100% - 2em);
+  .form-icon {
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: auto;
+    display: block;
+  }
 
-    @include respond-to("desktop") {
-      max-width: 800px;
-    }
-
-    &.form-inline {
-      @include respond-to("desktop") {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        align-items: center;
-        gap: 16px;
-        width: 100%;
-      }
-    }
-
-    .form-icon {
-      position: absolute;
-      left: 4px;
-      top: 50%;
-      transform: translate(0, -50%);
-      width: auto;
-      display: block;
-    }
-
-    label {
-      @extend %label-regular;
-    }
-
-    // &.size2-field {
-    //   @include respond-to("desktop") {
-    //     width: 12vw;
-    //     max-width: 200px;
-    //   }
-    // }
-
-    // &.size3-field {
-    //   @include respond-to("desktop") {
-    //     width: 50vw;
-    //     max-width: 600px;
-    //   }
-    // }
+  label {
+    @extend %label-regular;
   }
 }
 
@@ -103,8 +68,16 @@ textarea,
   width: calc(100% - 2em);
   gap: 10px;
 
-  @include respond-to("desktop") {
-    max-width: 800px;
+  &.form-inline {
+    @include respond-to("desktop") {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      padding-left: 0;
+    }
   }
 }
 
@@ -115,7 +88,6 @@ textarea,
     flex-wrap: wrap;
     flex-direction: row;
     gap: 16px;
-    width: 100%;
   }
 }
 
@@ -131,7 +103,7 @@ textarea,
   }
 }
 
-.input-field-pretty {
+.input-field--pretty {
   @extend .input-field;
   display: flex;
   flex-direction: column;

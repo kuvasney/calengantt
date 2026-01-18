@@ -52,7 +52,7 @@ export default function RegisterForm() {
             Registre-se para acessar o{" "}
             <span className="calangar-font">{APP_CONFIG.appName}</span>
           </legend>
-          <div className="input-field-pretty">
+          <div className="input-field--pretty">
             <span className="form-icon">
               <CgUser />
             </span>
@@ -65,7 +65,7 @@ export default function RegisterForm() {
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
-          <div className="input-field-pretty">
+          <div className="input-field--pretty">
             <span className="form-icon">@</span>
             <label htmlFor="email">E-mail:</label>
             <input
@@ -76,7 +76,7 @@ export default function RegisterForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="input-field-pretty">
+          <div className="input-field--pretty">
             <label htmlFor="password" className="login-form__password">
               <span className="form-icon">
                 <CgLock />

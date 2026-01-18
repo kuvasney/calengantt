@@ -51,7 +51,7 @@ export default function ForgotPassword() {
         <form className="form-regular" onSubmit={handleSubmit}>
           <fieldset className="fieldset-regular">
             <legend>Insira seu e-mail para recuperar sua senha</legend>
-            <div className="input-field-pretty">
+            <div className="input-field--pretty">
               <span className="form-icon">
                 <HiOutlineMail />
               </span>

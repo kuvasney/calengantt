@@ -9,7 +9,7 @@ interface RefreshButtonProps {
 export default function RefreshButton({ onClick, label }: RefreshButtonProps) {
   return (
     <button
-      className="btn-default iconic"
+      className="btn-default"
       type="button"
       onClick={onClick}
       title={label || "Atualizar"}

@@ -12,9 +12,13 @@ import "./calengantt.scss";
 
 interface CalenganttProps {
   onRefresh: () => void;
+  newProjectDate?: (date: Date) => void;
 }
 
-export default function Calengantt({ onRefresh }: CalenganttProps) {
+export default function Calengantt({
+  onRefresh,
+  newProjectDate,
+}: CalenganttProps) {
   const projectsList: ProjectItem[] = useAppSelector(
     (state) => state.projects.projectsList || []
   );
@@ -79,7 +83,8 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
   //   .toISOString()
   //   .split("T")[0];
 
-  const showProject = (projectId: number) => () => {
+  const showProject = (projectId: number) => (e: React.MouseEvent) => {
+    e.stopPropagation(); // Impede o bubble
     const _project: ProjectItem | undefined = projectsList.find(
       (p) => p.id === projectId
     );
@@ -87,6 +92,10 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
       setSelectedProject(_project);
     }
   };
+
+  function handleCreateNewProject(date: Date) {
+    newProjectDate?.(date);
+  }
 
   // Ler URL apenas no carregamento inicial da página
   useEffect(() => {
@@ -191,7 +200,11 @@ export default function Calengantt({ onRefresh }: CalenganttProps) {
             }
 
             return (
-              <div key={i} className={`calendar-day ${isToday ? "today" : ""}`}>
+              <div
+                key={i}
+                className={`calendar-day ${isToday ? "today" : ""}`}
+                onClick={() => handleCreateNewProject(currentDate)}
+              >
                 <div className={`day-info ${isToday ? "today" : ""}`}>
                   {dayOfMonth}/{month}
                 </div>
