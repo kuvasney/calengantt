@@ -1,3 +1,5 @@
+@use "@/assets/styles/variables" as *;
+
 .project-details {
   padding: 24px;
   max-width: 900px;
@@ -290,8 +292,11 @@
 
     .step-action-button {
       position: absolute;
-      top: 20px;
       right: 20px;
+      bottom: 5px;
+
+      @include respond-to("desktop") {
+      }
     }
   }
 }
