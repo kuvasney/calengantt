@@ -160,6 +160,13 @@ textarea,
   }
 }
 
+.label-text--small {
+  font-size: var(--text-small);
+  text-transform: none;
+  font-weight: normal;
+  font-style: italic;
+}
+
 .login-form {
   @extend .form-regular !optional;
   display: flex;

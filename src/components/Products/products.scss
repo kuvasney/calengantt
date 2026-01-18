@@ -1,0 +1,58 @@
+@use "@/assets/styles/variables" as *;
+
+.products-page {
+  .btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 5px 5px;
+  }
+}
+
+.products-page__products-list {
+  margin-block: 2rem;
+
+  > li {
+    padding: 1rem;
+    border-radius: 5px;
+    border-bottom: 1px dotted var(--main-color);
+    background: var(--btn-gradient2);
+  }
+
+  li {
+    line-height: 1.3rem;
+  }
+
+  dl {
+    margin-block: 0.6rem;
+
+    dt {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--alt-color2);
+      margin-bottom: 0.3rem;
+    }
+
+    dd {
+      line-height: 1.5rem;
+      margin-left: 15px;
+    }
+  }
+}
+
+.products-page__description {
+  margin-block: 1rem;
+  font-style: italic;
+  font-size: small;
+}
+
+.products-form {
+  ::placeholder {
+    font-size: var(--text-small);
+    color: var(--alt-color2);
+    font-weight: 400;
+    opacity: 0.7;
+    font-style: italic;
+  }
+}

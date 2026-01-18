@@ -5,6 +5,15 @@
   padding: 1em;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.list-regular {
+  list-style: none;
+}
+
 .iconic {
   display: flex;
   align-items: center;
@@ -105,6 +114,16 @@
 }
 
 .btn-small {
-  // padding: 4px;
-  // font-size: $text-small;
+  border: 1px solid var(--main-color);
+  border-radius: 2px;
+  background: var(--btn-gradient2);
+  color: var(--text-color);
+  font-size: $text-small;
+}
+
+.btn-small--flat {
+  border: 0;
+  background: transparent;
+  color: var(--alt-color1);
+  font-size: $text-small;
 }

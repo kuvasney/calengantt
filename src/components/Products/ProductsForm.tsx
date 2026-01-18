@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useProductsApi } from "@/hooks/useProductsApi";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LoaderComponent from "../Loader/LoaderComponent";
+import { HiTrash } from "react-icons/hi";
 import type { ProductStep, Product } from "@/types/products";
 
 interface ProductsFormProps {
@@ -21,7 +22,7 @@ export default function ProductsForm({
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productStepName, setProductStepName] = useState<string[]>([""]);
-  const [productStepDays, setProductStepDays] = useState<number[]>([0]);
+  const [productStepDays, setProductStepDays] = useState<number[]>([]);
   const [actualStepIndex, setActualStepIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -127,88 +128,101 @@ export default function ProductsForm({
   }
 
   return (
-    <form className="form-regular products-form" onSubmit={handleSubmit}>
-      {isLoading && <LoaderComponent />}
-      <fieldset>
-        <legend>
-          {isEditing ? "Editar Produto" : "Adicionar Novo Produto"}
-        </legend>
-        <div className="form-field">
-          <label htmlFor="productName">Nome do Produto:</label>
-          <input
-            type="text"
-            id="productName"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-field">
-          <label htmlFor="productDescription">Descrição do Produto:</label>
-          <textarea
-            id="productDescription"
-            value={productDescription}
-            onChange={(e) => setProductDescription(e.target.value)}
-          ></textarea>
-        </div>
-      </fieldset>
-      <label>Etapas do Produto:</label>
-      {productStepName.map((stepName, index) => (
-        <fieldset key={index}>
-          <legend>Etapa {index + 1}</legend>
-          <div className="form-inline">
-            <div className="form-field size3-field">
-              <label htmlFor={`stepName-${index}`}>Nome da Etapa:</label>
-              <input
-                type="text"
-                id={`stepName-${index}`}
-                value={stepName}
-                onChange={(e) => {
-                  const newStepNames = [...productStepName];
-                  newStepNames[index] = e.target.value;
-                  setProductStepName(newStepNames);
-                }}
-              />
-            </div>
-            <div className="form-field size2-field">
-              <label htmlFor={`stepDays-${index}`}>Duração (dias):</label>
-              <input
-                type="number"
-                id={`stepDays-${index}`}
-                value={productStepDays[index]}
-                onChange={(e) => {
-                  const newStepDays = [...productStepDays];
-                  newStepDays[index] = Number(e.target.value);
-                  setProductStepDays(newStepDays);
-                }}
-              />
-            </div>
+    <div className="products-form__wrapper">
+      <h2>Adicionar Novo Produto</h2>
+      <form className="form-regular products-form" onSubmit={handleSubmit}>
+        {isLoading && <LoaderComponent />}
+        <fieldset className="fieldset-regular">
+          <legend>{isEditing ? "Editar Produto" : "Sobre o Produto"}</legend>
+          <div className="form-field">
+            <label htmlFor="productName">Nome do Produto:</label>
+            <input
+              type="text"
+              id="productName"
+              value={productName}
+              placeholder="Nome que será exibido na lista de produtos"
+              onChange={(e) => setProductName(e.target.value)}
+              required
+            />
           </div>
-          <button
-            type="button"
-            className="btn-danger btn-small"
-            onClick={() => handleRemoveStep(index)}
-          >
-            Remover Etapa
-          </button>
+          <div className="form-field">
+            <label htmlFor="productDescription">Descrição do Produto:</label>
+            <textarea
+              id="productDescription"
+              value={productDescription}
+              placeholder="A descrição do produto é opcional"
+              onChange={(e) => setProductDescription(e.target.value)}
+            ></textarea>
+          </div>
         </fieldset>
-      ))}
-      <button
-        type="button"
-        className="btn-default btn-small"
-        onClick={handleAddStep}
-      >
-        Adicionar Etapa
-      </button>
-      {errorMessage && (
-        <div className="products-form__error-message">{errorMessage}</div>
-      )}
-      {successMessage && (
-        <div className="products-form__success-message">{successMessage}</div>
-      )}
-      <button type="submit" className="btn-default btn-submit">
-        {isEditing ? "Atualizar Produto" : "Salvar Produto"}
-      </button>
-    </form>
+        <label>Etapas do Produto:</label>
+        {productStepName.map((stepName, index) => (
+          <fieldset key={index} className="fieldset-regular">
+            <legend>Etapa {index + 1}</legend>
+            <div className="form-inline">
+              <div className="form-field size3-field">
+                <label htmlFor={`stepName-${index}`}>
+                  Nome da Etapa: <br />
+                  <span className="label-text--small">
+                    Se mais de uma etapa pode ser feita no mesmo dia, adicione
+                    todas.
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  id={`stepName-${index}`}
+                  value={stepName}
+                  placeholder="Este nome será exibido no detalhe"
+                  onChange={(e) => {
+                    const newStepNames = [...productStepName];
+                    newStepNames[index] = e.target.value;
+                    setProductStepName(newStepNames);
+                  }}
+                />
+              </div>
+              <div className="form-field size2-field">
+                <label htmlFor={`stepDays-${index}`}>Duração (dias):</label>
+                <input
+                  type="number"
+                  id={`stepDays-${index}`}
+                  value={productStepDays[index]}
+                  onChange={(e) => {
+                    const newStepDays = [...productStepDays];
+                    newStepDays[index] = Number(e.target.value);
+                    setProductStepDays(newStepDays);
+                  }}
+                />
+              </div>
+            </div>
+            {index !== 0 && (
+              <button
+                type="button"
+                className="btn-small"
+                onClick={() => handleRemoveStep(index)}
+              >
+                <HiTrash />
+                Remover Etapa
+              </button>
+            )}
+          </fieldset>
+        ))}
+        <button
+          type="button"
+          className="btn-default btn-small"
+          onClick={handleAddStep}
+        >
+          Adicionar Etapa
+        </button>
+        {errorMessage && (
+          <div className="products-form__error-message">{errorMessage}</div>
+        )}
+        {successMessage && (
+          <div className="products-form__success-message">{successMessage}</div>
+        )}
+        <button type="submit" className="btn-default btn-submit">
+          {isEditing ? "Atualizar Produto" : "Salvar Produto"}
+        </button>
+      </form>
+    </div>
   );
 }

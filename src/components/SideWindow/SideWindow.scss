@@ -49,9 +49,9 @@
 
 .side-window__title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--text-xlarge);
   font-weight: 600;
-  color: var(--light-color);
+  color: var(--text-color);
 }
 
 .side-window__close {

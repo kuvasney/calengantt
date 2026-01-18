@@ -26,7 +26,9 @@ export default function SideWindow({
         data-open={isOpen}
       >
         <div className="side-window__header">
-          {title && <h2 className="side-window__title">{title}</h2>}
+          {title && (
+            <h2 className="side-window__title calangar-font">{title}</h2>
+          )}
           <button
             className="side-window__close"
             onClick={onClose}
