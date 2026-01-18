@@ -21,7 +21,7 @@
     font-weight: bold;
 
     @include respond-to("mobile") {
-      font-size: $text-regular;
+      // font-size: $text-regular;
     }
 
     @include respond-to("desktop") {
@@ -29,7 +29,8 @@
     }
 
     span {
-      font-size: 10px;
+      font-size: 12px;
+      color: var(--alt-color1);
     }
   }
 }

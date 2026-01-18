@@ -27,7 +27,7 @@ export default function Calengantt({
   const highlightedProject = useAppSelector(
     (state) => state.projects.highlightedProject
   );
-  const [daysToShow, setDaysToShow] = useState(5);
+  const [daysToShow, setDaysToShow] = useState(30);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
     null
   );
