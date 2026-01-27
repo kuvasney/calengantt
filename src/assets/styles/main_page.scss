@@ -78,3 +78,17 @@
     margin-top: 0;
   }
 }
+
+.register-page {
+  display: flex;
+
+  @include respond-to("mobile") {
+    flex-direction: column;
+  }
+
+  @include respond-to("desktop") {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem 1rem;
+  }
+}

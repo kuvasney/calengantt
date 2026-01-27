@@ -25,6 +25,7 @@ export default function ProjectDetails({
   const [editClientName, setEditClientName] = useState(false);
   const [editProjectName, setEditProjectName] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
+  const [editStartDate, setEditStartDate] = useState(false);
 
   function translateStatus(status: string): string {
     switch (status) {
@@ -45,6 +46,18 @@ export default function ProjectDetails({
     if (!project) return;
     await updateProject(project.id, { clientName: value });
     setProject({ ...project, clientName: value });
+  };
+
+  const handleSaveStartDate = async (value: string) => {
+    if (!project) return;
+    try {
+      await updateProject(project.id, { startDate: value });
+      // Recarregar o projeto completo para pegar os schedules recalculados
+      const updatedProject = await getProject(project.id);
+      setProject(updatedProject);
+    } catch (error) {
+      console.error("Erro ao atualizar data de início:", error);
+    }
   };
 
   const handleSaveProjectName = async (value: string) => {
@@ -145,6 +158,13 @@ export default function ProjectDetails({
                 <span className="meta-label">Início</span>
                 <span className="meta-value">
                   {formatDate(project.startDate)}
+                  <button
+                    className="btn-edit"
+                    onClick={() => setEditStartDate(true)}
+                    type="button"
+                  >
+                    <CgPen />
+                  </button>
                 </span>
               </div>
               <div className="meta-item">
@@ -252,6 +272,18 @@ export default function ProjectDetails({
             title="Editar Nome do Cliente"
             fieldLabel="Nome"
             currentValue={project.clientName}
+          />
+
+          <EditFieldModal
+            isOpen={editStartDate}
+            fieldType="date"
+            onClose={() => setEditStartDate(false)}
+            onSave={handleSaveStartDate}
+            title="Editar Data de Início do Projeto"
+            fieldLabel="Data de Início"
+            currentValue={
+              new Date(project.startDate).toISOString().split("T")[0]
+            }
           />
 
           <EditFieldModal

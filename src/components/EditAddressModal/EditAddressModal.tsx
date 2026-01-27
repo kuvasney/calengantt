@@ -59,16 +59,16 @@ export default function EditAddressModal({
 
   const footer = (
     <>
-      <button
+      {/* <button
         className="btn-default"
         onClick={onClose}
         disabled={loading}
         type="button"
       >
         Cancelar
-      </button>
+      </button> */}
       <button
-        className="btn-primary"
+        className="btn-default btn-submit"
         onClick={handleSave}
         disabled={loading}
         type="button"
@@ -85,85 +85,87 @@ export default function EditAddressModal({
       title="Editar Endereço"
       footer={footer}
     >
-      <div className="form-field">
-        <label htmlFor="zipCode">CEP *</label>
-        <input
-          type="text"
-          id="zipCode"
-          value={address.zipCode}
-          onChange={(e) => handleChange("zipCode", e.target.value)}
-          disabled={loading}
-        />
-      </div>
+      <div className="form-regular">
+        <div className="input-field--pretty">
+          <label htmlFor="zipCode">CEP *</label>
+          <input
+            type="text"
+            id="zipCode"
+            value={address.zipCode}
+            onChange={(e) => handleChange("zipCode", e.target.value)}
+            disabled={loading}
+          />
+        </div>
 
-      <div className="form-field">
-        <label htmlFor="street">Rua *</label>
-        <input
-          type="text"
-          id="street"
-          value={address.street}
-          onChange={(e) => handleChange("street", e.target.value)}
-          disabled={loading}
-        />
-      </div>
+        <div className="input-field--pretty">
+          <label htmlFor="street">Rua *</label>
+          <input
+            type="text"
+            id="street"
+            value={address.street}
+            onChange={(e) => handleChange("street", e.target.value)}
+            disabled={loading}
+          />
+        </div>
 
-      <div className="form-field">
-        <label htmlFor="number">Número</label>
-        <input
-          type="text"
-          id="number"
-          value={address.number}
-          onChange={(e) => handleChange("number", e.target.value)}
-          disabled={loading}
-        />
-      </div>
+        <div className="input-field--pretty">
+          <label htmlFor="number">Número</label>
+          <input
+            type="text"
+            id="number"
+            value={address.number}
+            onChange={(e) => handleChange("number", e.target.value)}
+            disabled={loading}
+          />
+        </div>
 
-      <div className="form-field">
-        <label htmlFor="complement">Complemento</label>
-        <input
-          type="text"
-          id="complement"
-          value={address.complement || ""}
-          onChange={(e) => handleChange("complement", e.target.value)}
-          disabled={loading}
-        />
-      </div>
+        <div className="input-field--pretty">
+          <label htmlFor="complement">Complemento</label>
+          <input
+            type="text"
+            id="complement"
+            value={address.complement || ""}
+            onChange={(e) => handleChange("complement", e.target.value)}
+            disabled={loading}
+          />
+        </div>
 
-      <div className="form-field">
-        <label htmlFor="neighborhood">Bairro</label>
-        <input
-          type="text"
-          id="neighborhood"
-          value={address.neighborhood}
-          onChange={(e) => handleChange("neighborhood", e.target.value)}
-          disabled={loading}
-        />
-      </div>
+        <div className="input-field--pretty">
+          <label htmlFor="neighborhood">Bairro</label>
+          <input
+            type="text"
+            id="neighborhood"
+            value={address.neighborhood}
+            onChange={(e) => handleChange("neighborhood", e.target.value)}
+            disabled={loading}
+          />
+        </div>
 
-      <div className="form-field">
-        <label htmlFor="city">Cidade *</label>
-        <input
-          type="text"
-          id="city"
-          value={address.city}
-          onChange={(e) => handleChange("city", e.target.value)}
-          disabled={loading}
-        />
-      </div>
+        <div className="input-field--pretty">
+          <label htmlFor="city">Cidade *</label>
+          <input
+            type="text"
+            id="city"
+            value={address.city}
+            onChange={(e) => handleChange("city", e.target.value)}
+            disabled={loading}
+          />
+        </div>
 
-      <div className="form-field">
-        <label htmlFor="state">Estado *</label>
-        <input
-          type="text"
-          id="state"
-          value={address.state}
-          onChange={(e) => handleChange("state", e.target.value)}
-          disabled={loading}
-          maxLength={2}
-        />
-      </div>
+        <div className="input-field--pretty">
+          <label htmlFor="state">Estado *</label>
+          <input
+            type="text"
+            id="state"
+            value={address.state}
+            onChange={(e) => handleChange("state", e.target.value)}
+            disabled={loading}
+            maxLength={2}
+          />
+        </div>
 
-      {error && <div className="error-message">{error}</div>}
+        {error && <div className="error-message">{error}</div>}
+      </div>
     </Modal>
   );
 }

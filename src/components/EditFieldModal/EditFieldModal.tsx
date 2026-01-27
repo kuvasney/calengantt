@@ -46,16 +46,16 @@ export default function EditFieldModal({
 
   const footer = (
     <>
-      <button
+      {/* <button
         className="btn-default"
         onClick={onClose}
         disabled={loading}
         type="button"
       >
         Cancelar
-      </button>
+      </button> */}
       <button
-        className="btn-primary"
+        className="btn-default"
         onClick={handleSave}
         disabled={loading}
         type="button"
@@ -67,7 +67,7 @@ export default function EditFieldModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} footer={footer}>
-      <div className="form-field">
+      <div className="input-field--pretty">
         <label htmlFor="edit-field">{fieldLabel}</label>
         <input
           type={fieldType}

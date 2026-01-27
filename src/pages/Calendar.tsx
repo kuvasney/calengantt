@@ -9,7 +9,7 @@ import { APP_CONFIG } from "@/config/app";
 
 import { useProjectsApi } from "@/hooks/useProjectsApi";
 import { useProductsApi } from "@/hooks/useProductsApi";
-import { useAppDispatch } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setProjectsList } from "@/stores/projectsSlice";
 import { setProductsList } from "@/stores/productsSlice";
 // import { HiFolder } from "react-icons/hi";
@@ -19,16 +19,23 @@ export default function Calendar() {
   const { getProducts } = useProductsApi();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [projectsList, setProjectsListState] = useState([]);
-  const [productsList, setProductsListState] = useState([]);
+
+  // Usar estado do Redux
+  const projectsList = useAppSelector(
+    (state) => state.projects.projectsList || []
+  );
+  const productsList = useAppSelector(
+    (state) => state.products.productsList || []
+  );
+
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [projectStartDate, setProjectStartDate] = useState<Date | string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchProjects = useCallback(async () => {
     try {
       const data = await getProjects();
       if (data) {
-        setProjectsListState(data);
         dispatch(setProjectsList(data));
       }
     } catch (error) {
@@ -40,7 +47,6 @@ export default function Calendar() {
     try {
       const data = await getProducts();
       if (data) {
-        setProductsListState(data);
         dispatch(setProductsList(data));
       }
     } catch (error) {
@@ -58,10 +64,17 @@ export default function Calendar() {
   }
 
   useEffect(() => {
-    fetchProjects();
-    fetchProducts();
+    const loadData = async () => {
+      await Promise.all([fetchProjects(), fetchProducts()]);
+      setIsLoading(false);
+    };
+    loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Carrega apenas no mount
+
+  if (isLoading) {
+    return <p>Carregando...</p>;
+  }
 
   if (productsList.length === 0) {
     return (

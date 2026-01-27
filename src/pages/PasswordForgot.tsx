@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineCalendar, HiOutlineMail } from "react-icons/hi";
 import FormMessages from "@/components/FormMessages/FormMessages";
 
-export default function ForgotPassword() {
+export default function PasswordForgot() {
   const { passwordEmailRecovery } = useUserApi();
   const [email, setEmail] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -36,7 +36,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <section className="login-page">
+    <section className="register-page">
       <div className="forgot-password-page__main-content">
         <h2>
           Recuperar sua senha do{" "}

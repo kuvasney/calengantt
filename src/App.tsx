@@ -3,7 +3,8 @@ import Login from "@/pages/Login";
 import Calendar from "@/pages/Calendar";
 import Products from "@/pages/Products";
 import Register from "@/pages/Register";
-import ForgotPassword from "@/pages/ForgotPassword";
+import PasswordForgot from "@/pages/PasswordForgot";
+import PasswordReset from "@/pages/PasswordReset";
 import AuthCallBack from "@/pages/AuthCallBack";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppHeader from "@/components/AppHeader/AppHeader";
@@ -16,6 +17,7 @@ function App() {
     "/",
     "/register",
     "/forgot-password",
+    "/reset-password",
     "/auth/callback",
   ];
   const shouldShowHeader = !hideHeaderPaths.includes(location.pathname);
@@ -27,7 +29,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password" element={<PasswordForgot />} />
+          <Route path="/reset-password" element={<PasswordReset />} />
           <Route
             path="/calendar"
             element={

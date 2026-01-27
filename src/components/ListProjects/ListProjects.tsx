@@ -4,6 +4,7 @@ import {
   setHighlightedProject,
   clearHighlightedProject,
 } from "../../stores/projectsSlice";
+import { useProjectsApi } from "@/hooks/useProjectsApi";
 import SideWindow from "@components/SideWindow/SideWindow";
 import type { ProjectItem } from "../../types/project";
 import { formatDate } from "@/utils/dateFormatter";
@@ -13,11 +14,12 @@ import "./listProjects.scss";
 
 export default function ListProjects() {
   const dispatch = useAppDispatch();
+  const { deleteProject } = useProjectsApi();
   const highlightedProject: ProjectItem | null = useAppSelector(
-    (state) => state.projects.highlightedProject
+    (state) => state.projects.highlightedProject,
   );
   const projects: ProjectItem[] = useAppSelector(
-    (state) => state.projects.projectsList || []
+    (state) => state.projects.projectsList || [],
   );
   const [showProjects, setShowProjects] = useState(false);
 
@@ -29,6 +31,14 @@ export default function ListProjects() {
     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
     window.history.pushState(null, "", newUrl);
     setShowProjects(false);
+  };
+
+  const handleDeleteProject = async (project: ProjectItem) => {
+    if (!project) {
+      return;
+    }
+    confirm(`Tem certeza que deseja apagar o projeto ${project.projectName}?`);
+    await deleteProject(project.id);
   };
 
   const clearFilters = () => {
@@ -88,6 +98,9 @@ export default function ListProjects() {
                 <div className="project-card-header">
                   <h3 className="project-name">{project.projectName}</h3>
                   <span className="project-id">#{project.id}</span>
+                  <button onClick={() => handleDeleteProject(project)}>
+                    Apagar este projeto
+                  </button>
                 </div>
 
                 <div className="project-card-body">

@@ -268,7 +268,10 @@ export default function NewProject({
 
   return (
     <>
-      <button className="btn-default" onClick={() => setShowProjectsForm(true)}>
+      <button
+        className="btn-default btn-new-project"
+        onClick={() => setShowProjectsForm(true)}
+      >
         <span className="icon">
           <HiPlus />
         </span>
@@ -309,6 +312,33 @@ export default function NewProject({
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
                 />
+              </div>
+              <div className="form-field form-inline">
+                <div className="input-field--pretty">
+                  <label htmlFor="projectProduct">Produto</label>
+                  <select
+                    id="projectProduct"
+                    value={projectProduct}
+                    onChange={(e) => setProjectProduct(e.target.value)}
+                  >
+                    <option value="">Selecione um produto</option>
+                    {Array.isArray(productsList) &&
+                      productsList.map((product: Product) => (
+                        <option key={product.id} value={product.id}>
+                          {product.value}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className="input-field--pretty">
+                  <label htmlFor="startDate">Data de Início</label>
+                  <input
+                    type="date"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
               </div>
             </fieldset>
             <fieldset className="fieldset-regular">
@@ -527,33 +557,7 @@ export default function NewProject({
                   </div>
                 </>
               )}
-              <div className="form-field form-inline">
-                <div className="input-field--pretty">
-                  <label htmlFor="projectProduct">Produto</label>
-                  <select
-                    id="projectProduct"
-                    value={projectProduct}
-                    onChange={(e) => setProjectProduct(e.target.value)}
-                  >
-                    <option value="">Selecione um produto</option>
-                    {Array.isArray(productsList) &&
-                      productsList.map((product: Product) => (
-                        <option key={product.id} value={product.id}>
-                          {product.value}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <div className="input-field--pretty">
-                  <label htmlFor="startDate">Data de Início</label>
-                  <input
-                    type="date"
-                    id="startDate"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                  />
-                </div>
-              </div>
+
               <button
                 className="btn-default btn-submit"
                 type="submit"

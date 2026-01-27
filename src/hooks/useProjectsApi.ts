@@ -10,7 +10,7 @@ export const useProjectsApi = () => {
       {
         method: "GET",
         headers: getAuthHeaders(),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -26,7 +26,7 @@ export const useProjectsApi = () => {
       {
         method: "GET",
         headers: getAuthHeaders(),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -43,11 +43,27 @@ export const useProjectsApi = () => {
         method: "POST",
         headers: getAuthHeaders(),
         body: JSON.stringify(projectData),
-      }
+      },
     );
 
     if (!response.ok) {
       throw new Error("Erro ao criar o projeto");
+    }
+
+    return await response.json();
+  }, []);
+
+  const deleteProject = useCallback(async (projectId: number) => {
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}`,
+      {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao deletar o projeto");
     }
 
     return await response.json();
@@ -61,7 +77,7 @@ export const useProjectsApi = () => {
           method: "PUT",
           headers: getAuthHeaders(),
           body: JSON.stringify(projectData),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -70,7 +86,7 @@ export const useProjectsApi = () => {
 
       return await response.json();
     },
-    []
+    [],
   );
 
   const updateStepStatus = useCallback(
@@ -78,7 +94,7 @@ export const useProjectsApi = () => {
       projectId: number,
       scheduleId: number,
       status: "in_progress" | "completed",
-      actualDate?: string
+      actualDate?: string,
     ) => {
       const response = await fetchWithAuth(
         `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}/schedules/${scheduleId}/status`,
@@ -86,7 +102,7 @@ export const useProjectsApi = () => {
           method: "PATCH",
           headers: getAuthHeaders(),
           body: JSON.stringify({ status, actualDate }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -95,7 +111,7 @@ export const useProjectsApi = () => {
 
       return await response.json();
     },
-    []
+    [],
   );
 
   // const getProjectComments = useCallback(async (projectId: number) => {
@@ -117,6 +133,7 @@ export const useProjectsApi = () => {
   return {
     getProjects,
     getProject,
+    deleteProject,
     postProject,
     updateProject,
     updateStepStatus,

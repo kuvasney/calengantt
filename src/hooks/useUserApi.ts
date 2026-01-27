@@ -18,7 +18,7 @@ export const useUserApi = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(userData),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -28,7 +28,7 @@ export const useUserApi = () => {
       const data: LoginResponse = await response.json();
       return data;
     },
-    []
+    [],
   );
 
   const registerUser = useCallback(
@@ -41,7 +41,7 @@ export const useUserApi = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(userData),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -51,27 +51,27 @@ export const useUserApi = () => {
       const data: LoginResponse = await response.json();
       return data;
     },
-    []
+    [],
   );
 
   const passwordEmailRecovery = useCallback(
     async (email: string): Promise<void> => {
       const response = await fetch(
-        `${API_CONFIG.baseURL}${API_ENDPOINTS.user}/password-recovery`,
+        `${API_CONFIG.baseURL}${API_ENDPOINTS.user}/reset-password-email`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email }),
-        }
+        },
       );
 
       if (!response.ok) {
         throw new Error("Erro ao enviar o e-mail de recuperação de senha");
       }
     },
-    []
+    [],
   );
 
   const getUserProfile = useCallback(async (): Promise<User> => {
@@ -97,5 +97,37 @@ export const useUserApi = () => {
     return data.user;
   }, []);
 
-  return { userLogin, registerUser, passwordEmailRecovery, getUserProfile };
+  const updateUserPassword = useCallback(
+    async (token: string, password: string) => {
+      const response = await fetch(
+        `${API_CONFIG.baseURL}${API_ENDPOINTS.user}/reset-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password, token }),
+        },
+      );
+
+      if (!response.ok) {
+        if (response.status === 400) {
+          throw new Error("Token inválido ou usuário não encontrado");
+        } else {
+          throw new Error("Erro ao atualizar a senha");
+        }
+      }
+
+      return await response.json();
+    },
+    [],
+  );
+
+  return {
+    userLogin,
+    registerUser,
+    passwordEmailRecovery,
+    getUserProfile,
+    updateUserPassword,
+  };
 };
