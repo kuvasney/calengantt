@@ -6,7 +6,7 @@ import type { Project, ProjectItem, Address, Schedules } from "@/types/project";
 
 import { CgCalendarDates, CgCheckR, CgPen } from "react-icons/cg";
 
-import EditFieldModal from "../EditFieldModal/EditFieldModal";
+import EditFieldModal from "@/components/Projects/EditFieldModal/EditFieldModal";
 import EditAddressModal from "../EditAddressModal/EditAddressModal";
 
 import "./ProjectDetails.scss";
@@ -81,7 +81,7 @@ export default function ProjectDetails({
         project.id,
         schedule.id,
         "completed",
-        new Date().toISOString()
+        new Date().toISOString(),
       );
 
       // Recarrega o projeto completo para mostrar as datas recalculadas

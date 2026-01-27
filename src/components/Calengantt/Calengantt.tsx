@@ -5,8 +5,8 @@ import { setHighlightedProject } from "@/stores/projectsSlice";
 import type { ProjectItem } from "@/types/project";
 
 import SideWindow from "@components/SideWindow/SideWindow";
-import ProjectDetails from "../ProjectDetails/ProjectDetails";
-import RefreshButton from "../RefreshButton/RefreshButton";
+import ProjectDetails from "@/components/Projects/ProjectDetails/ProjectDetails";
+import RefreshButton from "@/components/RefreshButton/RefreshButton";
 
 import "./calengantt.scss";
 
@@ -20,16 +20,16 @@ export default function Calengantt({
   newProjectDate,
 }: CalenganttProps) {
   const projectsList: ProjectItem[] = useAppSelector(
-    (state) => state.projects.projectsList || []
+    (state) => state.projects.projectsList || [],
   );
 
   const dispatch = useAppDispatch();
   const highlightedProject = useAppSelector(
-    (state) => state.projects.highlightedProject
+    (state) => state.projects.highlightedProject,
   );
   const [daysToShow, setDaysToShow] = useState(30);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
-    null
+    null,
   );
   const today = useMemo(() => new Date(), []);
   const dayOfWeek = today.getDay(); // 0 = domingo, 1 = segunda, etc.
@@ -69,7 +69,7 @@ export default function Calengantt({
 
     // Ordenar projetos visíveis por ID e atribuir posições
     const sortedVisibleProjects = Array.from(visibleProjects).sort(
-      (a, b) => a - b
+      (a, b) => a - b,
     );
     sortedVisibleProjects.forEach((projectId, index) => {
       positions.set(projectId, index);
@@ -86,7 +86,7 @@ export default function Calengantt({
   const showProject = (projectId: number) => (e: React.MouseEvent) => {
     e.stopPropagation(); // Impede o bubble
     const _project: ProjectItem | undefined = projectsList.find(
-      (p) => p.id === projectId
+      (p) => p.id === projectId,
     );
     if (_project) {
       setSelectedProject(_project);
@@ -195,7 +195,7 @@ export default function Calengantt({
             // Se houver um projeto destacado, mostrar apenas ele
             if (highlightedProject !== null) {
               projectsInThisDay = projectsInThisDay.filter(
-                (project) => project.id === highlightedProject.id
+                (project) => project.id === highlightedProject.id,
               );
             }
 
@@ -217,7 +217,7 @@ export default function Calengantt({
                     if (project.schedules) {
                       currentSchedule = project.schedules.find((schedule) => {
                         const scheduleStart = new Date(
-                          schedule.plannedStartDate
+                          schedule.plannedStartDate,
                         );
                         const scheduleEnd = new Date(schedule.plannedEndDate);
                         scheduleStart.setHours(0, 0, 0, 0);

@@ -1,18 +1,16 @@
 import { useEffect, useCallback, useState } from "react";
-
-import Calengantt from "@/components/Calengantt/Calengantt";
-import CreateNewProject from "@/components/CreateNewProject/CreateNewProject";
-import ListProjects from "@/components/ListProjects/ListProjects";
 import { useNavigate } from "react-router-dom";
-
 import { APP_CONFIG } from "@/config/app";
-
 import { useProjectsApi } from "@/hooks/useProjectsApi";
 import { useProductsApi } from "@/hooks/useProductsApi";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setProjectsList } from "@/stores/projectsSlice";
 import { setProductsList } from "@/stores/productsSlice";
-// import { HiFolder } from "react-icons/hi";
+import Calengantt from "@/components/Calengantt/Calengantt";
+import CreateNewProject from "@/components/Projects/CreateNewProject/CreateNewProject";
+import ListProjects from "@/components/Projects/ListProjects/ListProjects";
+import SideWindow from "@/components/SideWindow/SideWindow";
+import { HiBriefcase } from "react-icons/hi";
 
 export default function Calendar() {
   const { getProjects } = useProjectsApi();
@@ -22,15 +20,16 @@ export default function Calendar() {
 
   // Usar estado do Redux
   const projectsList = useAppSelector(
-    (state) => state.projects.projectsList || []
+    (state) => state.projects.projectsList || [],
   );
   const productsList = useAppSelector(
-    (state) => state.products.productsList || []
+    (state) => state.products.productsList || [],
   );
 
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [projectStartDate, setProjectStartDate] = useState<Date | string>("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [productSideWindow, setProductSideWindow] = useState<boolean>(false);
 
   const fetchProjects = useCallback(async () => {
     try {
@@ -82,10 +81,27 @@ export default function Calendar() {
         <p>
           Você não tem nenhum produto cadastrado. <br />
           Para começar a utilizar o {APP_CONFIG.appName}, crie um novo produto.
-          <button className="btn-default" onClick={() => navigate("/products")}>
-            Criar Produto
-          </button>
         </p>
+        <p>
+          <a
+            onClick={() => setProductSideWindow(true)}
+            className="link-default"
+          >
+            O que é um produto?
+          </a>
+        </p>
+        <button className="btn-default" onClick={() => navigate("/products")}>
+          <span className="icon">
+            <HiBriefcase />
+          </span>
+          Criar Produto
+        </button>
+        <SideWindow
+          isOpen={productSideWindow}
+          onClose={() => setProductSideWindow(false)}
+          position="left"
+          title="O que é um produto?"
+        />
       </div>
     );
   }

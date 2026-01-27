@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Modal from "../Modal/Modal";
+import Modal from "../../Modal/Modal";
 
 interface EditFieldModalProps {
   isOpen: boolean;

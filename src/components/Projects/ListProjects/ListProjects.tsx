@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import {
   setHighlightedProject,
   clearHighlightedProject,
-} from "../../stores/projectsSlice";
+} from "@/stores/projectsSlice";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
 import SideWindow from "@components/SideWindow/SideWindow";
-import type { ProjectItem } from "../../types/project";
+import type { ProjectItem } from "@/types/project";
 import { formatDate } from "@/utils/dateFormatter";
 
 import { HiEye, HiCalendar, HiUser, HiBriefcase } from "react-icons/hi";

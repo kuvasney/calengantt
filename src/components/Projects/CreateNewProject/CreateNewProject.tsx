@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useCepApi } from "@/hooks/useCepApi";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
 import { useAppSelector } from "@/stores/hooks";
-import SideWindow from "../SideWindow/SideWindow";
-import StatesCombo from "../StatesCombo";
-import FormMessages from "../FormMessages/FormMessages";
-import Loader from "../Loader/Loader";
+import SideWindow from "../../SideWindow/SideWindow";
+import StatesCombo from "../../StatesCombo";
+import FormMessages from "../../FormMessages/FormMessages";
+import Loader from "../../Loader/Loader";
 
 import type { ProjectData } from "@/types/project";
 import { HiPlus, HiSearch, HiFolderAdd } from "react-icons/hi";
@@ -59,7 +59,7 @@ export default function NewProject({
   // DADOS BASE DO PROJETO
   const [projectProduct, setProjectProduct] = useState("");
   const [startDate, setStartDate] = useState<string>(
-    startingDate ? new Date(startingDate).toISOString().split("T")[0] : ""
+    startingDate ? new Date(startingDate).toISOString().split("T")[0] : "",
   );
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
@@ -106,7 +106,7 @@ export default function NewProject({
       setCidade: (value: string) => void;
       setEstado: (value: string) => void;
     },
-    setErrors: React.Dispatch<React.SetStateAction<string[]>>
+    setErrors: React.Dispatch<React.SetStateAction<string[]>>,
   ) {
     if (cep.trim() === "") {
       setErrors(["Por favor, insira um CEP válido."]);
@@ -366,7 +366,7 @@ export default function NewProject({
                         setCidade: setClientCidade,
                         setEstado: setClientEstado,
                       },
-                      setClientCEPError
+                      setClientCEPError,
                     )
                   }
                 >
@@ -484,7 +484,7 @@ export default function NewProject({
                             setCidade: setObraCidade,
                             setEstado: setObraEstado,
                           },
-                          setObraCEPError
+                          setObraCEPError,
                         )
                       }
                     >
