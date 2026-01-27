@@ -5,6 +5,7 @@ import Products from "@/pages/Products";
 import Register from "@/pages/Register";
 import PasswordForgot from "@/pages/PasswordForgot";
 import PasswordReset from "@/pages/PasswordReset";
+import TermsAndPrivacy from "./pages/TermsAndPrivacy";
 import AuthCallBack from "@/pages/AuthCallBack";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppHeader from "@/components/AppHeader/AppHeader";
@@ -31,6 +32,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<PasswordForgot />} />
           <Route path="/reset-password" element={<PasswordReset />} />
+          <Route path="/terms-and-privacy" element={<TermsAndPrivacy />} />
           <Route
             path="/calendar"
             element={
