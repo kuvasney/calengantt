@@ -3,18 +3,29 @@ import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import {
   setHighlightedProject,
   clearHighlightedProject,
+  setProjectsList,
 } from "@/stores/projectsSlice";
+import { translateProjectStatus } from "@/utils/normalizers";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
 import SideWindow from "@components/SideWindow/SideWindow";
-import type { ProjectItem } from "@/types/project";
 import { formatDate } from "@/utils/dateFormatter";
+import type { ProjectItem } from "@/types/project";
 
-import { HiEye, HiCalendar, HiUser, HiBriefcase } from "react-icons/hi";
+import {
+  HiEye,
+  HiCalendar,
+  HiClock,
+  HiUser,
+  HiBriefcase,
+  HiFilter,
+  HiCheck,
+  HiTrash,
+} from "react-icons/hi";
 import "./listProjects.scss";
 
 export default function ListProjects() {
   const dispatch = useAppDispatch();
-  const { deleteProject } = useProjectsApi();
+  const { deleteProject, getProjects } = useProjectsApi();
   const highlightedProject: ProjectItem | null = useAppSelector(
     (state) => state.projects.highlightedProject,
   );
@@ -39,6 +50,8 @@ export default function ListProjects() {
     }
     confirm(`Tem certeza que deseja apagar o projeto ${project.projectName}?`);
     await deleteProject(project.id);
+    const projects = await getProjects();
+    dispatch(setProjectsList(projects));
   };
 
   const clearFilters = () => {
@@ -63,7 +76,9 @@ export default function ListProjects() {
 
         {highlightedProject !== null && (
           <div className="filter-badge">
-            <span className="filter-icon">🔍</span>
+            <span className="filter-icon">
+              <HiFilter />
+            </span>
             <span className="filter-text">{highlightedProject.clientName}</span>
             <button
               className="btn-clear-filter"
@@ -93,12 +108,18 @@ export default function ListProjects() {
                 key={project.id}
                 className={`project-card ${
                   highlightedProject?.id === project.id ? "active" : ""
-                }`}
+                } ${project.status === "completed" ? "completed" : ""}`}
               >
                 <div className="project-card-header">
                   <h3 className="project-name">{project.projectName}</h3>
                   <span className="project-id">#{project.id}</span>
-                  <button onClick={() => handleDeleteProject(project)}>
+                  <button
+                    onClick={() => handleDeleteProject(project)}
+                    className="btn-danger--alt"
+                  >
+                    <span className="icon">
+                      <HiTrash />
+                    </span>
                     Apagar este projeto
                   </button>
                 </div>
@@ -132,31 +153,46 @@ export default function ListProjects() {
                       <span className="icon">
                         <HiCalendar />
                       </span>{" "}
-                      Início
+                      Início planejado
                     </span>
                     <span className="info-value">
                       {formatDate(project.startDate)}
                     </span>
                   </div>
-                </div>
-
-                <button
-                  className="btn-highlight"
-                  onClick={() => highlightProject(project)}
-                >
-                  {highlightedProject?.id === project.id ? (
-                    <>
-                      <span>✓</span> Selecionado
-                    </>
-                  ) : (
-                    <>
+                  <div className="project-info">
+                    <span className="info-label">
                       <span className="icon">
-                        <HiEye />
+                        <HiClock />
                       </span>{" "}
-                      Destacar no Calendário
-                    </>
-                  )}
-                </button>
+                      Status
+                    </span>
+                    <span className="info-value">
+                      {translateProjectStatus(project.status)}
+                    </span>
+                  </div>
+                </div>
+                {project.status !== "completed" && (
+                  <button
+                    className="btn-highlight"
+                    onClick={() => highlightProject(project)}
+                  >
+                    {highlightedProject?.id === project.id ? (
+                      <>
+                        <span className="icon">
+                          <HiCheck />
+                        </span>{" "}
+                        Selecionado
+                      </>
+                    ) : (
+                      <>
+                        <span className="icon">
+                          <HiEye />
+                        </span>{" "}
+                        Destacar no Calendário
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             ))
           )}
