@@ -14,16 +14,19 @@
   --dark-color-bg: #{$light_dark-color};
   --btn-gradient1: #{$light_btn-gradient1};
   --btn-gradient2: #{$light_btn-gradient2};
+  --btn-gradient-danger: #{$light_gradient-danger};
   --error-color: #{$dark_color-error};
   --success-color: #{$dark_color-success};
 
   /* Tamanhos de fonte responsivos */
+  --text-smaller: 0.6rem;
   --text-small: 0.7rem;
   --text-regular: 0.8rem;
   --text-large: 1.6rem;
   --text-xlarge: 2rem;
 
   @include respond-to("desktop") {
+    --text-smaller: 0.65rem;
     --text-small: 0.8rem;
     --text-regular: 1rem;
     --text-large: 1.8rem;
@@ -42,6 +45,7 @@
     --dark-color-bg: #{$dark_dark-color};
     --btn-gradient1: #{$dark_btn-gradient1};
     --btn-gradient2: #{$dark_btn-gradient2};
+    --btn-gradient-danger: #{$dark_gradient-danger};
     --error-color: #{$light_color-error};
     --success-color: #{$light_color-success};
   }
