@@ -35,7 +35,7 @@ export default function LoginForm() {
     try {
       const loginData: UserCredentials = { email: username, password };
       const loginResponse: LoginResponse = await userLogin(
-        loginData as UserCredentials
+        loginData as UserCredentials,
       );
       if (loginResponse) {
         sessionStorage.setItem("accessToken", loginResponse.accessToken);
@@ -113,6 +113,11 @@ export default function LoginForm() {
           <SocialLogin />
         </fieldset>
       </form>
+      <p>
+        <Link to="terms-and-privacy" className="link-default">
+          Leia os Termos de uso e a Política de privacidade
+        </Link>
+      </p>
     </div>
   );
 }

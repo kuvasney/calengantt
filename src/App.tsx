@@ -20,6 +20,7 @@ function App() {
     "/forgot-password",
     "/reset-password",
     "/auth/callback",
+    "/terms-and-privacy",
   ];
   const shouldShowHeader = !hideHeaderPaths.includes(location.pathname);
 

@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function TermsAndPrivacy() {
   return (
     <div style={{ maxWidth: 800, margin: "2rem auto", padding: "2rem" }}>
+      <Link to="/" className="link-default">
+        Voltar para o login
+      </Link>
       <h1>Termos de Uso</h1>
       <p>
         Ao utilizar este site, você concorda com os seguintes termos de uso. O
