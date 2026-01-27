@@ -31,8 +31,40 @@ export default function Calengantt({
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
     null,
   );
+
+  // Filtrar projetos abertos (status !== "completed")
+  const openedProjectsList: ProjectItem[] = useMemo(
+    () => projectsList.filter((project) => project.status !== "completed"),
+    [projectsList],
+  );
+
+  // Ordenar projetos abertos por data de início
+  const projectsListSortedByDate: ProjectItem[] = useMemo(
+    () =>
+      [...openedProjectsList].sort(
+        (a, b) =>
+          new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+      ),
+    [openedProjectsList],
+  );
+
+  // Pega a data de início do projeto mais antigo aberto
+  const firstProjectStartDate =
+    projectsListSortedByDate.length > 0
+      ? new Date(projectsListSortedByDate[0].startDate)
+      : new Date();
+
   const today = useMemo(() => new Date(), []);
   const dayOfWeek = today.getDay(); // 0 = domingo, 1 = segunda, etc.
+
+  // calcular daysToShow automatico baseado no projeto mais antigo ainda nao completed
+  const _diffDaysToShowTodayMs =
+    today.getTime() - firstProjectStartDate.getTime();
+
+  const diffDaysToShowToday = useMemo(() => {
+    const days = Math.ceil(_diffDaysToShowTodayMs / (1000 * 60 * 60 * 24)) + 7;
+    return days < 1 ? 7 : days;
+  }, [_diffDaysToShowTodayMs]);
 
   // Criar mapeamento fixo de projeto -> posição baseado nos projetos visíveis no período
   const projectPositions = useMemo(() => {
@@ -44,14 +76,14 @@ export default function Calengantt({
     startDate.setDate(today.getDate() - dayOfWeek);
 
     // Calcular total de dias a exibir (do domingo até daysToShow a partir de hoje)
-    const totalDays = dayOfWeek + daysToShow;
+    const totalDays = dayOfWeek + diffDaysToShowToday;
 
     // Calcular data final do período
     const endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + totalDays - 1);
 
-    // Identificar todos os projetos que aparecem no período visível
-    projectsList.forEach((project) => {
+    // Identificar todos os projetos abertos que aparecem no período visível
+    openedProjectsList.forEach((project) => {
       if (!project.schedules || project.schedules.length === 0) return;
 
       // Pegar primeira e última data dos schedules
@@ -76,12 +108,7 @@ export default function Calengantt({
     });
 
     return positions;
-  }, [projectsList, today, dayOfWeek, daysToShow]);
-
-  // const lastDay = today.getDate() + daysToShow;
-  // const maxDate = new Date(today.getFullYear(), today.getMonth(), lastDay)
-  //   .toISOString()
-  //   .split("T")[0];
+  }, [openedProjectsList, today, dayOfWeek, diffDaysToShowToday]);
 
   const showProject = (projectId: number) => (e: React.MouseEvent) => {
     e.stopPropagation(); // Impede o bubble
@@ -109,6 +136,11 @@ export default function Calengantt({
       }
     }
   }, [dispatch, projectsList]);
+
+  // Atualize diffDaysToShowToday sempre que os projetos mudarem
+  useEffect(() => {
+    setDaysToShow(diffDaysToShowToday);
+  }, [diffDaysToShowToday]);
 
   return (
     <section>
@@ -167,8 +199,8 @@ export default function Calengantt({
           </div>
 
           {Array.from({ length: dayOfWeek + daysToShow }, (_, i) => {
-            const startDate = new Date(today);
-            startDate.setDate(today.getDate() - dayOfWeek);
+            const startDate = new Date(firstProjectStartDate);
+            startDate.setDate(startDate.getDate() - dayOfWeek);
             const currentDate = new Date(startDate);
             currentDate.setDate(startDate.getDate() + i);
             const dayOfMonth = currentDate.getDate();
@@ -177,8 +209,8 @@ export default function Calengantt({
             });
             const isToday = currentDate.toDateString() === today.toDateString();
 
-            // Verificar quais projetos ocupam este dia
-            let projectsInThisDay = projectsList.filter((project) => {
+            // Verificar quais projetos abertos ocupam este dia
+            let projectsInThisDay = openedProjectsList.filter((project) => {
               if (!project.schedules || project.schedules.length === 0)
                 return false;
 
