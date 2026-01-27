@@ -105,6 +105,22 @@ ul {
   font-weight: 700;
 }
 
+.btn-danger {
+  @extend .btn-default;
+  background: var(--btn-gradient-danger);
+  border: 1px solid var(--error-color);
+}
+
+.btn-danger--alt {
+  border: 1px solid var(--error-color);
+  color: var(--error-color);
+  font-size: var(--text-small);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
 .btn-small {
   border: 1px solid var(--main-color);
   border-radius: 2px;
@@ -113,9 +129,43 @@ ul {
   font-size: $text-small;
 }
 
+.btn-small1 {
+  @extend .btn-default;
+  font-size: var(--text-smaller);
+  min-width: 100px;
+  width: fit-content;
+  padding: 4px;
+}
+
 .btn-small--flat {
   border: 0;
   background: transparent;
   color: var(--alt-color1);
   font-size: $text-small;
+}
+
+.btn-highlight {
+  padding: 10px;
+  border: 0;
+  background: var(--main-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: var(--text-smaller);
+
+  &:hover {
+    border-color: rgba(var(--light-color), 0.5);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  span {
+  }
 }
