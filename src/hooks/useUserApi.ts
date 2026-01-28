@@ -22,6 +22,9 @@ export const useUserApi = () => {
       );
 
       if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Usuário inexistente ou senha inválida");
+        }
         throw new Error("Erro ao fazer login do usuário");
       }
 
