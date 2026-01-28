@@ -49,20 +49,21 @@ export default function ProductsPage() {
     setEditingProduct(product);
   }
 
-  function handleDeleteProduct(product: Product) {
+  async function handleDeleteProduct(product: Product) {
     if (
       window.confirm(
-        `Tem certeza que deseja remover o produto ${product.value}?`
+        `Tem certeza que deseja remover o produto ${product.value}?`,
       )
     ) {
-      // Chama API para deletar
-      deleteProduct(product.id)
-        .then(() => {
-          fetchProducts(); // Recarrega lista após exclusão
-        })
-        .catch((error) => {
-          console.error("Erro ao deletar o produto:", error);
-        });
+      try {
+        await deleteProduct(product.id);
+        fetchProducts(); // Recarrega lista após exclusão
+      } catch (error) {
+        console.error("Erro ao deletar o produto:", error);
+        alert(
+          "Erro ao deletar o produto. Verifique se não há projetos associados.",
+        );
+      }
     }
   }
   function handleCloseModal() {
@@ -118,7 +119,7 @@ export default function ProductsPage() {
                           Total de dias:{" "}
                           {product.steps.reduce(
                             (total, step) => total + step.days,
-                            0
+                            0,
                           )}
                         </dd>
                         {product.steps.map((step, index) => (
