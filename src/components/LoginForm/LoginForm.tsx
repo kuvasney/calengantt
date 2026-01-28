@@ -19,15 +19,19 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setFormErrors([]);
 
     if (!username || !password) {
-      setError("Por favor, preencha o e-mail e a senha.");
+      setFormErrors((prev) => [
+        ...prev,
+        "Por favor, preencha o e-mail e a senha.",
+      ]);
+
       return;
     }
 
@@ -44,10 +48,15 @@ export default function LoginForm() {
         dispatch({ type: "user/setUser", payload: loginResponse.user });
         navigate("/calendar");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Erro ao fazer login:", error);
-      setError("Erro ao tentar fazer login. Por favor, tente novamente.");
+      if (error instanceof Error) {
+        setFormErrors((prev) => [...prev, error.message]);
+      } else {
+        setFormErrors((prev) => [...prev, "Erro inesperado. Tente novamente"]);
+      }
     } finally {
+      console.log("errors", formErrors);
       setLoading(false);
     }
   };
@@ -109,7 +118,14 @@ export default function LoginForm() {
             </button>
             {loading && <LoaderComponent />}
           </div>
-          {error && <FormMessages type="error">{error}</FormMessages>}
+          {formErrors && (
+            <FormMessages
+              type="error"
+              messages={formErrors}
+              duration={5000}
+              key={formErrors.join()}
+            />
+          )}
           {/* <SocialLogin /> */}
         </fieldset>
       </form>

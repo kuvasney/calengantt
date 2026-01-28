@@ -9,14 +9,14 @@ import LoaderComponent from "@/components/Loader/LoaderComponent";
 
 export default function PasswordReset() {
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const { updateUserPassword } = useUserApi();
 
   async function handleResetSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError("");
+    setFormErrors([]);
     setLoading(true);
 
     const url = window.location.href;
@@ -24,25 +24,25 @@ export default function PasswordReset() {
     const token = params.get("token");
 
     if (!password) {
-      setError("É necessário preencher uma senha!");
+      setFormErrors(["É necessário preencher uma senha!"]);
       setLoading(false);
       return;
     }
 
     if (!token) {
-      setError("Requisição inválida");
+      setFormErrors(["Requisição inválida"]);
       setLoading(false);
       return;
     }
     try {
       await updateUserPassword(token, password);
-      setSuccess("Senha alterada com sucesso!");
+      setSuccessMessage(["Senha alterada com sucesso!"]);
       setLoading(false);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setError(error.message);
+        setFormErrors([error.message]);
       } else {
-        setError("Erro inesperado");
+        setFormErrors(["Erro inesperado"]);
       }
       setLoading(false);
     }
@@ -71,30 +71,26 @@ export default function PasswordReset() {
             <legend>Digite sua nova senha</legend>
 
             <PasswordInput onStateChange={setPassword} value={password} />
-            {error !== "" && (
-              <>
-                <FormMessages type="error">
-                  <p className="error-text">{error}</p>
-                </FormMessages>
-                <p>
-                  <Link className="link-default" to="/forgot-password">
-                    Solicite aqui um novo email de recuperação de senha
-                  </Link>
-                </p>
-              </>
+            {formErrors.length > 0 && (
+              <p>
+                <FormMessages type="error" messages={formErrors} />
+                <Link className="link-default" to="/forgot-password">
+                  Solicite aqui um novo email de recuperação de senha
+                </Link>
+              </p>
             )}
             <div className="input-field">
               <button className="btn-default btn-submit" type="submit">
                 Atualizar senha
               </button>
             </div>
-            {success !== "" && (
-              <FormMessages type="success">
-                <p className="error-text">{success}</p>
+            {successMessage.length > 0 && (
+              <p className="error-text">
+                <FormMessages type="success" messages={successMessage} />
                 <Link className="link-default" to="/">
                   Voltar para o login
                 </Link>
-              </FormMessages>
+              </p>
             )}
           </fieldset>
         </form>

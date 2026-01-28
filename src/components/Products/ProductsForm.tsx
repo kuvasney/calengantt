@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useProductsApi } from "@/hooks/useProductsApi";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LoaderComponent from "../Loader/LoaderComponent";
+import FormMessages from "../FormMessages/FormMessages";
 import { HiTrash } from "react-icons/hi";
 import type { ProductStep, Product } from "@/types/products";
 
@@ -25,8 +26,8 @@ export default function ProductsForm({
   const [productStepDays, setProductStepDays] = useState<number[]>([]);
   const [actualStepIndex, setActualStepIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
 
   // Popular formulário ao editar
   useEffect(() => {
@@ -49,7 +50,10 @@ export default function ProductsForm({
 
   function handleRemoveStep(index: number) {
     if (productStepName.length === 1) {
-      setErrorMessage("Um produto deve ter ao menos uma etapa.");
+      setFormErrors((prev) => [
+        ...prev,
+        "Um produto deve ter ao menos uma etapa.",
+      ]);
       return;
     }
 
@@ -62,12 +66,12 @@ export default function ProductsForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
+    setFormErrors([]);
+    setSuccessMessage([]);
     setIsLoading(true);
 
     if (!productName.trim()) {
-      setErrorMessage("O nome do produto é obrigatório.");
+      setFormErrors((prev) => [...prev, "O nome do produto é obrigatório."]);
       setIsLoading(false);
       return;
     }
@@ -92,7 +96,7 @@ export default function ProductsForm({
         // Atualizar produto existente
         productResponse = await updateProduct(
           initialProduct.id,
-          productData as Product
+          productData as Product,
         );
       } else {
         // Criar novo produto
@@ -105,8 +109,8 @@ export default function ProductsForm({
 
       setSuccessMessage(
         isEditing
-          ? "Produto atualizado com sucesso!"
-          : "Produto criado com sucesso!"
+          ? ["Produto atualizado com sucesso!"]
+          : ["Produto criado com sucesso!"],
       );
 
       if (!isEditing) {
@@ -121,7 +125,10 @@ export default function ProductsForm({
       onSuccess?.();
     } catch (error) {
       console.error("Erro ao salvar o produto:", error);
-      setErrorMessage("Erro ao salvar o produto. Por favor, tente novamente.");
+      setFormErrors((prev) => [
+        ...prev,
+        "Erro ao salvar o produto. Por favor, tente novamente.",
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +141,7 @@ export default function ProductsForm({
         {isLoading && <LoaderComponent />}
         <fieldset className="fieldset-regular">
           <legend>{isEditing ? "Editar Produto" : "Sobre o Produto"}</legend>
-          <div className="form-field">
+          <div className="form-field--pretty">
             <label htmlFor="productName">Nome do Produto:</label>
             <input
               type="text"
@@ -145,7 +152,7 @@ export default function ProductsForm({
               required
             />
           </div>
-          <div className="form-field">
+          <div className="form-field--pretty">
             <label htmlFor="productDescription">Descrição do Produto:</label>
             <textarea
               id="productDescription"
@@ -160,7 +167,7 @@ export default function ProductsForm({
           <fieldset key={index} className="fieldset-regular">
             <legend>Etapa {index + 1}</legend>
             <div className="form-inline">
-              <div className="form-field size3-field">
+              <div className="form-field--pretty">
                 <label htmlFor={`stepName-${index}`}>
                   Nome da Etapa: <br />
                   <span className="label-text--small">
@@ -173,6 +180,7 @@ export default function ProductsForm({
                   id={`stepName-${index}`}
                   value={stepName}
                   placeholder="Este nome será exibido no detalhe"
+                  required
                   onChange={(e) => {
                     const newStepNames = [...productStepName];
                     newStepNames[index] = e.target.value;
@@ -180,16 +188,30 @@ export default function ProductsForm({
                   }}
                 />
               </div>
-              <div className="form-field size2-field">
+              <div className="form-field--pretty">
                 <label htmlFor={`stepDays-${index}`}>Duração (dias):</label>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="Mínima de 1 dia"
+                  required
                   id={`stepDays-${index}`}
-                  value={productStepDays[index]}
+                  value={
+                    productStepDays[index] === 0 ? "" : productStepDays[index]
+                  }
                   onChange={(e) => {
-                    const newStepDays = [...productStepDays];
-                    newStepDays[index] = Number(e.target.value);
-                    setProductStepDays(newStepDays);
+                    const value = e.target.value;
+                    // Permite apenas números inteiros positivos ou vazio
+                    if (/^\d*$/.test(value)) {
+                      const newStepDays = [...productStepDays];
+                      newStepDays[index] = value === "" ? 0 : Number(value);
+                      setProductStepDays(newStepDays);
+                    } else {
+                      setFormErrors((prev) => [
+                        ...prev,
+                        "A duração de uma etapa deve ser de pelo menos 1 dia",
+                      ]);
+                    }
                   }}
                 />
               </div>
@@ -213,11 +235,21 @@ export default function ProductsForm({
         >
           Adicionar etapa
         </button>
-        {errorMessage && (
-          <div className="products-form__error-message">{errorMessage}</div>
+        {formErrors.length > 0 && (
+          <FormMessages
+            messages={formErrors}
+            type="error"
+            duration={5000}
+            key={formErrors.join()}
+          />
         )}
-        {successMessage && (
-          <div className="products-form__success-message">{successMessage}</div>
+        {successMessage.length > 0 && (
+          <FormMessages
+            messages={successMessage}
+            type="success"
+            duration={5000}
+            key={successMessage.join()}
+          />
         )}
         <button type="submit" className="btn-default btn-submit">
           {isEditing ? "Atualizar Produto" : "Salvar Produto"}

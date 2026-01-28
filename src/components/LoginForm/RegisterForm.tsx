@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useUserApi } from "@/hooks/useUserApi";
 import { APP_CONFIG } from "@/config/app";
 import LoaderComponent from "../Loader/LoaderComponent";
-import SocialLogin from "../SocialLogin";
+// import SocialLogin from "../SocialLogin";
 import FormMessages from "../FormMessages/FormMessages";
 import { CgLock, CgUser, CgEye, CgEyeAlt } from "react-icons/cg";
 
@@ -15,30 +15,37 @@ export default function RegisterForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setFormErrors([]);
+    setSuccessMessage([]);
 
     if (!fullName || !email || !password) {
-      setError("Por favor, preencha todos os campos.");
+      setFormErrors((prev) => [
+        ...prev,
+        "Por favor, preencha todos os campos.",
+      ]);
       return;
     }
 
     setLoading(true);
     try {
       await registerUser({ fullName, email, password });
-      setSuccessMessage("Registro bem-sucedido!");
+      setSuccessMessage(["Registro bem-sucedido!"]);
       setFullName("");
       setEmail("");
       setPassword("");
     } catch (error) {
       console.error("Erro ao registrar usuário:", error);
-      setError("Erro ao tentar registrar. Por favor, tente novamente.");
+      setFormErrors((prev) => [
+        ...prev,
+        "Erro ao tentar registrar. Por favor, tente novamente.",
+      ]);
     } finally {
       setLoading(false);
     }
@@ -98,18 +105,21 @@ export default function RegisterForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <FormMessages type="error">{error}</FormMessages>}
-          {successMessage && (
-            <FormMessages type="success">
-              {successMessage} Você pode agora fazer <Link to="/">login</Link>.
-            </FormMessages>
+          {formErrors.length > 0 && (
+            <FormMessages type="error" messages={formErrors} />
+          )}
+          {successMessage.length > 0 && (
+            <div className="form-success">
+              <FormMessages type="success" messages={successMessage} />
+              Você pode agora fazer <Link to="/">login</Link>.
+            </div>
           )}
           <div className="form-actions">
             <button type="submit" className="btn-default" disabled={loading}>
               {loading ? <LoaderComponent /> : "Registrar"}
             </button>
           </div>
-          <SocialLogin />
+          {/* <SocialLogin /> */}
         </fieldset>
       </form>
     </div>

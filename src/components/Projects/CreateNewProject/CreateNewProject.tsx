@@ -63,7 +63,7 @@ export default function NewProject({
   );
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
-  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -245,12 +245,12 @@ export default function NewProject({
       await postProject(projectData as ProjectData);
 
       // Sucesso: mostrar mensagem e limpar formulário
-      setSuccessMessage("✅ Projeto criado com sucesso!");
+      setSuccessMessage(["✅ Projeto criado com sucesso!"]);
       clearForm();
 
       // Limpar mensagem após 3 segundos e fechar
       setTimeout(() => {
-        setSuccessMessage("");
+        setSuccessMessage([]);
         onSuccess(); // Notifica pai e fecha
       }, 3000);
     } catch (error) {
@@ -375,13 +375,7 @@ export default function NewProject({
                 </button>
               </div>
               {clientCEPError.length > 0 && (
-                <FormMessages type="error">
-                  {clientCEPError.map((error, index) => (
-                    <p key={index} className="error-text">
-                      {error}
-                    </p>
-                  ))}
-                </FormMessages>
+                <FormMessages type="error" messages={clientCEPError} />
               )}
 
               <div className="input-field--pretty">
@@ -568,19 +562,21 @@ export default function NewProject({
               </button>
             </fieldset>
             {successMessage && (
-              <FormMessages type="success">
-                <p>{successMessage}</p>
-              </FormMessages>
+              <FormMessages
+                type="success"
+                messages={successMessage}
+                onClose={() => setSuccessMessage([])}
+                duration={5000}
+              />
             )}
             {formErrors.length > 0 && (
               <div className="error-messages">
-                {formErrors.map((error, index) => (
-                  <FormMessages type="error">
-                    <p key={index} className="error-text">
-                      {error}
-                    </p>
-                  </FormMessages>
-                ))}
+                <FormMessages
+                  type="error"
+                  messages={formErrors}
+                  onClose={() => setFormErrors([])}
+                  duration={10000}
+                />
               </div>
             )}
             {isLoading && <p>Carregando...</p>}

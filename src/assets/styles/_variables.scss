@@ -25,7 +25,7 @@ $dark_color-accent: #4caf50; // Para CTAs e elementos importantes
 $dark_color-border: #1b3a24; // Bordas sutis
 $dark_color-hover: #134d2c; // Estados hover
 $dark_color-error: #f00;
-$dark_color-success: #27ae60;
+$dark_color-success: #00f;
 
 $light_color-bg: #e6f2e6;
 $light_color-main: #b3e6b3;
@@ -38,7 +38,7 @@ $light_btn-gradient2: linear-gradient(45deg, #b3e6b3, #0000ff00);
 $light_gradient-danger: linear-gradient(45deg, #f00, #ccc);
 $light_color-text: #000000;
 $light_color-error: #f00;
-$light_color-success: #27ae60;
+$light_color-success: #00f;
 
 @use "sass:map";
 

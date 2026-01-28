@@ -30,7 +30,7 @@ ul {
   justify-content: center;
   gap: 8px;
   padding: 12px 20px;
-  background: var(--btn-gradient1);
+  background: var(--gradient-1);
   color: white;
   border: none;
   border-radius: 8px;
@@ -100,14 +100,14 @@ ul {
 
 .btn-submit {
   @extend .btn-default;
-  background: var(--btn-gradient1);
+  background: var(--gradient-1);
   font-size: 1.4em;
   font-weight: 700;
 }
 
 .btn-danger {
   @extend .btn-default;
-  background: var(--btn-gradient-danger);
+  background: var(--gradient-danger);
   border: 1px solid var(--error-color);
 }
 
@@ -124,7 +124,7 @@ ul {
 .btn-small {
   border: 1px solid var(--main-color);
   border-radius: 2px;
-  background: var(--btn-gradient2);
+  background: var(--gradient-2);
   color: var(--text-color);
   font-size: $text-small;
 }

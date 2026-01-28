@@ -9,27 +9,31 @@ import FormMessages from "@/components/FormMessages/FormMessages";
 export default function PasswordForgot() {
   const { passwordEmailRecovery } = useUserApi();
   const [email, setEmail] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccessMessage("");
+    setFormErrors([]);
+    setSuccessMessage([]);
 
     if (!email) {
-      setError("Por favor, insira seu e-mail.");
+      setFormErrors(["Por favor, insira seu e-mail."]);
       return;
     }
 
     setLoading(true);
     try {
       await passwordEmailRecovery(email);
-      setSuccessMessage("E-mail de recuperação enviado com sucesso!");
+      setSuccessMessage([
+        "Se o email estiver cadastrado, você receberá instruções para recuperação de senha",
+      ]);
     } catch (error) {
       console.error("Erro ao enviar e-mail de recuperação:", error);
-      setError("Erro ao tentar enviar o e-mail. Por favor, tente novamente.");
+      setFormErrors([
+        "Erro ao tentar enviar o e-mail. Por favor, tente novamente.",
+      ]);
     } finally {
       setLoading(false);
     }
@@ -66,10 +70,12 @@ export default function PasswordForgot() {
               />
             </div>
             {loading && <LoaderComponent />}
-            {successMessage && (
-              <FormMessages type="success">{successMessage}</FormMessages>
+            {successMessage.length > 0 && (
+              <FormMessages type="success" messages={successMessage} />
             )}
-            {error && <FormMessages type="error">{error}</FormMessages>}
+            {formErrors.length > 0 && (
+              <FormMessages type="error" messages={formErrors} />
+            )}
 
             <div className="input-field">
               <button type="submit" className="btn-default">

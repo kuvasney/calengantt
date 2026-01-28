@@ -101,7 +101,47 @@ export default function Calendar() {
           onClose={() => setProductSideWindow(false)}
           position="left"
           title="O que é um produto?"
-        />
+        >
+          <p>
+            <strong>Tudo que você vende é um produto. </strong>
+          </p>
+          <p>
+            Se você é um <strong>prestador de serviços</strong>, o{" "}
+            <strong>produto</strong> é o seu <strong>serviço prestado</strong>.
+          </p>
+          <p>
+            <strong>Quer um exemplo prático?</strong> Vamos pegar o caso de uma
+            pessoa que trabalhe com faxina de locais.
+          </p>
+          <p>
+            Essa pessoa faz limpeza de locais (residências, escritórios ou até
+            firmas). Porém nem todos os locais são iguais. Então, para um
+            residência familiar pequena, ela levará 1 dia. Mas para uma pequena
+            empresa ela pode levar 3 dias. Então, ao cadastrar um produto, ela
+            cadastraria: <br />
+            Nome do produto: Faxina residência pequena. <br />
+            E nas etapas: <br />
+            Etapa 1: Limpeza completa <br />
+            Duração: 1 dia.
+          </p>
+          <p>
+            Porém, para uma casa maior ou uma pequena empresa, ela cadastraria:{" "}
+            <br />
+            Nome do produto: Faxina residência grande. <br />
+            E nas etapas: <br />
+            Etapa 1: Limpeza de quartos, banheiros e salas <br />
+            Duração: 1 dia. <br />
+            Etapa 2: Limpeza de cozinha, outros cômodos internos <br />
+            Duração: 1 dia. <br />
+            Etapa 3: Limpeza área externa <br />
+            Duração: 1 dia.
+          </p>
+          <p>
+            Com isso, essa pessoa tem 2 produtos cadastrados e pode controlar
+            seu calendário apenas criando o projeto e adicionando o produto
+            correspondente!
+          </p>
+        </SideWindow>
       </div>
     );
   }

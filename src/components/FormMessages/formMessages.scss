@@ -1,6 +1,45 @@
 @use "@/assets/styles/variables" as *;
 
+.form-messages {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+  bottom: 20px;
+  right: 0;
+
+  &.form-error {
+    background: var(--error-color);
+    border: 1px solid var(--error-color);
+  }
+
+  &.form-success {
+    background: var(--success-color);
+    border: 1px solid var(--main-color);
+  }
+
+  &.isHidden {
+    opacity: 0;
+    transform: translateX(20px);
+    z-index: -1;
+  }
+
+  &.isVisible {
+    padding-top: 1.5rem;
+    opacity: 1;
+    transform: translateX(0);
+    bottom: 20px;
+    right: 1px;
+    z-index: 10;
+  }
+}
+
 .form-message {
+  font-weight: bold;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -10,4 +49,27 @@
   span.icon {
     font-size: $text-large;
   }
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .icon {
+    flex-shrink: 0;
+  }
+}
+
+.form-message.form-error,
+.form-message.form-success {
+  color: white;
+}
+
+.form-messages__close {
+  display: flex;
+  font-size: var(--text-smaller);
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+.btn-small--flat.form-messages__close {
+  color: white;
 }

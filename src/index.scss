@@ -12,9 +12,9 @@
   --alt-color2: #{$light_color-3};
   --light-color: #{$light_light-color};
   --dark-color-bg: #{$light_dark-color};
-  --btn-gradient1: #{$light_btn-gradient1};
-  --btn-gradient2: #{$light_btn-gradient2};
-  --btn-gradient-danger: #{$light_gradient-danger};
+  --gradient-1: #{$light_btn-gradient1};
+  --gradient-2: #{$light_btn-gradient2};
+  --gradient-danger: #{$light_gradient-danger};
   --error-color: #{$dark_color-error};
   --success-color: #{$dark_color-success};
 
@@ -43,9 +43,9 @@
     --alt-color2: #{$dark_color-3};
     --light-color: #{$dark_light-color};
     --dark-color-bg: #{$dark_dark-color};
-    --btn-gradient1: #{$dark_btn-gradient1};
-    --btn-gradient2: #{$dark_btn-gradient2};
-    --btn-gradient-danger: #{$dark_gradient-danger};
+    --gradient-1: #{$dark_btn-gradient1};
+    --gradient-2: #{$dark_btn-gradient2};
+    --gradient-danger: #{$dark_gradient-danger};
     --error-color: #{$light_color-error};
     --success-color: #{$light_color-success};
   }
