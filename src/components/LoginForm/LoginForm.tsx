@@ -4,7 +4,7 @@ import { useUserApi } from "@/hooks/useUserApi";
 import { APP_CONFIG } from "@/config/app";
 import { useAppDispatch } from "@/stores/hooks";
 import LoaderComponent from "../Loader/LoaderComponent";
-import SocialLogin from "../SocialLogin";
+// import SocialLogin from "../SocialLogin";
 import { CgEye, CgEyeAlt, CgLock } from "react-icons/cg";
 import type { UserCredentials, LoginResponse } from "@/types/user";
 
@@ -110,7 +110,7 @@ export default function LoginForm() {
             {loading && <LoaderComponent />}
           </div>
           {error && <FormMessages type="error">{error}</FormMessages>}
-          <SocialLogin />
+          {/* <SocialLogin /> */}
         </fieldset>
       </form>
       <p>
