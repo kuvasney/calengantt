@@ -54,6 +54,8 @@ export default function Calengantt({
       ? new Date(projectsListSortedByDate[0].startDate)
       : new Date();
 
+  firstProjectStartDate.setHours(0, 0, 0, 0);
+
   const today = useMemo(() => new Date(), []);
   const dayOfWeek = today.getDay(); // 0 = domingo, 1 = segunda, etc.
 
@@ -74,6 +76,7 @@ export default function Calengantt({
     // Calcular o domingo anterior (ou o próprio dia se for domingo)
     const startDate = new Date(today);
     startDate.setDate(today.getDate() - dayOfWeek);
+    startDate.setHours(0, 0, 0, 0); // Normalize para meia-noite local
 
     // Calcular total de dias a exibir (do domingo até daysToShow a partir de hoje)
     const totalDays = dayOfWeek + diffDaysToShowToday;
@@ -81,6 +84,7 @@ export default function Calengantt({
     // Calcular data final do período
     const endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + totalDays - 1);
+    endDate.setHours(23, 59, 59, 999); // Normalize para fim do dia
 
     // Identificar todos os projetos abertos que aparecem no período visível
     openedProjectsList.forEach((project) => {
@@ -92,6 +96,10 @@ export default function Calengantt({
 
       const projectStart = new Date(firstSchedule.plannedStartDate);
       const projectEnd = new Date(lastSchedule.plannedEndDate);
+
+      // Normalize para evitar bugs de fuso horário
+      projectStart.setHours(0, 0, 0, 0);
+      projectEnd.setHours(23, 59, 59, 999);
 
       // Verifica se o projeto aparece no período visível
       if (projectEnd >= startDate && projectStart <= endDate) {
@@ -220,6 +228,10 @@ export default function Calengantt({
 
               const projectStart = new Date(firstSchedule.plannedStartDate);
               const projectEnd = new Date(lastSchedule.plannedEndDate);
+
+              // Normalize para meia-noite local (ignora horas para evitar bugs de fuso)
+              projectStart.setHours(0, 0, 0, 0);
+              projectEnd.setHours(23, 59, 59, 999);
 
               return currentDate >= projectStart && currentDate <= projectEnd;
             });
