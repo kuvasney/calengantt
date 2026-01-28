@@ -27,6 +27,13 @@ textarea,
   }
 }
 
+.select-default {
+  option {
+    background-color: var(--main-color);
+    color: var(--text-color);
+  }
+}
+
 .form-regular {
   display: flex;
   flex-direction: column;

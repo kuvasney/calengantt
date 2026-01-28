@@ -317,6 +317,7 @@ export default function NewProject({
                 <div className="input-field--pretty">
                   <label htmlFor="projectProduct">Produto</label>
                   <select
+                    className="select-default"
                     id="projectProduct"
                     value={projectProduct}
                     onChange={(e) => setProjectProduct(e.target.value)}
