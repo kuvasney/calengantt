@@ -29,8 +29,14 @@ export default function TermsAndPrivacy() {
 
         <h2>2. Uso Aceitável</h2>
         <ul>
-          <li>Você é responsável por fornecer informações verdadeiras e atualizadas.</li>
-          <li>Você concorda em não utilizar o sistema para fins ilícitos ou prejudiciais.</li>
+          <li>
+            Você é responsável por fornecer informações verdadeiras e
+            atualizadas.
+          </li>
+          <li>
+            Você concorda em não utilizar o sistema para fins ilícitos ou
+            prejudiciais.
+          </li>
           <li>
             É proibido transmitir conteúdo que seja ofensivo, discriminatório,
             ilegal ou que viole direitos de terceiros.
@@ -44,8 +50,8 @@ export default function TermsAndPrivacy() {
         <h2>3. Autenticação e Segurança de Conta</h2>
         <ul>
           <li>
-            Você é responsável por manter a confidencialidade de suas credenciais
-            de login.
+            Você é responsável por manter a confidencialidade de suas
+            credenciais de login.
           </li>
           <li>
             Você é responsável por todas as atividades realizadas em sua conta.
@@ -103,9 +109,9 @@ export default function TermsAndPrivacy() {
             visitadas e horário de acesso.
           </li>
           <li>
-            <strong>Cookies e Tecnologias Similares:</strong> Utilizamos cookies,
-            armazenamento local e tecnologias similares para aprimorar sua
-            experiência.
+            <strong>Cookies e Tecnologias Similares:</strong> Utilizamos
+            cookies, armazenamento local e tecnologias similares para aprimorar
+            sua experiência.
           </li>
         </ul>
 
@@ -126,11 +132,15 @@ export default function TermsAndPrivacy() {
 
         <h2>3. Compartilhamento de Dados</h2>
         <p>
-          <strong>Google OAuth:</strong> Você nos autoriza a receber
-          informações da Google como parte do processo de autenticação OAuth 2.0.
-          Você pode revogar essa autorização a qualquer momento através das
-          configurações de segurança da sua conta Google em{" "}
-          <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer">
+          <strong>Google OAuth:</strong> Você nos autoriza a receber informações
+          da Google como parte do processo de autenticação OAuth 2.0. Você pode
+          revogar essa autorização a qualquer momento através das configurações
+          de segurança da sua conta Google em{" "}
+          <a
+            href="https://myaccount.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             myaccount.google.com
           </a>
           .
@@ -142,9 +152,7 @@ export default function TermsAndPrivacy() {
         </p>
         <ul>
           <li>Provedores de serviços que nos ajudam a operar a plataforma;</li>
-          <li>
-            Autoridades legais quando exigido por lei ou ordem judicial;
-          </li>
+          <li>Autoridades legais quando exigido por lei ou ordem judicial;</li>
           <li>
             Em caso de fusão, aquisição ou insolvência (com notificação prévia);
           </li>
@@ -163,8 +171,8 @@ export default function TermsAndPrivacy() {
           <li>Auditorias de segurança regulares;</li>
         </ul>
         <p>
-          Porém, nenhum método de transmissão pela internet é 100% seguro.
-          Não podemos garantir segurança absoluta.
+          Porém, nenhum método de transmissão pela internet é 100% seguro. Não
+          podemos garantir segurança absoluta.
         </p>
 
         <h2>5. Retenção de Dados</h2>
@@ -185,8 +193,8 @@ export default function TermsAndPrivacy() {
             <strong>Correção:</strong> Corrigir dados incorretos ou incompletos;
           </li>
           <li>
-            <strong>Exclusão:</strong> Solicitar a exclusão de seus dados (direito
-            ao esquecimento);
+            <strong>Exclusão:</strong> Solicitar a exclusão de seus dados
+            (direito ao esquecimento);
           </li>
           <li>
             <strong>Portabilidade:</strong> Receber seus dados em formato
@@ -205,8 +213,8 @@ export default function TermsAndPrivacy() {
         <h2>7. Cookies e Tecnologias de Rastreamento</h2>
         <p>
           Utilizamos cookies para autenticação, preferências do usuário e
-          análise de uso. Você pode controlar as configurações de cookies em
-          seu navegador, mas isso pode afetar a funcionalidade do serviço.
+          análise de uso. Você pode controlar as configurações de cookies em seu
+          navegador, mas isso pode afetar a funcionalidade do serviço.
         </p>
 
         <h2>8. Conformidade com LGPD/GDPR</h2>
