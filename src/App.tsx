@@ -6,7 +6,6 @@ import AppHeader from "@/components/AppHeader/AppHeader";
 import Loader from "@/components/Loader/Loader";
 
 import "./App.scss";
-console.log("App component rendering");
 const Calendar = lazy(() => import("@/pages/Calendar"));
 const Products = lazy(() => import("@/pages/Products"));
 const Register = lazy(() => import("@/pages/Register"));
@@ -17,7 +16,6 @@ const AuthCallBack = lazy(() => import("@/pages/AuthCallBack"));
 
 function App() {
   const location = useLocation();
-  console.log("Current location:", location.pathname);
   const hideHeaderPaths = [
     "/",
     "/register",
