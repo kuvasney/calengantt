@@ -1,19 +1,23 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Login from "@/pages/Login";
-import Calendar from "@/pages/Calendar";
-import Products from "@/pages/Products";
-import Register from "@/pages/Register";
-import PasswordForgot from "@/pages/PasswordForgot";
-import PasswordReset from "@/pages/PasswordReset";
-import TermsAndPrivacy from "./pages/TermsAndPrivacy";
-import AuthCallBack from "@/pages/AuthCallBack";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppHeader from "@/components/AppHeader/AppHeader";
+import Loader from "@/components/Loader/Loader";
 
 import "./App.scss";
+console.log("App component rendering");
+const Calendar = lazy(() => import("@/pages/Calendar"));
+const Products = lazy(() => import("@/pages/Products"));
+const Register = lazy(() => import("@/pages/Register"));
+const PasswordForgot = lazy(() => import("@/pages/PasswordForgot"));
+const PasswordReset = lazy(() => import("@/pages/PasswordReset"));
+const TermsAndPrivacy = lazy(() => import("@/pages/TermsAndPrivacy"));
+const AuthCallBack = lazy(() => import("@/pages/AuthCallBack"));
 
 function App() {
   const location = useLocation();
+  console.log("Current location:", location.pathname);
   const hideHeaderPaths = [
     "/",
     "/register",
@@ -28,30 +32,32 @@ function App() {
     <div className="app-wrapper">
       {shouldShowHeader && <AppHeader />}
       <div className="content-wrapper">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<PasswordForgot />} />
-          <Route path="/reset-password" element={<PasswordReset />} />
-          <Route path="/terms-and-privacy" element={<TermsAndPrivacy />} />
-          <Route
-            path="/calendar"
-            element={
-              <ProtectedRoute>
-                <Calendar />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <ProtectedRoute>
-                <Products />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/auth/callback" element={<AuthCallBack />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<PasswordForgot />} />
+            <Route path="/reset-password" element={<PasswordReset />} />
+            <Route path="/terms-and-privacy" element={<TermsAndPrivacy />} />
+            <Route
+              path="/calendar"
+              element={
+                <ProtectedRoute>
+                  <Calendar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/auth/callback" element={<AuthCallBack />} />
+          </Routes>
+        </Suspense>
       </div>
     </div>
   );
