@@ -9,6 +9,10 @@ import App from "./App.tsx";
 
 import "./index.scss";
 
+window.addEventListener("load", () => {
+  import("./App.scss");
+});
+
 async function enableMocking() {
   if (import.meta.env.DEV) {
     const { worker } = await import("./mocks/browser");
@@ -30,6 +34,6 @@ enableMocking().then(() => {
           </BrowserRouter>
         </Provider>
       </ErrorBoundary>
-    </StrictMode>
+    </StrictMode>,
   );
 });

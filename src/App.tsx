@@ -5,7 +5,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AppHeader from "@/components/AppHeader/AppHeader";
 import Loader from "@/components/Loader/Loader";
 
-import "./App.scss";
+// stylesheet será resolvido no Vite para melhorar o pagespeed
 const Calendar = lazy(() => import("@/pages/Calendar"));
 const Products = lazy(() => import("@/pages/Products"));
 const Register = lazy(() => import("@/pages/Register"));

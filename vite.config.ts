@@ -14,4 +14,13 @@ export default defineConfig({
       "@stores": path.resolve(__dirname, "./src/stores"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom"],
+        },
+      },
+    },
+  },
 });
