@@ -9,41 +9,27 @@
     <meta name="apple-mobile-web-app-title" content="Calangar" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Preconnect para acelerar conexão com Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Ranchers&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Ranchers&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      />
-    </noscript>
     <meta
       name="google-site-verification"
       content="IZuvdJyCy6WpsuFS8HayhMU6fk61YeWSjXwNhixOKps"
     />
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-TDDZB3XPFT"
-    ></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+      window.addEventListener("load", function () {
+        // Carrega gtag.js
+        const script = document.createElement("script");
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-TDDZB3XPFT";
+        script.async = true;
+        document.head.appendChild(script);
 
-      gtag("config", "G-TDDZB3XPFT");
+        // Inicializa dataLayer
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-TDDZB3XPFT");
+      });
     </script>
     <title>Calangar</title>
     <style>
