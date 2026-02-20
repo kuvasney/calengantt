@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useUserApi } from "@/hooks/useUserApi";
 import { APP_CONFIG } from "@/config/app";
 import LoaderComponent from "../Loader/LoaderComponent";
-// import SocialLogin from "../SocialLogin";
+import SocialLogin from "../SocialLogin";
 import FormMessages from "../FormMessages/FormMessages";
 import { CgLock, CgUser, CgEye, CgEyeAlt } from "react-icons/cg";
 
@@ -119,7 +119,7 @@ export default function RegisterForm() {
               {loading ? <LoaderComponent /> : "Registrar"}
             </button>
           </div>
-          {/* <SocialLogin /> */}
+          <SocialLogin />
         </fieldset>
       </form>
     </div>
