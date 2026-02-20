@@ -7,9 +7,8 @@ import { store } from "./stores";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import App from "./App.tsx";
 
-import "./index.scss";
-
 window.addEventListener("load", () => {
+  import("./index.scss");
   import("./App.scss");
 });
 
