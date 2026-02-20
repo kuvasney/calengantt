@@ -1,10 +1,34 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// https://vite.dev/config/
+function deferStyles(): Plugin {
+  return {
+    name: "defer-styles",
+    enforce: "post",
+    transformIndexHtml(html: string) {
+      return html.replace(
+        /<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+\.css)"[^>]*>/g,
+        (match, href) => {
+          const attrs = match
+            .replace(/<link\s+/i, "")
+            .replace(/>/g, "")
+            .replace(/\s*rel="stylesheet"/i, "")
+            .replace(/\s*href="[^"]+\.css"/i, "")
+            .trim();
+
+          return [
+            `<link rel="preload" as="style" href="${href}" ${attrs} onload="this.onload=null;this.rel='stylesheet'">`,
+            `<noscript><link rel="stylesheet" href="${href}" ${attrs}></noscript>`,
+          ].join("");
+        },
+      );
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), deferStyles()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
