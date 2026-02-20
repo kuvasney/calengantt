@@ -13,9 +13,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Ranchers&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      rel="stylesheet"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ranchers&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      />
+    </noscript>
     <meta
       name="google-site-verification"
       content="IZuvdJyCy6WpsuFS8HayhMU6fk61YeWSjXwNhixOKps"
@@ -35,6 +46,18 @@
       gtag("config", "G-TDDZB3XPFT");
     </script>
     <title>Calangar</title>
+    <style>
+      /* CSS crítico mínimo */
+      html,
+      body,
+      #root {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        font-family: Ubuntu, sans-serif;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
