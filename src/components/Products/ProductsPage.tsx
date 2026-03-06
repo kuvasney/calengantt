@@ -8,7 +8,7 @@ import EditProductModal from "@/components/Products/EditProductModal";
 import {
   HiPencil,
   HiTrash,
-  HiBriefcase,
+  HiOutlineBeaker,
   HiChevronDown,
   HiChevronUp,
 } from "react-icons/hi";
@@ -92,7 +92,7 @@ export default function ProductsPage() {
             <li key={product.id}>
               <ul className="list-regular">
                 <li onClick={() => showMore(product.id)}>
-                  <HiBriefcase /> {product.value}{" "}
+                  <HiOutlineBeaker /> {product.value}{" "}
                   <button className="btn-small--flat">
                     {showingProductDetails === product.id ? (
                       <>

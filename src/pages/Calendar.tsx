@@ -8,9 +8,8 @@ import { setProjectsList } from "@/stores/projectsSlice";
 import { setProductsList } from "@/stores/productsSlice";
 import Calengantt from "@/components/Calengantt/Calengantt";
 import CreateNewProject from "@/components/Projects/CreateNewProject/CreateNewProject";
-import ListProjects from "@/components/Projects/ListProjects/ListProjects";
 import SideWindow from "@/components/SideWindow/SideWindow";
-import { HiBriefcase } from "react-icons/hi";
+import { HiOutlineBriefcase } from "react-icons/hi";
 
 export default function Calendar() {
   const { getProjects } = useProjectsApi();
@@ -64,7 +63,7 @@ export default function Calendar() {
 
   useEffect(() => {
     const loadData = async () => {
-      await Promise.all([fetchProjects(), fetchProducts()]);
+      await Promise.all([fetchProducts()]);
       setIsLoading(false);
     };
     loadData();
@@ -92,7 +91,7 @@ export default function Calendar() {
         </p>
         <button className="btn-default" onClick={() => navigate("/products")}>
           <span className="icon">
-            <HiBriefcase />
+            <HiOutlineBriefcase />
           </span>
           Criar Produto
         </button>
@@ -148,7 +147,6 @@ export default function Calendar() {
 
   return (
     <>
-      <ListProjects />
       {projectsList.length === 0 && (
         <p>
           Você não tem nenhum projeto cadastrado.{" "}
