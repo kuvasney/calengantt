@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/stores/hooks";
 import { useProjectsApi } from "@/hooks/useProjectsApi";
+import { fetchProjects } from "@/stores/projectsSlice";
 import { formatDate } from "@/utils/dateFormatter";
 import Skeleton from "./Skeleton";
 import type { Project, ProjectItem, Address, Schedules } from "@/types/project";
@@ -17,6 +19,7 @@ export default function ProjectDetails({
 }: {
   selectedProject: ProjectItem;
 }) {
+  const dispatch = useAppDispatch();
   const { getProject, updateProject, updateStepStatus } = useProjectsApi();
   const [project, setProject] = useState<Project | null>(null);
   // const [comments, setComments] = useState<CommentsType[]>([]);
@@ -45,6 +48,7 @@ export default function ProjectDetails({
   const handleSaveClientName = async (value: string) => {
     if (!project) return;
     await updateProject(project.id, { clientName: value });
+    dispatch(fetchProjects());
     setProject({ ...project, clientName: value });
   };
 
@@ -55,6 +59,7 @@ export default function ProjectDetails({
       // Recarregar o projeto completo para pegar os schedules recalculados
       const updatedProject = await getProject(project.id);
       setProject(updatedProject);
+      dispatch(fetchProjects());
     } catch (error) {
       console.error("Erro ao atualizar data de início:", error);
     }
@@ -63,29 +68,32 @@ export default function ProjectDetails({
   const handleSaveProjectName = async (value: string) => {
     if (!project) return;
     await updateProject(project.id, { projectName: value });
+    dispatch(fetchProjects());
     setProject({ ...project, projectName: value });
   };
 
   const handleSaveAddress = async (address: Address) => {
     if (!project) return;
     await updateProject(project.id, { obraAddress: address });
+    dispatch(fetchProjects());
     setProject({ ...project, obraAddress: address });
   };
 
-  const handleFinishStep = async (schedule: Schedules) => {
+  const handleFinishStep = async (schedule: Schedules, isFinish: boolean) => {
     if (!project) return;
-
+    const newStatus = isFinish ? "completed" : "in_progress";
     try {
       // Atualiza o status da etapa no backend (recalcula automaticamente as próximas)
       await updateStepStatus(
         project.id,
         schedule.id,
-        "completed",
+        newStatus,
         new Date().toISOString(),
       );
 
       // Recarrega o projeto completo para mostrar as datas recalculadas
       const updatedProject = await getProject(project.id);
+      dispatch(fetchProjects());
       setProject(updatedProject);
     } catch (error) {
       console.error("Erro ao finalizar etapa:", error);
@@ -247,12 +255,24 @@ export default function ProjectDetails({
                       <button
                         className="btn-default step-action-button"
                         type="button"
-                        onClick={() => handleFinishStep(schedule)}
+                        onClick={() => handleFinishStep(schedule, true)}
                       >
                         <span className="icon">
                           <CgCheckR />
                         </span>
                         Finalizar Etapa
+                      </button>
+                    )}
+                    {schedule.status === "completed" && (
+                      <button
+                        className="btn-default step-action-button"
+                        type="button"
+                        onClick={() => handleFinishStep(schedule, false)}
+                      >
+                        <span className="icon">
+                          <CgCheckR />
+                        </span>
+                        Reabrir Etapa
                       </button>
                     )}
                   </div>
