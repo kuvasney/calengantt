@@ -6,7 +6,12 @@ import { formatDate } from "@/utils/dateFormatter";
 import Skeleton from "./Skeleton";
 import type { Project, ProjectItem, Address, Schedules } from "@/types/project";
 
-import { CgCalendarDates, CgCheckR, CgPen } from "react-icons/cg";
+import {
+  HiOutlineCalendar,
+  HiOutlineCheck,
+  HiOutlinePencil,
+  HiOutlineReply,
+} from "react-icons/hi";
 
 import EditFieldModal from "@/components/Projects/EditFieldModal/EditFieldModal";
 import EditAddressModal from "../EditAddressModal/EditAddressModal";
@@ -20,7 +25,8 @@ export default function ProjectDetails({
   selectedProject: ProjectItem;
 }) {
   const dispatch = useAppDispatch();
-  const { getProject, updateProject, updateStepStatus } = useProjectsApi();
+  const { getProject, updateProject, updateScheduleDates, finishStep } =
+    useProjectsApi();
   const [project, setProject] = useState<Project | null>(null);
   // const [comments, setComments] = useState<CommentsType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,6 +35,9 @@ export default function ProjectDetails({
   const [editProjectName, setEditProjectName] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
   const [editStartDate, setEditStartDate] = useState(false);
+  const [editStepIndex, setEditStepIndex] = useState<number | null>(null);
+  const [editStepStartDate, setEditStepStartDate] = useState(false);
+  const [editStepEndDate, setEditStepEndDate] = useState(false);
 
   function translateStatus(status: string): string {
     switch (status) {
@@ -65,6 +74,39 @@ export default function ProjectDetails({
     }
   };
 
+  const handleSaveStepStartDate = async (value: string) => {
+    if (!project || editStepIndex === null) return;
+    const schedule = project.schedules[editStepIndex];
+    if (!schedule) return;
+
+    try {
+      await updateScheduleDates(project.id, schedule.id, value, undefined);
+      // Recarregar o projeto completo para pegar os schedules recalculados
+      const updatedProject = await getProject(project.id);
+      setProject(updatedProject);
+      dispatch(fetchProjects());
+    } catch (error) {
+      console.error("Erro ao atualizar data de início da etapa:", error);
+    }
+  };
+
+  const handleSaveStepEndDate = async (value: string) => {
+    if (!project || editStepIndex === null) return;
+    const schedule = project.schedules[editStepIndex];
+    if (!schedule) return;
+
+    try {
+      await updateScheduleDates(project.id, schedule.id, undefined, value);
+      // Recarregar o projeto completo para pegar os schedules recalculados
+      const updatedProject = await getProject(project.id);
+      handleFinishStep(schedule, true, value);
+      setProject(updatedProject);
+      dispatch(fetchProjects());
+    } catch (error) {
+      console.error("Erro ao atualizar data de término da etapa:", error);
+    }
+  };
+
   const handleSaveProjectName = async (value: string) => {
     if (!project) return;
     await updateProject(project.id, { projectName: value });
@@ -79,16 +121,20 @@ export default function ProjectDetails({
     setProject({ ...project, obraAddress: address });
   };
 
-  const handleFinishStep = async (schedule: Schedules, isFinish: boolean) => {
+  const handleFinishStep = async (
+    schedule: Schedules,
+    isFinish: boolean,
+    endDate?: string,
+  ) => {
     if (!project) return;
-    const newStatus = isFinish ? "completed" : "in_progress";
+
     try {
-      // Atualiza o status da etapa no backend (recalcula automaticamente as próximas)
-      await updateStepStatus(
+      await finishStep(
         project.id,
         schedule.id,
-        newStatus,
-        new Date().toISOString(),
+        isFinish,
+        schedule.actualStartDate ?? undefined,
+        endDate,
       );
 
       // Recarrega o projeto completo para mostrar as datas recalculadas
@@ -137,7 +183,7 @@ export default function ProjectDetails({
                   onClick={() => setEditProjectName(true)}
                   type="button"
                 >
-                  <CgPen />
+                  <HiOutlinePencil />
                 </button>
               </h2>
               <span className="project-id">#{project.id}</span>
@@ -152,7 +198,7 @@ export default function ProjectDetails({
                     onClick={() => setEditClientName(true)}
                     type="button"
                   >
-                    <CgPen />
+                    <HiOutlinePencil />
                   </button>
                 </span>
               </div>
@@ -171,7 +217,7 @@ export default function ProjectDetails({
                     onClick={() => setEditStartDate(true)}
                     type="button"
                   >
-                    <CgPen />
+                    <HiOutlinePencil />
                   </button>
                 </span>
               </div>
@@ -186,7 +232,7 @@ export default function ProjectDetails({
                     onClick={() => setEditAddress(true)}
                     type="button"
                   >
-                    <CgPen />
+                    <HiOutlinePencil />
                   </button>
                 </span>
               </div>
@@ -220,8 +266,28 @@ export default function ProjectDetails({
                         <span className="date-label">Planejado</span>
                         <div className="date-range">
                           <span>{formatDate(schedule.plannedStartDate)}</span>
+                          <button
+                            className="btn-edit"
+                            onClick={() => {
+                              setEditStepStartDate(true);
+                              setEditStepIndex(index);
+                            }}
+                            type="button"
+                          >
+                            <HiOutlinePencil />
+                          </button>
                           <span className="date-separator">→</span>
                           <span>{formatDate(schedule.plannedEndDate)}</span>
+                          <button
+                            className="btn-edit"
+                            onClick={() => {
+                              setEditStepEndDate(true);
+                              setEditStepIndex(index);
+                            }}
+                            type="button"
+                          >
+                            <HiOutlinePencil />
+                          </button>
                         </div>
                       </div>
 
@@ -246,7 +312,7 @@ export default function ProjectDetails({
                     <div className="step-footer">
                       <span className="step-duration">
                         <span className="icon">
-                          <CgCalendarDates />
+                          <HiOutlineCalendar />
                         </span>{" "}
                         {step.days} {step.days === 1 ? "dia" : "dias"}
                       </span>
@@ -258,7 +324,7 @@ export default function ProjectDetails({
                         onClick={() => handleFinishStep(schedule, true)}
                       >
                         <span className="icon">
-                          <CgCheckR />
+                          <HiOutlineCheck />
                         </span>
                         Finalizar Etapa
                       </button>
@@ -270,7 +336,7 @@ export default function ProjectDetails({
                         onClick={() => handleFinishStep(schedule, false)}
                       >
                         <span className="icon">
-                          <CgCheckR />
+                          <HiOutlineReply />
                         </span>
                         Reabrir Etapa
                       </button>
@@ -303,6 +369,44 @@ export default function ProjectDetails({
             fieldLabel="Data de Início"
             currentValue={
               new Date(project.startDate).toISOString().split("T")[0]
+            }
+          />
+
+          <EditFieldModal
+            isOpen={editStepStartDate}
+            fieldType="date"
+            onClose={() => {
+              setEditStepStartDate(false);
+              setEditStepIndex(null);
+            }}
+            onSave={handleSaveStepStartDate}
+            title="Editar Data de Início da Etapa"
+            fieldLabel="Data de Início da Etapa"
+            currentValue={
+              editStepIndex !== null && project.schedules[editStepIndex]
+                ? new Date(project.schedules[editStepIndex].plannedStartDate)
+                    .toISOString()
+                    .split("T")[0]
+                : ""
+            }
+          />
+
+          <EditFieldModal
+            isOpen={editStepEndDate}
+            fieldType="date"
+            onClose={() => {
+              setEditStepEndDate(false);
+              setEditStepIndex(null);
+            }}
+            onSave={handleSaveStepEndDate}
+            title="Editar Data de Término da Etapa"
+            fieldLabel="Data de Término da Etapa"
+            currentValue={
+              editStepIndex !== null && project.schedules[editStepIndex]
+                ? new Date(project.schedules[editStepIndex].plannedEndDate)
+                    .toISOString()
+                    .split("T")[0]
+                : ""
             }
           />
 

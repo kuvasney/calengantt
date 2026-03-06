@@ -95,18 +95,84 @@ export const useProjectsApi = () => {
       scheduleId: number,
       status: "pending" | "in_progress" | "completed",
       actualDate?: string,
+      actualStartDate?: string,
+      actualEndDate?: string,
     ) => {
       const response = await fetchWithAuth(
         `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}/schedules/${scheduleId}/status`,
         {
           method: "PATCH",
           headers: getAuthHeaders(),
-          body: JSON.stringify({ status, actualDate }),
+          body: JSON.stringify({
+            status,
+            actualDate,
+            actualStartDate,
+            actualEndDate,
+          }),
         },
       );
 
       if (!response.ok) {
         throw new Error("Erro ao atualizar status da etapa");
+      }
+
+      return await response.json();
+    },
+    [],
+  );
+
+  const updateScheduleDates = useCallback(
+    async (
+      projectId: number,
+      scheduleId: number,
+      plannedStartDate?: string,
+      plannedEndDate?: string,
+    ) => {
+      const response = await fetchWithAuth(
+        `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}/schedules/${scheduleId}/dates`,
+        {
+          method: "PATCH",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ plannedStartDate, plannedEndDate }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar datas da etapa");
+      }
+
+      return await response.json();
+    },
+    [],
+  );
+
+  const finishStep = useCallback(
+    async (
+      projectId: number,
+      scheduleId: number,
+      isFinish: boolean,
+      actualStartDate?: string,
+      actualEndDate?: string,
+    ) => {
+      const nowIso = new Date().toISOString();
+      const newStatus = isFinish ? "completed" : "in_progress";
+
+      const response = await fetchWithAuth(
+        `${API_CONFIG.baseURL}${API_ENDPOINTS.projects}/${projectId}/schedules/${scheduleId}/status`,
+        {
+          method: "PATCH",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            status: newStatus,
+            actualDate: nowIso,
+            actualStartDate: actualStartDate ?? nowIso,
+            actualEndDate: isFinish ? (actualEndDate ?? nowIso) : undefined,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao finalizar/reabrir etapa");
       }
 
       return await response.json();
@@ -121,5 +187,7 @@ export const useProjectsApi = () => {
     postProject,
     updateProject,
     updateStepStatus,
+    updateScheduleDates,
+    finishStep,
   };
 };

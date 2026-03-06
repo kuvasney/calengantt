@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/stores/hooks";
-import { HiMenu, HiCalendar, HiLogout, HiBriefcase } from "react-icons/hi";
+import {
+  HiMenu,
+  HiOutlineCalendar,
+  HiOutlineLogout,
+  HiOutlineBriefcase,
+  HiOutlineBeaker,
+} from "react-icons/hi";
 
 import UserInfo from "../UserInfo/UserInfo";
 
@@ -38,17 +44,22 @@ export default function AppNav() {
         <ul>
           <li>
             <Link to="/calendar" onClick={closeMenu}>
-              <HiCalendar /> Calendário
+              <HiOutlineCalendar /> Calendário
             </Link>
           </li>
           <li>
             <Link to="/products" onClick={closeMenu}>
-              <HiBriefcase /> Produtos
+              <HiOutlineBeaker /> Produtos
+            </Link>
+          </li>
+          <li>
+            <Link to="/projects" onClick={closeMenu}>
+              <HiOutlineBriefcase /> Projetos
             </Link>
           </li>
           <li>
             <button className="btn-flat" onClick={handleLogout}>
-              <HiLogout /> Sair
+              <HiOutlineLogout /> Sair
             </button>
           </li>
         </ul>

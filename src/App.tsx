@@ -8,6 +8,7 @@ import Loader from "@/components/Loader/Loader";
 // stylesheet será resolvido no Vite para melhorar o pagespeed
 const Calendar = lazy(() => import("@/pages/Calendar"));
 const Products = lazy(() => import("@/pages/Products"));
+const Projects = lazy(() => import("@/pages/Projects"));
 const Register = lazy(() => import("@/pages/Register"));
 const PasswordForgot = lazy(() => import("@/pages/PasswordForgot"));
 const PasswordReset = lazy(() => import("@/pages/PasswordReset"));
@@ -50,6 +51,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/projects"
+              element={
+                <ProtectedRoute>
+                  <Projects />
                 </ProtectedRoute>
               }
             />
