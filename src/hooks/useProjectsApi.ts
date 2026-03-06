@@ -93,7 +93,7 @@ export const useProjectsApi = () => {
     async (
       projectId: number,
       scheduleId: number,
-      status: "in_progress" | "completed",
+      status: "pending" | "in_progress" | "completed",
       actualDate?: string,
     ) => {
       const response = await fetchWithAuth(
@@ -113,22 +113,6 @@ export const useProjectsApi = () => {
     },
     [],
   );
-
-  // const getProjectComments = useCallback(async (projectId: number) => {
-  //   const response = await fetchWithAuth(
-  //     `${API_CONFIG.baseURL}${API_ENDPOINTS.project}/${projectId}/comments`,
-  //     {
-  //       method: "GET",
-  //       headers: getAuthHeaders(),
-  //     }
-  //   );
-
-  //   if (!response.ok) {
-  //     throw new Error(`Erro ao buscar os comentários: ${response.statusText}`);
-  //   }
-
-  //   return await response.json();
-  // }, []);
 
   return {
     getProjects,
