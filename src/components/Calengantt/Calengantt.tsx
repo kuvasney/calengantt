@@ -94,8 +94,16 @@ export default function Calengantt({
       const firstSchedule = project.schedules[0];
       const lastSchedule = project.schedules[project.schedules.length - 1];
 
-      const projectStart = new Date(firstSchedule.plannedStartDate);
-      const projectEnd = new Date(lastSchedule.plannedEndDate);
+      const projectStart = new Date(
+        firstSchedule.actualStartDate
+          ? firstSchedule.actualStartDate
+          : firstSchedule.plannedStartDate,
+      );
+      const projectEnd = new Date(
+        lastSchedule.actualEndDate
+          ? lastSchedule.actualEndDate
+          : lastSchedule.plannedEndDate,
+      );
 
       // Normalize para evitar bugs de fuso horário
       projectStart.setHours(0, 0, 0, 0);
