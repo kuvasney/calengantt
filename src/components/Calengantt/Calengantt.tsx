@@ -257,21 +257,24 @@ export default function Calengantt({
                     // Identificar qual schedule está ativo neste dia
                     let currentSchedule = null;
                     let currentStepName = "";
-
+                    let currentStepIndex = 0;
                     if (project.schedules) {
-                      currentSchedule = project.schedules.find((schedule) => {
-                        const scheduleStart = new Date(
-                          schedule.plannedStartDate,
-                        );
-                        const scheduleEnd = new Date(schedule.plannedEndDate);
-                        scheduleStart.setHours(0, 0, 0, 0);
-                        scheduleEnd.setHours(23, 59, 59, 999);
+                      currentSchedule = project.schedules.find(
+                        (schedule, index) => {
+                          currentStepIndex = index;
+                          const scheduleStart = new Date(
+                            schedule.plannedStartDate,
+                          );
+                          const scheduleEnd = new Date(schedule.plannedEndDate);
+                          scheduleStart.setHours(0, 0, 0, 0);
+                          scheduleEnd.setHours(23, 59, 59, 999);
 
-                        return (
-                          currentDate >= scheduleStart &&
-                          currentDate <= scheduleEnd
-                        );
-                      });
+                          return (
+                            currentDate >= scheduleStart &&
+                            currentDate <= scheduleEnd
+                          );
+                        },
+                      );
 
                       if (currentSchedule) {
                         currentStepName = currentSchedule.productStep.name;
@@ -295,6 +298,9 @@ export default function Calengantt({
                             project.id * 70
                           }, 80%, 70%, 0.8)`,
                           top: `${topOffset}px`,
+                          borderColor: `hsla(${
+                            currentStepIndex * 90
+                          }, 80%, 70%, 1)`,
                         }}
                         onClick={showProject(project.id)}
                       >
